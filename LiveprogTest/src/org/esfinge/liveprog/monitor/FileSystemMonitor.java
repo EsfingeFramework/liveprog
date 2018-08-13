@@ -151,7 +151,10 @@ public class FileSystemMonitor extends AbstractMonitor
 		{
 			try
 			{
-				System.out.println(">>>>> Started monitoring..");
+				// TODO: debug
+				// informa qual o (root) diretorio que esta sendo monitorado 
+				System.out.println(">>>>> Started monitoring [" + rootDir.toAbsolutePath() + "]");
+				
 				//
 				isRunning = true;
 				

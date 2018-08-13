@@ -8,10 +8,12 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
-import java.util.function.Predicate;
+import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.esfinge.liveprog.IStateLoader;
 import org.esfinge.liveprog.annotation.IgnoreOnReload;
 
 /**
@@ -158,32 +160,54 @@ public class Utils
 	{
 		try
 		{
-			// obtem as propriedades do novo objeto
-			for ( Field newObjField : getFields(newObj.getClass()) )
+			// verifica se a nova classe implementa a interface IStateLoader
+			if ( newObj instanceof IStateLoader )
 			{
-				// verifica se o campo esta marcado como @IgnoreOnReload
-				if ( newObjField.isAnnotationPresent(IgnoreOnReload.class) )
+				// TODO: debug
+				System.out.format("UTILS >> Criando mapa de propriedades para carregamento via IStateLoader!\n\n");
+
+				// cria o mapa de propriedades do objeto antigo
+				Map<String,Object> mapState = new HashMap<String,Object>();
+				
+				for ( Field oldObjField : getFields(oldObj.getClass()) )
 				{
-					// TODO: debug
-					System.out.println("UTILS >> Propriedade ignorada: " + newObjField.getName());
-					
-					continue;
+					// armazena a propriedade no objeto antigo
+					oldObjField.setAccessible(true);
+					mapState.put(oldObjField.getName(), oldObjField.get(oldObj));
 				}
 				
-				// obtem a propriedade do objeto antigo
-				Field oldObjField = getField(oldObj.getClass(), newObjField.getName());
-				
-				if ( oldObjField != null )
+				// carrega o estado no novo objeto
+				((IStateLoader) newObj).load(mapState);
+			}
+			else
+			{
+				// obtem as propriedades do novo objeto
+				for ( Field newObjField : getFields(newObj.getClass()) )
 				{
-					//
-					newObjField.setAccessible(true);
-					oldObjField.setAccessible(true);
+					// verifica se o campo esta marcado com @IgnoreOnReload
+					if ( newObjField.isAnnotationPresent(IgnoreOnReload.class) )
+					{
+						// TODO: debug
+						System.out.println("UTILS >> Propriedade ignorada: " + newObjField.getName());
+						
+						continue;
+					}
 					
-					// copia o valor antigo para o novo objeto
-					newObjField.set(newObj, oldObjField.get(oldObj));
-
-					// TODO: debug
-					System.out.println("UTILS >> Propriedade copiada: " + newObjField.getName());
+					// obtem a propriedade no objeto antigo
+					Field oldObjField = getField(oldObj.getClass(), newObjField.getName());						
+				
+					if ( oldObjField != null )
+					{
+						//
+						newObjField.setAccessible(true);
+						oldObjField.setAccessible(true);
+						
+						// copia o valor antigo para o novo objeto
+						newObjField.set(newObj, oldObjField.get(oldObj));
+	
+						// TODO: debug
+						System.out.format("UTILS >> Propriedade copiada: [%s , %s]\n", newObjField.getName(), newObjField.get(newObj));
+					}
 				}
 			}
 			

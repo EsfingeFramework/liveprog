@@ -4,16 +4,52 @@ import org.esfinge.liveprog.LiveClassFactory;
 import org.esfinge.liveprog.monitor.FileSystemMonitor;
 import org.esfinge.liveprog.monitor.IMonitor;
 
+
 public class Main
 {
 	public static void main(String[] args) throws Exception
 	{
-		
 		// cria uma nova fabrica de objetos dinamicos
-		IMonitor monitor = new FileSystemMonitor("bin", true);
+		IMonitor monitor = new FileSystemMonitor("LiveprogTest/bin", true);
 		LiveClassFactory factory = new LiveClassFactory(monitor);
 		monitor.start();
 		
+		ClasseD d = factory.createObject(ClasseD.class);
+		d.setNome("Joao da Silva");
+		d.setIdade(30);
+		d.setSexo('M');
+		d.test();
+
+		
+		/*
+		File fD = Paths.get("LiveProgTest/bin/liveprog/test/ClasseD.class").toFile();
+		ClassInstrumentation ci = new ClassInstrumentation(fD);
+		
+		 StringWriter sw=new StringWriter();
+		 TraceClassVisitor cv=new TraceClassVisitor(new PrintWriter(sw));
+		 ci.getClassReader().accept(cv,0);
+		 System.out.println(sw.toString());
+		 */
+
+		 /*
+		ci.getClassReader().accept(new ClassNode() {
+
+			@Override
+			public void visitInnerClass(String arg0, String arg1, String arg2, int arg3)
+			{
+				System.out.println("Name: " + arg0);
+				System.out.println("OuterName: " + arg1);
+				System.out.println("InnerName: " + arg2);
+				System.out.println("Access: " + arg3);
+				
+				// TODO Auto-generated method stub
+				super.visitInnerClass(arg0, arg1, arg2, arg3);
+			}
+			
+		}, ClassReader.SKIP_FRAMES);
+		*/
+		 
+		 
 		/*
 		ClasseA liveA = factory.createObject(ClasseA.class);
 		ClasseB liveB = factory.createObject(ClasseB.class);
@@ -23,7 +59,7 @@ public class Main
 		liveB.test();
 		*/
 		
-		
+		/*
 		// testa a criacao de objetos independentes da mesma classe dinamica  
 		ClasseC c1 = factory.createObject(ClasseC.class);
 		ClasseC c2 = factory.createObject(ClasseC.class);
@@ -38,6 +74,7 @@ public class Main
 		c2.somar();
 		
 		// modifique a ClasseC e veja se os resultados sao como esperado!
+		 */
 		
 		
 		/*
