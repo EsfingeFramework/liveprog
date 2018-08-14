@@ -24,6 +24,9 @@ public class LiveClassFactory implements IMonitorObserver
 	// mapa dos proxies criados para cada tipo de classe dinamica
 	private Map<String, List<ILiveClassObserver>> mapProxies;
 	
+	// mapa dos observadores externos de classes dinamicas (sem ser os proxies)
+	private Map<String, List<ILiveClassObserver>> mapObservers;	
+	
 	// mapa das classes dinamicas atualmente criadas
 	private Map<String, Class<?>> mapLiveClasses;
 	
@@ -41,6 +44,7 @@ public class LiveClassFactory implements IMonitorObserver
 	{
 		this.classLoader = new LiveClassLoader();
 		this.mapProxies = new HashMap<String, List<ILiveClassObserver>>();
+		this.mapObservers = new HashMap<String, List<ILiveClassObserver>>();
 		this.mapLiveClasses = new HashMap<String, Class<?>>();
 		
 		// se registra no monitor para receber notificacoes 
@@ -128,6 +132,11 @@ public class LiveClassFactory implements IMonitorObserver
 				if ( this.mapProxies.containsKey(classInstr.getClassName()) )
 					for ( ILiveClassObserver proxy : this.mapProxies.get(classInstr.getClassName()) )
 						proxy.classReloaded(newClass);
+				
+				// notifica os observadores que a classe foi atualizada
+				if ( this.mapObservers.containsKey(classInstr.getClassName()) )
+					for ( ILiveClassObserver observer : this.mapObservers.get(classInstr.getClassName()) )
+						observer.classReloaded(newClass);
 			}
 		}
 		catch ( Exception e )
@@ -136,6 +145,60 @@ public class LiveClassFactory implements IMonitorObserver
 			System.out.println("FACTORY >> " + "Erro ao carregar classe: " + classFile.getName());
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * Adiciona um observador para que seja notificado quando a classe dinamica 
+	 * for atualizada para uma nova versao.
+	 * 
+	 * @param clazz a classe dinamica a ser observada
+	 * @param observer interessado na notificacao quando a classe for atualizacao
+	 * @see org.esfinge.liveprog.ILiveClassObserver
+	 */
+	public void addLiveClassObserver(Class<?> clazz, ILiveClassObserver observer)
+	{
+		// verifica se a classe eh do tipo dinamica
+		if (! clazz.isAnnotationPresent(LiveClass.class) )
+			return;
+
+		// recupera a lista de observadores da classe informada
+		List<ILiveClassObserver> lstObservers = this.mapObservers.get(clazz.getName());
+		
+		if ( lstObservers == null )
+			lstObservers = new ArrayList<ILiveClassObserver>();
+		
+		// adiciona o novo observador
+		lstObservers.add(observer);
+		
+		// atualiza o mapa
+		this.mapObservers.put(clazz.getName(), lstObservers);
+	}
+	
+	/**
+	 * Remove um observador registrado para receber notificacoes quando uma classe dinamica 
+	 * eh atualizada para uma nova versao.
+	 * 
+	 * @param clazz a classe dinamica observada
+	 * @param observer observador a ser removido da lista de observadores registrados para a classe dinamica
+	 * @see org.esfinge.liveprog.ILiveClassObserver
+	 */
+	public void removeLiveClassObserver(Class<?> clazz, ILiveClassObserver observer)
+	{
+		// verifica se a classe eh do tipo dinamica
+		if (! clazz.isAnnotationPresent(LiveClass.class) )
+			return;
+
+		// recupera a lista de observadores da classe informada
+		List<ILiveClassObserver> lstObservers = this.mapObservers.get(clazz.getName());
+		
+		if ( lstObservers == null )
+			return;
+		
+		// remove o observador
+		lstObservers.remove(observer);
+		
+		// atualiza o mapa
+		this.mapObservers.put(clazz.getName(), lstObservers);
 	}
 	
 	/**
