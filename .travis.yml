@@ -3,4 +3,4 @@ jdk:
   - oraclejdk8
 script:
 - cd LiveprogTest
-- javac -classpath $(find ./libs -name "*.jar") -d bin $(find ./src -name "*.java")
+- javac -classpath $(ls -1 ./libs | paste -sd ":" -) -d bin $(find ./src -name "*.java")
