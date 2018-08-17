@@ -1,0 +1,6 @@
+language: java
+jdk:
+  - oraclejdk8
+script:
+- cd LiveprogTest
+- javac -cp \"./bin/:./libs/\*:$(ls -1 ./libs | paste -sd ":" -):\" -d bin $(find ./src -name "*.java")
