@@ -16,7 +16,7 @@ import org.objectweb.asm.commons.SimpleRemapper;
  * 
  * @see org.esfinge.LiveClass
  */
-class LiveClassLoader
+public class LiveClassLoader
 {
 	// mapa das versoes atuais de cada classe dinamica carregada
 	private Map<String,Integer> mapClassVersion;

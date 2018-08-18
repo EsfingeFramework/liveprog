@@ -13,12 +13,12 @@ public class Main
 		IMonitor monitor = new FileSystemMonitor("LiveprogTest/bin", true);
 		LiveClassFactory factory = new LiveClassFactory(monitor);
 		monitor.start();
-		
-		ClasseD d = factory.createObject(ClasseD.class);
-		d.setNome("Joao da Silva");
-		d.setIdade(30);
-		d.setSexo('M');
-		d.test();
+//		
+//		ClasseD d = factory.createObject(ClasseD.class);
+//		d.setNome("Joao da Silva");
+//		d.setIdade(30);
+//		d.setSexo('M');
+//		d.test();
 
 		
 		/*
@@ -50,14 +50,14 @@ public class Main
 		*/
 		 
 		 
-		/*
+		
 		ClasseA liveA = factory.createObject(ClasseA.class);
 		ClasseB liveB = factory.createObject(ClasseB.class);
 		
 		liveA.setB(liveB);
 		liveA.test();
 		liveB.test();
-		*/
+		
 		
 		/*
 		// testa a criacao de objetos independentes da mesma classe dinamica  

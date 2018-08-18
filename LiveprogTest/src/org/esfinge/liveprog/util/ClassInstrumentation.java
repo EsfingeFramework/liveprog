@@ -43,6 +43,11 @@ public class ClassInstrumentation
 		return ( this.classFile );
 	}
 	
+	public String getName()
+	{
+		return this.classFile.getName();
+	}
+	
 	/**
 	 * Obtem os dados da classe (bytecode).
 	 * 
