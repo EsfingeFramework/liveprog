@@ -4,3 +4,4 @@ jdk:
 script:
 - cd LiveProg
 - mvn install
+- mvn test
