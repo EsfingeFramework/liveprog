@@ -1,11 +1,12 @@
-package test.org.esfinge.liveprog;
+package org.esfinge.liveprog;
 
 import org.esfinge.liveprog.annotation.LiveClass;
 
 @LiveClass
-public class ClassB {
+public class ClassA
+{
 	public String getName()
 	{
-		return "ClassB";
+		return "ClassA";
 	}
 }
