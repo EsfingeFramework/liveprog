@@ -33,7 +33,6 @@ public class LiveClassFactory implements IMonitorObserver
 	// carregador de classes dinamicas
 	private LiveClassLoader classLoader;
 
-
 	/**
 	 * Cria uma nova fabrica para criacao de objetos de classe dinamicas.
 	 * 
@@ -42,7 +41,22 @@ public class LiveClassFactory implements IMonitorObserver
 	 */
 	public LiveClassFactory(IMonitor monitor) throws Exception
 	{
-		this.classLoader = new LiveClassLoader();
+		this(monitor, null);
+	}
+
+	/**
+	 * Cria uma nova fabrica para criacao de objetos de classe dinamicas.
+	 * 
+	 * @throws Exception caso ocorra algum erro interno de inicializacao 
+	 * @see org.esfinge.liveprog.monitor.IMonitor
+	 */
+	public LiveClassFactory(IMonitor monitor, LiveClassLoader classLoader) throws Exception
+	{
+		if(classLoader != null)
+			this.classLoader = classLoader;
+		else
+			new LiveClassLoader();
+		
 		this.mapProxies = new HashMap<String, List<ILiveClassObserver>>();
 		this.mapObservers = new HashMap<String, List<ILiveClassObserver>>();
 		this.mapLiveClasses = new HashMap<String, Class<?>>();
@@ -110,15 +124,12 @@ public class LiveClassFactory implements IMonitorObserver
 	}
 	
 	@Override
-	public void classFileUpdated(File classFile)
+	public void classFileUpdated(ClassInstrumentation classInstr)
 	{
 		try
-		{
-			//
-			ClassInstrumentation classInstr = new ClassInstrumentation(classFile);
-			
+		{			
 			// tenta carregar a nova versao da classe
-			Class<?> newClass = this.classLoader.loadUpdatedClass(classFile);
+			Class<?> newClass = this.classLoader.loadUpdatedClass(classInstr.getFile());
 			
 			if ( newClass != null )
 			{
@@ -142,7 +153,7 @@ public class LiveClassFactory implements IMonitorObserver
 		catch ( Exception e )
 		{
 			// TODO: debug
-			System.out.println("FACTORY >> " + "Erro ao carregar classe: " + classFile.getName());
+			System.out.println("FACTORY >> " + "Erro ao carregar classe: " + classInstr.getName());
 			e.printStackTrace();
 		}
 	}

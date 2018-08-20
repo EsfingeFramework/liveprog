@@ -2,6 +2,8 @@ package org.esfinge.liveprog.monitor;
 
 import java.io.File;
 
+import org.esfinge.liveprog.util.ClassInstrumentation;
+
 /**
  * Estrutura base para monitores de classes dinamicas.
  */
@@ -53,7 +55,7 @@ public abstract class AbstractMonitor implements IMonitor
 	private static class NullObserver implements IMonitorObserver
 	{
 		@Override
-		public void classFileUpdated(File classFile)
+		public void classFileUpdated(ClassInstrumentation classInstr)
 		{
 			// nao faz nada..
 		}
