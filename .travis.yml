@@ -2,5 +2,5 @@ language: java
 jdk:
   - oraclejdk8
 script:
-- cd LiveprogTest
+- cd LiveProg
 - mvn install
