@@ -2,6 +2,6 @@ language: java
 jdk:
   - oraclejdk8
 script:
-- cd LiveprogTest
-- mkdir bin
-- javac -cp \"./bin/:./libs/\*:$(ls -1 ./libs | paste -sd ":" -):\" -d bin $(find ./src/liveprog -name "*.java") $(find ./src/org -name "*.java")
+- cd LiveProg
+- mvn install
+- mvn test

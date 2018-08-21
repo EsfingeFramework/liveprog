@@ -1,34 +1,30 @@
-package test.org.esfinge.liveprog;
-
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.io.File;
+package org.esfinge.liveprog;
 
 import org.esfinge.liveprog.LiveClassFactory;
 import org.esfinge.liveprog.LiveClassLoader;
 import org.esfinge.liveprog.monitor.FileSystemMonitor;
 import org.esfinge.liveprog.util.ClassInstrumentation;
-import org.junit.jupiter.api.Test;
+import org.junit.*;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-class LiveClassFactoryTest {    
+public class LiveClassFactoryTest {    
 	FileSystemMonitor monitorMock = Mockito.mock(FileSystemMonitor.class);
 	LiveClassLoader loaderMock = Mockito.mock(LiveClassLoader.class);
 	
 	@Test
-	void testLiveClassFactory() {    
+	public void testLiveClassFactory() {    
 		try {
 			LiveClassFactory factory = new LiveClassFactory(monitorMock);
 			Mockito.verify(monitorMock).setObserver(factory);
 		} catch (Exception e) {
-			fail(e.getMessage());
+			Assert.fail(e.getMessage());
 		}
 	}
 
 	@Test
-	void testCreateObject() {
+	public void testCreateObject() {
 		try {
 			Mockito
 				.when(loaderMock.loadUpdatedClass(Mockito.any()))
@@ -58,9 +54,9 @@ class LiveClassFactoryTest {
 				.verify(loaderMock)
 				.loadUpdatedClass(Mockito.any());
 			
-			assertEquals("ClassB", a.getName());
+			Assert.assertEquals("ClassB", a.getName());
 		} catch (Exception e) {
-			fail(e.getMessage());
+			Assert.fail(e.getMessage());
 		}
 	}
 }
