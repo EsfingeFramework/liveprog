@@ -1,6 +1,5 @@
 package liveprog.test;
 
-import org.esfinge.liveprog.annotation.IgnoreOnReload;
 import org.esfinge.liveprog.annotation.InvokeOnReload;
 import org.esfinge.liveprog.annotation.LiveClass;
 

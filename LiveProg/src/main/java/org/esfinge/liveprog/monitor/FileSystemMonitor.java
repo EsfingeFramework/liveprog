@@ -186,7 +186,7 @@ public class FileSystemMonitor extends AbstractMonitor
 
 				    		ClassInstrumentation classInstr = new ClassInstrumentation(arquivo);
 				    		// notifica o observador
-				    		observer.classFileUpdated(classInstr);
+				    		observer.classUpdated(classInstr);
 				    	}
 				    }
 				    

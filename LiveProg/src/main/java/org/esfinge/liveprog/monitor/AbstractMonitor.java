@@ -1,7 +1,5 @@
 package org.esfinge.liveprog.monitor;
 
-import java.io.File;
-
 import org.esfinge.liveprog.util.ClassInstrumentation;
 
 /**
@@ -55,7 +53,7 @@ public abstract class AbstractMonitor implements IMonitor
 	private static class NullObserver implements IMonitorObserver
 	{
 		@Override
-		public void classFileUpdated(ClassInstrumentation classInstr)
+		public void classUpdated(ClassInstrumentation classInstr)
 		{
 			// nao faz nada..
 		}

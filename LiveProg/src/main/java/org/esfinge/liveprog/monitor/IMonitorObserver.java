@@ -1,7 +1,5 @@
 package org.esfinge.liveprog.monitor;
 
-import java.io.File;
-
 import org.esfinge.liveprog.util.ClassInstrumentation;
 
 /**
@@ -15,5 +13,5 @@ public interface IMonitorObserver
 	 * 
 	 * @param ClassInstrumentation Dados da classe atualizada, para que possa ser recarregada
 	 */
-	void classFileUpdated(ClassInstrumentation classInstr);
+	void classUpdated(ClassInstrumentation classInstr);
 }

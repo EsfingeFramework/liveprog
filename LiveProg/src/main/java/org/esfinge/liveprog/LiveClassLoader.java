@@ -47,7 +47,6 @@ public class LiveClassLoader
 			
 			// TODO: debug
 			System.out.println("LOADER >> " + classInstr.getSimpleClassName());
-			Class<?> origClass = Class.forName(classInstr.getClassName());
 			
 			// nova versao da classe
 			int classVersion = mapClassVersion.getOrDefault(classInstr.getClassName(), 0) + 1;

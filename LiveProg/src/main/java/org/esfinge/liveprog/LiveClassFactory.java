@@ -1,6 +1,5 @@
 package org.esfinge.liveprog;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -124,7 +123,7 @@ public class LiveClassFactory implements IMonitorObserver
 	}
 	
 	@Override
-	public void classFileUpdated(ClassInstrumentation classInstr)
+	public void classUpdated(ClassInstrumentation classInstr)
 	{
 		try
 		{			
