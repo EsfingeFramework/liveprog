@@ -43,7 +43,7 @@ public class LiveClassFactory implements ILiveClassUpdateObserver
 	 * 
 	 * @throws Exception caso ocorra algum erro interno de inicializacao 
 	 */
-	public LiveClassFactory() throws Exception
+	LiveClassFactory() throws Exception
 	{
 		this(false);
 	}
@@ -55,7 +55,7 @@ public class LiveClassFactory implements ILiveClassUpdateObserver
 	 * <b>false</b> se a aplicacao estiver rodando em modo de producao
 	 * @throws Exception caso ocorra algum erro interno de inicializacao
 	 */
-	public LiveClassFactory(boolean testMode) throws Exception
+	LiveClassFactory(boolean testMode) throws Exception
 	{
 		this.classLoader = new LiveClassLoader();
 		this.mapProxies = new HashMap<String, List<ILiveClassObserver>>();
