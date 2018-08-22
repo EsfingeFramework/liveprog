@@ -87,6 +87,6 @@ class LiveClassProxy implements MethodInterceptor, ILiveClassObserver
 	 */
 	private Object invokeRealMethod(Method proxyMethod, Object... args) throws Throwable
 	{
-		return( this.liveObj.getClass().getMethod(proxyMethod.getName(), proxyMethod.getParameterTypes()).invoke(this.liveObj, args) );
+		return ( this.liveObj.getClass().getMethod(proxyMethod.getName(), proxyMethod.getParameterTypes()).invoke(this.liveObj, args) );
 	}
 }

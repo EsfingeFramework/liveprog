@@ -1,25 +1,51 @@
 package liveprog.test;
 
-import org.esfinge.liveprog.annotation.LiveClass;
+import org.esfinge.liveprog.annotation.*;
 
+//versao 1
+///*
 @LiveClass
 public class ClasseB
 {
-	/**
-	 * Imprime o nome da classe.
-	 * Como ela eh uma classe dinamica, vai mostrar qual eh a versao atual.
-	 */
+	private String myString = "My String";
+	
 	public void test()
 	{
-		System.out.println("B >> " + this.getClass().getSimpleName());
-	}
-	
-	/**
-	 * Escreva qualquer coisa no metodo e salve para atualizar a classe
-	 * e a magica do framework funcionar! ;-)
-	 */
-	private void modifyMe()
-	{
-		// c
+		System.out.println("B >> B.test(): " + this.getClass().getSimpleName());
+		System.out.println("B >> myString: " + this.myString);
 	}
 }
+//*/
+
+
+// versao 2
+/*
+@LiveClass
+public class ClasseB
+{
+	@IgnoreOnReload
+	private String myString;
+	private InnerClasseB innerB;
+	
+	public ClasseB()
+	{
+		this.innerB = new InnerClasseB();
+	}
+	
+	@InvokeOnReload
+	public void test()
+	{
+		System.out.println("B >> B.test(): " + this.getClass().getSimpleName());
+		System.out.println("B >> myString: " + this.myString);
+		System.out.println("B >> Calling InnerClass: " + this.innerB.callInner());
+	}
+	
+	private class InnerClasseB
+	{
+		public String callInner()
+		{
+			return "Hello from InnerB!";
+		}
+	}
+}
+*/

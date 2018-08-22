@@ -1,21 +1,24 @@
 package liveprog.test;
 
-import org.esfinge.liveprog.annotation.InvokeOnReload;
-import org.esfinge.liveprog.annotation.LiveClass;
+import java.util.Map;
 
+import org.esfinge.liveprog.IStateLoader;
+import org.esfinge.liveprog.annotation.*;
+
+// versao 1
+///*
 @LiveClass
 public class ClasseA
 {
+	private int campo1 = 10;
+	private int campo2 = 20;
 	private ClasseB b;
 	
-	/**
-	 * Imprime o nome da classe.
-	 * Como ela eh uma classe dinamica, vai mostrar qual eh a versao atual.
-	 */
-	@InvokeOnReload
 	public void test()
 	{
-		System.out.println("A >> " + this.getClass().getSimpleName());
+		System.out.println("A >> A.test(): " + this.getClass().getSimpleName());
+		System.out.println("A >> campo1: " + this.campo1);
+		System.out.println("A >> campo2: " + this.campo2);
 		this.callB();
 	}
 	
@@ -24,29 +27,65 @@ public class ClasseA
 		this.b = b;
 	}
 	
-	/**
-	 * Imprime o nome da classe B.
-	 * Como ela eh uma classe dinamica, vai mostrar qual eh a versao atual da B.
-	 * 
-	 * Serve para verificar se o valor da propriedade b (que tb eh uma classe dinamica) 
-	 * foi copiado corretamente quando uma nova versao da classe A eh criada.
-	 * 
-	 * para a nova classe
-	 */
 	public void callB()
 	{
-		System.out.println("AB >> " + this.b);
+		System.out.println("A >> A.callB()");
+		System.out.println("A >> chamando B.test(): " + this.b.getClass().getSimpleName());
 		
 		if ( this.b != null )
 			this.b.test();
 	}
+}
+//*/
+
+// versao 2
+/*
+@LiveClass
+public class ClasseA implements IStateLoader
+{
+	private int campoA;
+	private int campoB;
+	private ClasseB b;
 	
-	/**
-	 * Escreva qualquer coisa no metodo e salve para atualizar a classe
-	 * e a magica do framework funcionar! ;-)
-	 */
-	private void modifyMe()
+	@InvokeOnReload
+	public void test()
 	{
-		//a
+		System.out.println("A >> A.test(): " + this.getClass().getSimpleName());
+		System.out.println("A >> campoA: " + this.campoA);
+		System.out.println("A >> campoB: " + this.campoB);
+		this.callB();
+	}
+	
+	public void setB(ClasseB b)
+	{
+		this.b = b;
+	}
+	
+	public void callB()
+	{
+		System.out.println("A >> A.callB()");
+		System.out.println("A >> chamando B.test(): " + this.b.getClass().getSimpleName());
+		
+		if ( this.b != null )
+			this.b.test();
+		
+		System.out.println("A >> campoA - campoB: " + (this.campoA - this.campoB));
+	}
+
+	@Override
+	public void load(Map<String, Object> mapState)
+	{
+		Object valor = mapState.get("campo1");
+		if ( valor instanceof Integer )
+			this.campoA = ((Integer) valor).intValue() * 10;
+		
+		valor = mapState.get("campo2");
+		if ( valor instanceof Integer )
+			this.campoB = ((Integer) valor).intValue() * 10;
+		
+		valor = mapState.get("b");
+		if ( b instanceof ClasseB )
+			this.b = (ClasseB) valor;
 	}
 }
+*/

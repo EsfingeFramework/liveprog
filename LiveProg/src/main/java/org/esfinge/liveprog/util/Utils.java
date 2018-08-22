@@ -1,16 +1,15 @@
 package org.esfinge.liveprog.util;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.esfinge.liveprog.IStateLoader;
@@ -21,71 +20,6 @@ import org.esfinge.liveprog.annotation.IgnoreOnReload;
  */
 public class Utils
 {
-	/**
-	 * Traduz o caminho de um arquivo de classe para o nome completo da classe.
-	 * 
-	 * (Exemplo: org/esfinge/liveprog/ClasseA.class -> org.esfinge.liveprog.ClasseA)
-	 * 
-	 * @param classFilePath o caminho do arquivo da classe
-	 * @return o nome qualificado da classe
-	 */
-	public static String getFullQualifiedClassName(String classFilePath)
-	{
-		// verifica se eh uma classe Java compilada
-		if (! classFilePath.endsWith(".class") )
-			return ( null );
-		
-		// transforma o caminho do arquivo -> nome completo da classe
-		return ( classFilePath.replace(".class", "").replace(File.separator,".") );
-	}
-	
-	/**
-	 * Traduz o nome completo da classe para o caminho do arquivo de classe.
-	 * 
-	 * (Exemplo: org.esfinge.liveprog.ClasseA -> org/esfinge/liveprog/ClasseA.class)
-	 * 
-	 * @param fullQualifiedClassName o nome qualificado da classe
-	 * @return o caminho do arquivo da classe
-	 */
-	public static String getClassFilePath(String fullQualifiedClassName)
-	{
-		return ( fullQualifiedClassName.replace(".", File.separator) + ".class" );
-	}
-	
-	/**
-	 * Retorna o conteudo (bytecoes) do arquivo da classe.
-	 * 
-	 * @param baseDir o diretorio base da classe 
-	 * @param fullQualifiedClassName o nome qualificado da classe
-	 * @return o conteudo do arquivo da classe (bytecodes)
-	 */
-	public static byte[] readClassFile(String baseDir, String fullQualifiedClassName) 
-	{
-		try
-		{
-			File file = new File(baseDir, getClassFilePath(fullQualifiedClassName));
-			if (! file.exists() )
-				return ( null );
-					
-	        FileInputStream input = new FileInputStream(file);
-			ByteArrayOutputStream output = new ByteArrayOutputStream();
-			
-	        byte[] buffer = new byte[8192];
-	        int read;
-
-	        while ( (read=input.read(buffer, 0, 8192)) > -1 )
-	            output.write(buffer, 0, read);
-	        
-	        input.close();
-	        return ( output.toByteArray() );
-		}
-		catch ( Exception e )
-		{
-			// TODO: debug
-			e.printStackTrace();
-			return ( null );
-		}
-	}
 	
 	/**
 	 * Retorna os metodos da classe que possuem a anotacao informada pelo parametro. 
@@ -154,6 +88,23 @@ public class Utils
 		{
 			return ( null );
 		}
+	}
+	
+	public static <T> void addToCollection(Collection<T> collection, T... elements)
+	{
+		if ( elements != null )
+			for ( T element : elements )
+				collection.add(element);
+	}
+	
+	public static <T> T getFromCollection(Collection<T> collection, Predicate<T> filter)
+	{
+		return ( collection.stream().filter(filter).findFirst().orElse(null) );
+	}
+	
+	public static <T> List<T> filterFromCollection(Collection<T> collection, Predicate<T> filter)
+	{
+		return ( collection.stream().filter(filter).collect(Collectors.toList()) );
 	}
 	
 	public static boolean copyProperties(Object oldObj, Object newObj)

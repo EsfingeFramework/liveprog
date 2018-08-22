@@ -1,7 +1,7 @@
 package org.esfinge.liveprog.monitor;
 
 /**
- * Interface para monitoramento de novas versoes de classes dinamicas.
+ * Interface para monitoramento de arquivos de novas versoes de classes dinamicas.
  */
 public interface IMonitor
 {
@@ -24,7 +24,7 @@ public interface IMonitor
 	 * Atribui o filtro dos tipos de arquivos a serem monitorados.
 	 * 
 	 * @param filter filtro para os tipos de arquivos a serem monitorados
-	 * @see IMonitorFileFilter
+	 * @see org.esfinge.liveprog.monitor.IMonitorFileFilter
 	 */
 	public void setFileFilter(IMonitorFileFilter filter);
 	
@@ -32,17 +32,24 @@ public interface IMonitor
 	 * Atribui o validador do formato dos arquivos monitorados.
 	 * 
 	 * @param validator validador para os arquivos encontrados pelo monitor
-	 * @see IMonitorFileValidator
+	 * @see org.esfinge.liveprog.monitor.IMonitorFileValidator
 	 */
 	public void setFileValidator(IMonitorFileValidator validator);
 	
 	/**
-	 * Atribui o observador a ser notificado quando uma nova versao 
-	 * de uma classe dinamica for encontrada.
+	 * Adiciona um observador para ser notificado quando arquivos de 
+	 * novas versoes de classes dinamicas forem encontrados.
 	 * 
-	 * @param observer interessado na notificacao de novas versoes de classes dinamicas, 
-	 * para que possam ser recarregadas
-	 * @see IMonitorObserver
+	 * @param observer interessado na notificacao quando novos arquivos forem encontrados
+	 * @see org.esfinge.liveprog.monitor.IMonitorObserver
 	 */
-	public void setObserver(IMonitorObserver observer);
+	public void addObserver(IMonitorObserver observer);
+	
+	/**
+	 * Remove um observador da lista de observadores.
+	 * 
+	 * @param observer observador a ser removido da lista de observadores
+	 * @see org.esfinge.liveprog.monitor.IMonitorObserver
+	 */
+	public void removeObserver(IMonitorObserver observer);
 }

@@ -1,17 +1,17 @@
 package org.esfinge.liveprog.monitor;
 
 import java.io.File;
-
-import org.esfinge.liveprog.util.ClassInstrumentation;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Estrutura base para monitores de classes dinamicas.
+ * Estrutura base para monitores de arquivos de classes dinamicas.
  */
 public abstract class AbstractMonitor implements IMonitor
 {
-	// observador a ser notificado das atualizacoes 
-	// dos arquivos de classes dinamicas
-	protected IMonitorObserver observer;
+	// lista de observadores a serem notificados dos arquivos 
+	// de novas versoes de classes dinamicas encontrados
+	protected List<IMonitorObserver> observers;
 	
 	// filtro dos tipos de arquivos a serem monitorados
 	protected IMonitorFileFilter fileFilter;
@@ -25,7 +25,7 @@ public abstract class AbstractMonitor implements IMonitor
 	 */
 	public AbstractMonitor()
 	{
-		this.setObserver(null);
+		this.observers = new ArrayList<IMonitorObserver>();
 	}
 	
 	@Override
@@ -41,23 +41,24 @@ public abstract class AbstractMonitor implements IMonitor
 	}
 
 	@Override
-	public void setObserver(IMonitorObserver observer)
+	public void addObserver(IMonitorObserver observer)
 	{
-		if ( observer == null )
-			this.observer = new NullObserver();
-		else
-			this.observer = observer;
+		this.observers.add(observer);
+	}
+
+	@Override
+	public void removeObserver(IMonitorObserver observer)
+	{
+		this.observers.remove(observer);
 	}
 	
 	/**
-	 * Padrao NullObject para quando nao for especificado um observador.
+	 * Notifica os observadores que um arquivo de uma nova versao de classe dinamica foi encontrado.
+	 * 
+	 * @param classFile o arquivo da nova versao da classe dinamica
 	 */
-	private static class NullObserver implements IMonitorObserver
+	protected void notifyObservers(File classFile)
 	{
-		@Override
-		public void classFileUpdated(ClassInstrumentation classInstr)
-		{
-			// nao faz nada..
-		}
+		this.observers.forEach(obs -> obs.classFileUpdated(classFile));
 	}
 }

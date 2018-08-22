@@ -1,16 +1,15 @@
 package org.esfinge.liveprog;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.ClassUtils;
-import org.esfinge.liveprog.annotation.LiveClass;
-import org.esfinge.liveprog.monitor.IMonitor;
-import org.esfinge.liveprog.monitor.IMonitorObserver;
-import org.esfinge.liveprog.util.ClassInstrumentation;
+import org.esfinge.liveprog.db.LiveClassDB;
+import org.esfinge.liveprog.exception.IncompatibleLiveClassException;
+import org.esfinge.liveprog.instrumentation.ClassInfo;
+import org.esfinge.liveprog.instrumentation.InstrumentationService;
 
 import net.sf.cglib.proxy.Enhancer;
 
@@ -19,7 +18,7 @@ import net.sf.cglib.proxy.Enhancer;
  * 
  * @see org.esfinge.liveprog.annotation.LiveClass
  */
-public class LiveClassFactory implements IMonitorObserver
+public class LiveClassFactory implements ILiveClassUpdateObserver
 {
 	// mapa dos proxies criados para cada tipo de classe dinamica
 	private Map<String, List<ILiveClassObserver>> mapProxies;
@@ -27,78 +26,92 @@ public class LiveClassFactory implements IMonitorObserver
 	// mapa dos observadores externos de classes dinamicas (sem ser os proxies)
 	private Map<String, List<ILiveClassObserver>> mapObservers;	
 	
-	// mapa das classes dinamicas atualmente criadas
-	private Map<String, Class<?>> mapLiveClasses;
+	// cache das classes dinamicas atualmente criadas
+	private Map<String, Class<?>> cacheLiveClasses;
 	
 	// carregador de classes dinamicas
 	private LiveClassLoader classLoader;
+	
+	// indica se a aplicacao esta rodando em modo de teste ou de producao
+	private boolean testMode;
+
 
 	/**
-	 * Cria uma nova fabrica para criacao de objetos de classe dinamicas.
+	 * Cria uma nova fabrica para criacao de objetos de classes dinamicas.
+	 * 
+	 * Assume que a aplicacao esta rodando em modo de producao.
 	 * 
 	 * @throws Exception caso ocorra algum erro interno de inicializacao 
-	 * @see org.esfinge.liveprog.monitor.IMonitor
 	 */
-	public LiveClassFactory(IMonitor monitor) throws Exception
+	public LiveClassFactory() throws Exception
 	{
-		this(monitor, null);
+		this(false);
 	}
-
+	
 	/**
-	 * Cria uma nova fabrica para criacao de objetos de classe dinamicas.
+	 * Cria uma nova fabrica para a criacao de objetos de classes dinamicas.
 	 * 
-	 * @throws Exception caso ocorra algum erro interno de inicializacao 
-	 * @see org.esfinge.liveprog.monitor.IMonitor
+	 * @param testMode <b>true</b> se a aplicacao estiver rodando em modo de testes - usa a versao mais recente da classe dinamica,
+	 * <b>false</b> se a aplicacao estiver rodando em modo de producao
+	 * @throws Exception caso ocorra algum erro interno de inicializacao
 	 */
-	public LiveClassFactory(IMonitor monitor, LiveClassLoader classLoader) throws Exception
+	public LiveClassFactory(boolean testMode) throws Exception
 	{
-		if(classLoader != null)
-			this.classLoader = classLoader;
-		else
-			new LiveClassLoader();
-		
+		this.classLoader = new LiveClassLoader();
 		this.mapProxies = new HashMap<String, List<ILiveClassObserver>>();
 		this.mapObservers = new HashMap<String, List<ILiveClassObserver>>();
-		this.mapLiveClasses = new HashMap<String, Class<?>>();
+		this.cacheLiveClasses = new HashMap<String, Class<?>>();
+		this.testMode = testMode;
 		
-		// se registra no monitor para receber notificacoes 
-		// de novas versoes de classes dinamicas
-		monitor.setObserver(this);
+		// TODO: debug..
+		System.out.format("FACTORY >> Iniciando em modo %s!\n", this.testMode ? "TESTER" : "PRODUCAO");
 	}
 	
 	/**
 	 * Cria um novo objeto de uma classe dinamica.
 	 * 
-	 * Se a classe informada no parametro nao for do tipo dinamica,
-	 * tenta retornar uma instancia normal da classe.
-	 * 
-	 * A classe deve ter implementado um construtor padrao (vazio) 
-	 * para que possa ser instanciada.
+	 * A classe deve atender aos requisitos para ser considerada uma classe dinamica.
 	 * 
 	 * @param objClass a classe cujo objeto dinamico sera criado
-	 * @return um objeto dinamico da classe informada
-	 * @throws Exception caso nao consiga criar uma instancia da classe 
-	 * informada como parametro (i.e. se a classe nao possuir um construtor padrao)
+	 * @return um novo objeto dinamico
+	 * @throws IncompatibleLiveClassException caso a classe nao seja compativel com os requisitos de classes dinamicas
 	 * @see org.esfinge.liveprog.annotation.LiveClass
+	 * @see org.esfinge.liveprog.instrumentation.InstrumentationService#checkValidLiveClass(Class)
 	 */
 	@SuppressWarnings("unchecked")
-	public <L> L createObject(Class<L> objClass) throws Exception
+	public <L> L createLiveObject(Class<L> objClass) throws IncompatibleLiveClassException
 	{
-		// nome da classe
-		String className = objClass.getName();
-		
-		// verifica se a classe eh do tipo dinamica
-		if ( objClass.isAnnotationPresent(LiveClass.class) )
+		try
 		{
-			// obtem a versao atual, se houver
-			Class<?> liveClass = this.mapLiveClasses.get(className);			
+			// nome da classe
+			String className = objClass.getName();
+
+			// verifica se a classe esta no cache
+			Class<?> liveClass = this.cacheLiveClasses.get(className);
+			
 			if ( liveClass == null )
 			{
-				// primeiro uso da classe
-				liveClass = objClass;
+				// verifica se a classe cumpre os requisitos de classes dinamicas
+				InstrumentationService.checkValidLiveClass(objClass);				
 				
-				// salva no mapa de classes dinamicas
-				this.mapLiveClasses.put(className, liveClass);
+				// obtem as informacoes da classe armazenadas no BD, se houver
+				ClassInfo liveClassInfo = LiveClassDB.getInstance().getLiveClassInfo(className, this.testMode);
+				
+				// verifica se ja tem alguma versao salva no banco
+				if ( liveClassInfo == null )
+				{
+					// primeiro uso da classe dinamica
+					liveClassInfo = InstrumentationService.inspect(objClass);
+					
+					// salva no banco de dados
+					LiveClassDB.getInstance().saveLiveClassInfo(liveClassInfo);
+				}
+				
+				// carrega a versao da classe dinamica
+				liveClass = this.classLoader.loadLiveClass(liveClassInfo);
+
+				// salva no cache
+				this.cacheLiveClasses.put(className, liveClass);
 			}
 			
 			// cria o objeto da classe dinamica
@@ -111,83 +124,104 @@ public class LiveClassFactory implements IMonitorObserver
 			e.setInterfaces(ClassUtils.getAllInterfaces(objClass).toArray(new Class[0]));
 			e.setCallback(proxy);
 			
-			// registra o proxy para ser notificado quando a classe dinamica mudar
+			// registra o proxy para ser notificado quando a classe dinamica for atualizada
 			this.registerProxy(className, proxy);
 
 			return ( (L) e.create() );
 		}
-		// utiliza a propria classe do ClassLoader padrao
-		else
+		catch ( Exception e)
 		{
-			return ( objClass.newInstance() );
+			// problemas ao criar objeto dinamico
+			throw new IncompatibleLiveClassException("Unable to create a new live object!", e);
 		}
 	}
 	
 	@Override
-	public void classFileUpdated(ClassInstrumentation classInstr)
+	public void liveClassUpdated(String liveClassName, ClassInfo newLiveClassInfo)
 	{
 		try
-		{			
-			// tenta carregar a nova versao da classe
-			Class<?> newClass = this.classLoader.loadUpdatedClass(classInstr.getFile());
+		{
+			// salva a nova versao no BD
+			LiveClassDB.getInstance().updateLiveClassInfo(liveClassName, newLiveClassInfo);
 			
-			if ( newClass != null )
+			// TODO: debug..
+			System.out.println("FACTORY >> Classe dinamica atualizada: " + liveClassName);
+			
+			// verifica se esta rodando em modo teste
+			if ( this.testMode )
 			{
-				// TODO: debug
-				System.out.println("FACTORY >> " + "Classe atualizada: " + classInstr.getSimpleClassName() + "[" + newClass + "]");
+				// carrega a versao da classe dinamica
+				Class<?> newLiveClass = this.classLoader.loadLiveClass(newLiveClassInfo);
 				
-				// salva a nova versao da classe
-				this.mapLiveClasses.put(classInstr.getClassName(), newClass);
+				// TODO: debug..
+				System.out.println("FACTORY >> Classe dinamica carregada: " + newLiveClass.getName());
+
+				// atualiza o cache
+				this.cacheLiveClasses.put(liveClassName, newLiveClass);
 				
-				// notifica os proxies que a classe foi atualizada
-				if ( this.mapProxies.containsKey(classInstr.getClassName()) )
-					for ( ILiveClassObserver proxy : this.mapProxies.get(classInstr.getClassName()) )
-						proxy.classReloaded(newClass);
+				// notifica os proxies
+				this.notifyProxies(liveClassName, newLiveClass);
 				
-				// notifica os observadores que a classe foi atualizada
-				if ( this.mapObservers.containsKey(classInstr.getClassName()) )
-					for ( ILiveClassObserver observer : this.mapObservers.get(classInstr.getClassName()) )
-						observer.classReloaded(newClass);
+				// notifica os observadores externos
+				this.notifyExternalObservers(liveClassName, newLiveClass);
 			}
 		}
 		catch ( Exception e )
 		{
-			// TODO: debug
-			System.out.println("FACTORY >> " + "Erro ao carregar classe: " + classInstr.getName());
+			// TODO: debug..
+			System.out.println("FACTORY >> Erro ao carregar nova versao da classe dinamica: " + liveClassName);
+			
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Adiciona um observador para que seja notificado quando a classe dinamica 
 	 * for atualizada para uma nova versao.
 	 * 
 	 * @param clazz a classe dinamica a ser observada
-	 * @param observer interessado na notificacao quando a classe for atualizacao
+	 * @param observer interessado na notificacao quando a classe for atualizada
+	 * @return <b>true</b> se o observador foi adicionado na lista de observadores
+	 * da classe informada, <b>false</b> caso contrario (i.e. caso a classe informada
+	 * nao seja compativel com os requisitos de classes dinamicas)
 	 * @see org.esfinge.liveprog.ILiveClassObserver
+	 * @see org.esfinge.liveprog.instrumentation.InstrumentationService#checkValidLiveClass(Class)
 	 */
-	public void addLiveClassObserver(Class<?> clazz, ILiveClassObserver observer)
+	public boolean addLiveClassObserver(Class<?> clazz, ILiveClassObserver observer)
 	{
-		// verifica se a classe eh do tipo dinamica
-		if (! clazz.isAnnotationPresent(LiveClass.class) )
-			return;
-
-		// recupera a lista de observadores da classe informada
-		List<ILiveClassObserver> lstObservers = this.mapObservers.get(clazz.getName());
-		
-		if ( lstObservers == null )
-			lstObservers = new ArrayList<ILiveClassObserver>();
-		
-		// adiciona o novo observador
-		lstObservers.add(observer);
-		
-		// atualiza o mapa
-		this.mapObservers.put(clazz.getName(), lstObservers);
+		try
+		{
+			// recupera a lista de observadores da classe informada
+			List<ILiveClassObserver> lstObservers = this.mapObservers.get(clazz.getName());
+			
+			if ( lstObservers == null )
+			{
+				// verifica se a classe cumpre os requisitos de classes dinamicas
+				InstrumentationService.checkValidLiveClass(clazz);
+				
+				// cria uma lista de observadores para a classe dinamica informada
+				lstObservers = new ArrayList<ILiveClassObserver>();
+			}
+			
+			// adiciona o novo observador
+			lstObservers.add(observer);
+			
+			// atualiza o mapa
+			this.mapObservers.put(clazz.getName(), lstObservers);
+			
+			return ( true );
+		}
+		catch ( IncompatibleLiveClassException e )
+		{
+			// TODO: debug..
+			e.printStackTrace();
+			
+			return ( false );
+		}
 	}
 	
 	/**
-	 * Remove um observador registrado para receber notificacoes quando uma classe dinamica 
-	 * eh atualizada para uma nova versao.
+	 * Remove um observador da lista de observadores da classe dinamica.
 	 * 
 	 * @param clazz a classe dinamica observada
 	 * @param observer observador a ser removido da lista de observadores registrados para a classe dinamica
@@ -195,21 +229,12 @@ public class LiveClassFactory implements IMonitorObserver
 	 */
 	public void removeLiveClassObserver(Class<?> clazz, ILiveClassObserver observer)
 	{
-		// verifica se a classe eh do tipo dinamica
-		if (! clazz.isAnnotationPresent(LiveClass.class) )
-			return;
-
 		// recupera a lista de observadores da classe informada
 		List<ILiveClassObserver> lstObservers = this.mapObservers.get(clazz.getName());
 		
-		if ( lstObservers == null )
-			return;
-		
 		// remove o observador
-		lstObservers.remove(observer);
-		
-		// atualiza o mapa
-		this.mapObservers.put(clazz.getName(), lstObservers);
+		if ( lstObservers != null )
+			lstObservers.remove(observer);
 	}
 	
 	/**
@@ -233,5 +258,17 @@ public class LiveClassFactory implements IMonitorObserver
 		
 		// atualiza o mapa
 		this.mapProxies.put(className, lstProxies);
+	}
+	
+	private void notifyProxies(String className, Class<?> newLiveClass)
+	{
+		if ( this.mapProxies.containsKey(className) )
+			this.mapProxies.get(className).forEach(obs -> obs.classReloaded(newLiveClass));
+	}
+	
+	private void notifyExternalObservers(String className, Class<?> newLiveClass)
+	{
+		if ( this.mapObservers.containsKey(className) )
+			this.mapObservers.get(className).forEach(obs -> obs.classReloaded(newLiveClass));
 	}
 }

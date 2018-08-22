@@ -16,8 +16,6 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.esfinge.liveprog.util.ClassInstrumentation;
-
 /**
  * Monitora novas versoes de classes dinamicas no sistema de arquivos.
  * 
@@ -51,19 +49,6 @@ public class FileSystemMonitor extends AbstractMonitor
 	 */
 	public FileSystemMonitor(String dir, boolean includeSubdirs) throws Exception
 	{
-		this(dir, includeSubdirs, null);
-	}
-	
-	/**
-	 * Cria um novo monitor de arquivos de classes dinamicas.
-	 * 
-	 * @param dir o diretorio para monitorar por novas versoes de classes dinamicas 
-	 * @param includeSubdirs monitorar tambem os subdiretorios
-	 * @param observer interessado a ser notificado quando uma nova versao de uma classe dinamica for encontrada
-	 * @throws Exception caso ocorra algum erro interno de inicializacao 
-	 */
-	public FileSystemMonitor(String dir, boolean includeSubdirs, IMonitorObserver observer) throws Exception
-	{
 		this.rootDir = Paths.get(dir);
 		this.mapKeyPath = new HashMap<WatchKey,Path>();
 		this.watchService = FileSystems.getDefault().newWatchService();
@@ -76,9 +61,6 @@ public class FileSystemMonitor extends AbstractMonitor
 		// validador de classes Java
 		this.setFileValidator(new JavaclassMonitorValidator());
 
-		// registra o observador
-		this.setObserver(observer);
-		
 		// registra o diretorio/subdiretorios a serem monitorados
 		this.registerDirectory(this.rootDir, includeSubdirs);
 	}
@@ -155,7 +137,7 @@ public class FileSystemMonitor extends AbstractMonitor
 			{
 				// TODO: debug
 				// informa qual o (root) diretorio que esta sendo monitorado 
-				System.out.println(">>>>> Started monitoring [" + rootDir.toAbsolutePath() + "]");
+				System.out.println("MONITOR >> Monitorando diretorio [" + rootDir.toAbsolutePath() + "]");
 				
 				//
 				isRunning = true;
@@ -182,18 +164,17 @@ public class FileSystemMonitor extends AbstractMonitor
 				    	if ( fileFilter.acceptFile(arquivo) && fileValidator.isValid(arquivo) )
 			    		{
 				    		// TODO: debug
-				    		System.out.println("MONITOR >> " + arquivo.getName() );
+				    		System.out.println("MONITOR >> Novo arquivo encontrado: " + arquivo.getName() );
 
-				    		ClassInstrumentation classInstr = new ClassInstrumentation(arquivo);
-				    		// notifica o observador
-				    		observer.classFileUpdated(classInstr);
+				    		// notifica os observadores
+				    		FileSystemMonitor.this.notifyObservers(arquivo);
 				    	}
 				    }
 				    
 				    key.reset();
 				}
 			}
-			catch (InterruptedException | IOException e)
+			catch (Exception e)
 			{
 				// TODO: debug
 				e.printStackTrace();
@@ -201,7 +182,7 @@ public class FileSystemMonitor extends AbstractMonitor
 			
 			finally
 			{
-				System.out.println(">>>>> Stoped monitoring!" );
+				System.out.println("MONITOR >> Monitoramento encerrado!" );
 				//
 				isRunning = false;
 			}
