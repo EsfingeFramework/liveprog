@@ -27,6 +27,28 @@ public class LiveClassFactoryTest {
 	public void testCreateObject() {
 		try {
 			Mockito
+			.when(loaderMock.loadUpdatedClass(Mockito.any()))
+			.then(new Answer<Class<?>>() {
+			    @Override
+			    public Class<?> answer(InvocationOnMock invocation) throws Throwable {
+			      return ClassB.class;
+			    }
+			});
+			
+			LiveClassFactory factory = new LiveClassFactory(monitorMock,loaderMock);
+			ClassA a = factory.createObject(ClassA.class);
+			
+			Assert.assertEquals("ClassA", a.getName());
+			Assert.assertTrue(a.getClass().getName().startsWith("org.esfinge.liveprog.ClassA$$EnhancerByCGLIB"));
+		} catch (Exception e) {
+			Assert.fail(e.getMessage());
+		}
+	}
+	
+	@Test
+	public void testClassUpdated() {
+		try {
+			Mockito
 				.when(loaderMock.loadUpdatedClass(Mockito.any()))
 				.then(new Answer<Class<?>>() {
 				    @Override
@@ -48,13 +70,52 @@ public class LiveClassFactoryTest {
 			LiveClassFactory factory = new LiveClassFactory(monitorMock,loaderMock);
 			ClassA a = factory.createObject(ClassA.class);
 			
-			factory.classFileUpdated(instrumentationMock);
+			Assert.assertEquals("ClassA", a.getName());
+			
+			factory.classUpdated(instrumentationMock);
 			
 			Mockito
 				.verify(loaderMock)
 				.loadUpdatedClass(Mockito.any());
 			
 			Assert.assertEquals("ClassB", a.getName());
+		} catch (Exception e) {
+			Assert.fail(e.getMessage());
+		}
+	}
+	
+	@Test
+	public void testAddLiveClassObserver() {
+		try {
+			ILiveClassObserver observerMock = Mockito.mock(ILiveClassObserver.class);
+			Mockito
+				.when(loaderMock.loadUpdatedClass(Mockito.any()))
+				.then(new Answer<Class<?>>() {
+				    @Override
+				    public Class<?> answer(InvocationOnMock invocation) throws Throwable {
+				      return ClassB.class;
+				    }
+				});
+			
+			ClassInstrumentation instrumentationMock = Mockito.mock(ClassInstrumentation.class);
+			Mockito
+			.when(instrumentationMock.getClassName())
+			.then(new Answer<String>() {
+			    @Override
+			    public String answer(InvocationOnMock invocation) throws Throwable {
+			      return ClassA.class.getName();
+			    }
+			});
+			
+			LiveClassFactory factory = new LiveClassFactory(monitorMock,loaderMock);
+			factory.addLiveClassObserver(ClassA.class, observerMock);
+			
+			factory.createObject(ClassA.class);
+			factory.classUpdated(instrumentationMock);
+			
+			Mockito
+				.verify(observerMock)
+				.classReloaded(ClassB.class);
 		} catch (Exception e) {
 			Assert.fail(e.getMessage());
 		}
