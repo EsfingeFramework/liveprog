@@ -50,7 +50,7 @@ public class LiveClassFactoryBuilder
 	 * Monitora o diretorio especificado em busca de arquivos de novas versoes de classes dinamicas.
 	 * 
 	 * @param dir o diretorio a ser monitorado na deteccao de arquivos de novas versoes de classes dinamicas
-	 * @return o proximo estagio do builder para a criacao da fabrica de objetos dinamicosmoni
+	 * @return o proximo estagio do builder para a criacao da fabrica de objetos dinamicos
 	 * @throws Exception em caso de erro na criacao de algum componente interno
 	 * @see org.esfinge.liveprog.monitor.FileSystemMonitor
 	 */
