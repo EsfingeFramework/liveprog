@@ -116,7 +116,7 @@ public class Utils
 			if ( newObj instanceof ILiveClassStateLoader )
 			{
 				// TODO: debug
-				System.out.format("UTILS >> Criando mapa de propriedades para carregamento via IStateLoader!\n\n");
+				System.out.format("UTILS >> Criando mapa de propriedades para carregamento via ILiveClassStateLoader!\n\n");
 
 				// cria o mapa de propriedades do objeto antigo
 				Map<String,Object> mapState = new HashMap<String,Object>();
