@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import org.esfinge.liveprog.IStateLoader;
+import org.esfinge.liveprog.ILiveClassStateLoader;
 import org.esfinge.liveprog.annotation.IgnoreOnReload;
 
 /**
@@ -90,6 +90,7 @@ public class Utils
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static <T> void addToCollection(Collection<T> collection, T... elements)
 	{
 		if ( elements != null )
@@ -112,7 +113,7 @@ public class Utils
 		try
 		{
 			// verifica se a nova classe implementa a interface IStateLoader
-			if ( newObj instanceof IStateLoader )
+			if ( newObj instanceof ILiveClassStateLoader )
 			{
 				// TODO: debug
 				System.out.format("UTILS >> Criando mapa de propriedades para carregamento via IStateLoader!\n\n");
@@ -128,7 +129,7 @@ public class Utils
 				}
 				
 				// carrega o estado no novo objeto
-				((IStateLoader) newObj).load(mapState);
+				((ILiveClassStateLoader) newObj).load(mapState);
 			}
 			else
 			{

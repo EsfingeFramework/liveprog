@@ -8,7 +8,7 @@ import java.util.Map;
  * 
  * @see org.esfinge.liveprog.annotation.LiveClass
  */
-public interface IStateLoader
+public interface ILiveClassStateLoader
 {
 	/**
 	 * Recebe o mapa com as propriedades e valores do objeto sendo substituido, 

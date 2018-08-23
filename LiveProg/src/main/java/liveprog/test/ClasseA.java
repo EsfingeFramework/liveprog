@@ -2,7 +2,7 @@ package liveprog.test;
 
 import java.util.Map;
 
-import org.esfinge.liveprog.IStateLoader;
+import org.esfinge.liveprog.ILiveClassStateLoader;
 import org.esfinge.liveprog.annotation.*;
 
 // versao 1
