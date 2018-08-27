@@ -20,9 +20,9 @@ import java.util.concurrent.Executors;
  * Monitora novas versoes de classes dinamicas no sistema de arquivos.
  * 
  * @see org.esfinge.LiveClass
- * @see IMonitor
+ * @see ILiveClassFileMonitor
  */
-public class FileSystemMonitor extends AbstractMonitor
+public class FileSystemMonitor extends AbstractLiveClassFileMonitor
 {
 	// diretorio a ser monitorado
 	private Path rootDir;
@@ -56,10 +56,10 @@ public class FileSystemMonitor extends AbstractMonitor
 		this.isRunning = false;
 		
 		// tipo de arquivos: classes Java
-		this.setFileFilter(new FileExtensionMonitorFilter("class"));
+		this.setFileFilter(new FileExtensionFilter("class"));
 		
 		// validador de classes Java
-		this.setFileValidator(new JavaclassMonitorValidator());
+		this.setFileValidator(new JavaclassValidator());
 
 		// registra o diretorio/subdiretorios a serem monitorados
 		this.registerDirectory(this.rootDir, includeSubdirs);

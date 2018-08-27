@@ -6,7 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.ClassUtils;
-import org.esfinge.liveprog.db.LiveClassDB;
+import org.esfinge.liveprog.db.ILiveClassDB;
+import org.esfinge.liveprog.db.ILiveClassDBVersionObserver;
 import org.esfinge.liveprog.exception.IncompatibleLiveClassException;
 import org.esfinge.liveprog.instrumentation.ClassInfo;
 import org.esfinge.liveprog.instrumentation.InstrumentationService;
@@ -18,7 +19,7 @@ import net.sf.cglib.proxy.Enhancer;
  * 
  * @see org.esfinge.liveprog.annotation.LiveClass
  */
-public class LiveClassFactory implements ILiveClassUpdateObserver
+public class LiveClassFactory implements ILiveClassUpdateObserver, ILiveClassDBVersionObserver
 {
 	// mapa dos proxies criados para cada tipo de classe dinamica
 	private Map<String, List<ILiveClassObserver>> mapProxies;
@@ -32,35 +33,29 @@ public class LiveClassFactory implements ILiveClassUpdateObserver
 	// carregador de classes dinamicas
 	private LiveClassLoader classLoader;
 	
+	// gerenciador do banco de dados
+	private ILiveClassDB dbManager;
+	
 	// indica se a aplicacao esta rodando em modo de teste ou de producao
 	private boolean testMode;
 
 
 	/**
-	 * Cria uma nova fabrica para criacao de objetos de classes dinamicas.
-	 * 
-	 * Assume que a aplicacao esta rodando em modo de producao.
-	 * 
-	 * @throws Exception caso ocorra algum erro interno de inicializacao 
-	 */
-	LiveClassFactory() throws Exception
-	{
-		this(false);
-	}
-	
-	/**
 	 * Cria uma nova fabrica para a criacao de objetos de classes dinamicas.
 	 * 
+	 * @param dbManager gerenciador para a persistencia de classes dinamicas
 	 * @param testMode <b>true</b> se a aplicacao estiver rodando em modo de testes - usa a versao mais recente da classe dinamica,
 	 * <b>false</b> se a aplicacao estiver rodando em modo de producao
+	 * @
 	 * @throws Exception caso ocorra algum erro interno de inicializacao
 	 */
-	LiveClassFactory(boolean testMode) throws Exception
+	LiveClassFactory(ILiveClassDB dbManager, boolean testMode) throws Exception
 	{
 		this.classLoader = new LiveClassLoader();
 		this.mapProxies = new HashMap<String, List<ILiveClassObserver>>();
 		this.mapObservers = new HashMap<String, List<ILiveClassObserver>>();
 		this.cacheLiveClasses = new HashMap<String, Class<?>>();
+		this.dbManager = dbManager;
 		this.testMode = testMode;
 		
 		// TODO: debug..
@@ -95,7 +90,7 @@ public class LiveClassFactory implements ILiveClassUpdateObserver
 				InstrumentationService.checkValidLiveClass(objClass);				
 				
 				// obtem as informacoes da classe armazenadas no BD, se houver
-				ClassInfo liveClassInfo = LiveClassDB.getInstance().getLiveClassInfo(className, this.testMode);
+				ClassInfo liveClassInfo = this.dbManager.getLiveClass(className, this.testMode);
 				
 				// verifica se ja tem alguma versao salva no banco
 				if ( liveClassInfo == null )
@@ -104,7 +99,7 @@ public class LiveClassFactory implements ILiveClassUpdateObserver
 					liveClassInfo = InstrumentationService.inspect(objClass);
 					
 					// salva no banco de dados
-					LiveClassDB.getInstance().saveLiveClassInfo(liveClassInfo);
+					this.dbManager.saveLiveClass(liveClassInfo.getName(), liveClassInfo);
 				}
 				
 				// carrega a versao da classe dinamica
@@ -141,8 +136,8 @@ public class LiveClassFactory implements ILiveClassUpdateObserver
 	{
 		try
 		{
-			// salva a nova versao no BD
-			LiveClassDB.getInstance().updateLiveClassInfo(liveClassName, newLiveClassInfo);
+			// salva a nova versao (de testes) no BD
+			this.dbManager.saveLiveClass(liveClassName, newLiveClassInfo);
 			
 			// TODO: debug..
 			System.out.println("FACTORY >> Classe dinamica atualizada: " + liveClassName);
@@ -170,6 +165,75 @@ public class LiveClassFactory implements ILiveClassUpdateObserver
 		{
 			// TODO: debug..
 			System.out.println("FACTORY >> Erro ao carregar nova versao da classe dinamica: " + liveClassName);
+			
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void liveClassCommitted(String className)
+	{
+		// o commit faz a versao de producao ficar igual a versao de testes,
+		// se estiver em modo testes nao muda nada para a aplicacao..
+		if ( this.testMode )
+			return;
+		
+		try
+		{
+			// obtem as informacoes da classe dinamica
+			ClassInfo liveClassInfo = this.dbManager.getLiveClass(className, false);
+			
+			// carrega a versao da classe dinamica
+			Class<?> newLiveClass = this.classLoader.loadLiveClass(liveClassInfo);
+			
+			// TODO: debug..
+			System.out.println("FACTORY >> Classe dinamica - commit: " + className);
+
+			// atualiza o cache
+			this.cacheLiveClasses.put(className, newLiveClass);
+			
+			// notifica os proxies
+			this.notifyProxies(className, newLiveClass);
+			
+			// notifica os observadores externos
+			this.notifyExternalObservers(className, newLiveClass);
+		}
+		catch ( Exception e )
+		{
+			// TODO: debug..
+			System.out.println("FACTORY >> Erro ao carregar commit da classe dinamica: " + className);
+			
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void liveClassRolledBack(String className)
+	{
+		try
+		{
+			// obtem as informacoes da classe dinamica
+			ClassInfo liveClassInfo = this.dbManager.getLiveClass(className, false);
+			
+			// carrega a versao da classe dinamica
+			Class<?> newLiveClass = this.classLoader.loadLiveClass(liveClassInfo);
+			
+			// TODO: debug..
+			System.out.println("FACTORY >> Classe dinamica - rollback: " + className);
+
+			// atualiza o cache
+			this.cacheLiveClasses.put(className, newLiveClass);
+			
+			// notifica os proxies
+			this.notifyProxies(className, newLiveClass);
+			
+			// notifica os observadores externos
+			this.notifyExternalObservers(className, newLiveClass);
+		}
+		catch ( Exception e )
+		{
+			// TODO: debug..
+			System.out.println("FACTORY >> Erro ao carregar rollback da classe dinamica: " + className);
 			
 			e.printStackTrace();
 		}
@@ -260,12 +324,24 @@ public class LiveClassFactory implements ILiveClassUpdateObserver
 		this.mapProxies.put(className, lstProxies);
 	}
 	
+	/**
+	 * Notifica os proxies de uma nova versao de classe dinamica.
+	 * 
+	 * @param className o nome da classe dinamica
+	 * @param newLiveClass a nova versao da classe dinamica
+	 */
 	private void notifyProxies(String className, Class<?> newLiveClass)
 	{
 		if ( this.mapProxies.containsKey(className) )
 			this.mapProxies.get(className).forEach(obs -> obs.classReloaded(newLiveClass));
 	}
 	
+	/**
+	 * Notifica os observadores externos de uma nova versao de classe dinamica.
+	 * 
+	 * @param className o nome da classe dinamica
+	 * @param newLiveClass a nova versao da classe dinamica
+	 */
 	private void notifyExternalObservers(String className, Class<?> newLiveClass)
 	{
 		if ( this.mapObservers.containsKey(className) )

@@ -7,47 +7,47 @@ import java.util.List;
 /**
  * Estrutura base para monitores de arquivos de classes dinamicas.
  */
-public abstract class AbstractMonitor implements IMonitor
+public abstract class AbstractLiveClassFileMonitor implements ILiveClassFileMonitor
 {
 	// lista de observadores a serem notificados dos arquivos 
 	// de novas versoes de classes dinamicas encontrados
-	protected List<IMonitorObserver> observers;
+	protected List<ILiveClassFileMonitorObserver> observers;
 	
 	// filtro dos tipos de arquivos a serem monitorados
-	protected IMonitorFileFilter fileFilter;
+	protected ILiveClassFileFilter fileFilter;
 	
 	// validador dos arquivos monitorados
-	protected IMonitorFileValidator fileValidator;
+	protected ILiveClassFileValidator fileValidator;
 	
 	
 	/**
 	 * Construtor padrao.
 	 */
-	public AbstractMonitor()
+	public AbstractLiveClassFileMonitor()
 	{
-		this.observers = new ArrayList<IMonitorObserver>();
+		this.observers = new ArrayList<ILiveClassFileMonitorObserver>();
 	}
 	
 	@Override
-	public void setFileFilter(IMonitorFileFilter filter)
+	public void setFileFilter(ILiveClassFileFilter filter)
 	{
 		this.fileFilter = filter;
 	}
 
 	@Override
-	public void setFileValidator(IMonitorFileValidator validator)
+	public void setFileValidator(ILiveClassFileValidator validator)
 	{
 		this.fileValidator = validator;
 	}
 
 	@Override
-	public void addObserver(IMonitorObserver observer)
+	public void addObserver(ILiveClassFileMonitorObserver observer)
 	{
 		this.observers.add(observer);
 	}
 
 	@Override
-	public void removeObserver(IMonitorObserver observer)
+	public void removeObserver(ILiveClassFileMonitorObserver observer)
 	{
 		this.observers.remove(observer);
 	}

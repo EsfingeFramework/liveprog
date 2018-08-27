@@ -5,7 +5,7 @@ import java.io.File;
 /**
  * Interface para filtrar os tipos de arquivos a serem monitorados.
  */
-public interface IMonitorFileFilter
+public interface ILiveClassFileFilter
 {
 	/**
 	 * Verifica se o arquivo eh apto a ser monitorado.

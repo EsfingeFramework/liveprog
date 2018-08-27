@@ -5,7 +5,7 @@ import java.io.File;
 /**
  * Interface para validar os arquivos monitorados.
  */
-public interface IMonitorFileValidator
+public interface ILiveClassFileValidator
 {
 	/**
 	 * Verifica se o formato do arquivo monitorado eh valido.

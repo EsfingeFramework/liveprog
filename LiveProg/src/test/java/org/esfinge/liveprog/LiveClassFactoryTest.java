@@ -1,10 +1,9 @@
 package org.esfinge.liveprog;
 
-import org.esfinge.liveprog.LiveClassFactory;
-import org.esfinge.liveprog.LiveClassLoader;
 import org.esfinge.liveprog.monitor.FileSystemMonitor;
 import org.esfinge.liveprog.util.ClassInstrumentation;
-import org.junit.*;
+import org.junit.Assert;
+import org.junit.Test;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;

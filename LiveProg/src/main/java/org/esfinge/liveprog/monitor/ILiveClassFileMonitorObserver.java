@@ -5,7 +5,7 @@ import java.io.File;
 /**
  * Interface para ser notificado quando arquivos de novas versoes de classes dinamicas forem encontrados.
  */
-public interface IMonitorObserver
+public interface ILiveClassFileMonitorObserver
 {
 	/**
 	 * Notifica que um arquivo de uma nova versao de classe dinamica foi encontrado.

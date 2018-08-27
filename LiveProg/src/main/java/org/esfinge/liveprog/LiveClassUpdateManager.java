@@ -13,13 +13,13 @@ import org.esfinge.liveprog.instrumentation.AccessModifier;
 import org.esfinge.liveprog.instrumentation.ClassInfo;
 import org.esfinge.liveprog.instrumentation.InstrumentationService;
 import org.esfinge.liveprog.instrumentation.MethodInfo;
-import org.esfinge.liveprog.monitor.IMonitorObserver;
+import org.esfinge.liveprog.monitor.ILiveClassFileMonitorObserver;
 import org.esfinge.liveprog.util.Utils;
 
 /**
  * Gerenciador de atualizacoes de classes dinamicas.
  */
-class LiveClassUpdateManager implements IMonitorObserver
+class LiveClassUpdateManager implements ILiveClassFileMonitorObserver
 {
 	// lista de observadores a serem notificados das 
 	// novas versoes das classes dinamicas criadas

@@ -12,7 +12,7 @@ import org.esfinge.liveprog.instrumentation.InstrumentationService;
  * 
  * @see org.esfinge.liveprog.annotation.LiveClass
  */
-public class JavaclassMonitorValidator  implements IMonitorFileValidator
+public class JavaclassValidator  implements ILiveClassFileValidator
 {
 
 	@Override

@@ -8,7 +8,7 @@ import java.util.Set;
 /**
  * Filtra os arquivos monitorados pelo tipo de extensao. 
  */
-public class FileExtensionMonitorFilter implements IMonitorFileFilter
+public class FileExtensionFilter implements ILiveClassFileFilter
 {
 	// os tipos de arquivos aceitos
 	private Set<String> validExtensions;
@@ -20,7 +20,7 @@ public class FileExtensionMonitorFilter implements IMonitorFileFilter
 	 * @param fileExtensions as extensoes dos tipos de arquivos aceitos;
 	 * nao colocar o ponto (.), somente a extensao!
 	 */
-	public FileExtensionMonitorFilter(String... fileExtensions)
+	public FileExtensionFilter(String... fileExtensions)
 	{
 		this.validExtensions = new HashSet<String>(Arrays.asList(fileExtensions));
 	}

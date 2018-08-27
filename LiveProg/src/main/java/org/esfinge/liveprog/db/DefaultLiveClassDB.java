@@ -13,15 +13,15 @@ import java.util.List;
 
 import org.esfinge.liveprog.instrumentation.ClassInfo;
 import org.esfinge.liveprog.instrumentation.InstrumentationService;
-
+import org.sqlite.SQLiteConfig;
 
 /**
  * Classe para gerenciamento das versoes de classes dinamicas.
  */
-public class LiveClassDB
+public class DefaultLiveClassDB implements ILiveClassDB
 {
 	// instancia singleton
-	private static LiveClassDB _singleton;
+	private static DefaultLiveClassDB _singleton;
 	
 	// caminho para o arquivo do BD
 	private static String _dbFilePath;
@@ -45,37 +45,28 @@ public class LiveClassDB
 	 * @throws SQLException em caso de erros com o banco de dados
 	 * @see #setDatabaseFilePath(String)
 	 */
-	public static LiveClassDB getInstance() throws IllegalStateException, SQLException
+	public static DefaultLiveClassDB getInstance() throws IllegalStateException, SQLException
 	{
 		if ( _dbFilePath == null )
 			throw new IllegalStateException("Database file path not set!");
 		
 		if ( _singleton == null )
 		{
-			_singleton = new LiveClassDB();
+			_singleton = new DefaultLiveClassDB();
 			_singleton.start();
 		}
 		
 		return ( _singleton );
 	}
 	
-	/**
-	 * Obtem as informacoes da classe dinamica no banco de dados.
-	 * 
-	 * @param className o nome da classe dinamica cujas informacoes serao carregadas
-	 * @param testMode <b>true</b> se a aplicacao estiver rodando em modo de testes - usa a versao mais recente da classe,
-	 * <b>false</b> se a aplicacao estiver rodando em modo de producao
-	 * @return as informacoes da classe dinamica salvas no banco de dados,
-	 * ou <b>null</b> caso nenhuma versao da classe informada tenha sido salva anteriormente 
-	 * @throws SQLException em caso de erros com o banco de dados
-	 */
-	public ClassInfo getLiveClassInfo(String className, boolean testMode) throws SQLException
+	@Override
+	public ClassInfo getLiveClass(String className, boolean testMode) throws SQLException
 	{
 		// obtem a conexao com o BD
 		Connection conn = this.getConnection();
 	
-		// verifica qual a versao atual da classe no BD
-		TableKeysInfo keysInfo = this.getVersion(conn, className, testMode);
+		// obtem as versoes da classe salvas no BD
+		TableKeysInfo keysInfo = this.getTableKeysInfo(conn, className);
 	
 		// nao ha versao salva no BD para essa classe
 		if ( keysInfo.getProductionVersion() < 0 )
@@ -105,33 +96,14 @@ public class LiveClassDB
 		return ( classInfo );
 	}
 	
-	/**
-	 * Salva as informacoes da classe dinamica no banco de dados.
-	 * 
-	 * @param liveClassInfo informacoes da classe dinamica
-	 * @throws SQLException em caso de erros com o banco de dados
-	 * @see org.esfinge.liveprog.instrumentation.ClassInfo
-	 */
-	public void saveLiveClassInfo(ClassInfo liveClassInfo) throws SQLException
-	{
-		this.updateLiveClassInfo(liveClassInfo.getName(), liveClassInfo);
-	}
-	
-	/**
-	 * Atualiza as informacoes da nova versao da classe dinamica no banco de dados.
-	 * 
-	 * @param originalLiveClassName o nome da classe dinamica original
-	 * @param newLiveClassInfo informacoes da nova versao da classe dinamica
-	 * @throws SQLException em caso de erros com o banco de dados
-	 * @see org.esfinge.liveprog.instrumentation.ClassInfo
-	 */
-	public void updateLiveClassInfo(String originalLiveClassName, ClassInfo newLiveClassInfo) throws SQLException
+	@Override
+	public void saveLiveClass(String className, ClassInfo classInfo) throws SQLException
 	{
 		// obtem a conexao com o BD
 		Connection conn = this.getConnection();
 
-		// verifica qual a versao atual da classe no BD
-		TableKeysInfo keysInfo = this.getVersion(conn, originalLiveClassName, true);
+		// obtem as versoes da classe salvas no BD
+		TableKeysInfo keysInfo = this.getTableKeysInfo(conn, className);
 
 		// nao ha versao salva no BD para essa classe
 		if ( keysInfo.getProductionVersion() < 0 )
@@ -140,13 +112,13 @@ public class LiveClassDB
 			int version = 1;
 			
 			// salva as informacoes da classe
-			int classId = this.saveToLiveClassTable(conn, originalLiveClassName, version);
+			int classId = this.saveToLiveClassTable(conn, className, version);
 			
 			// salva a versao e o bytecode da classe
-			int versionId = this.saveToClassVersionTable(conn, classId, version, newLiveClassInfo.getBytecode());
+			int versionId = this.saveToClassVersionTable(conn, classId, version, classInfo.getBytecode());
 			
 			// salva as classes internas da classe
-			for ( ClassInfo innerClass : newLiveClassInfo.getInnerClassesInfo() )
+			for ( ClassInfo innerClass : classInfo.getInnerClassesInfo() )
 				this.saveInnerClass(conn, versionId, innerClass);
 		}
 		else
@@ -162,17 +134,112 @@ public class LiveClassDB
 			}
 			
 			// insere na tabela de versoes
-			int versionId = this.saveToClassVersionTable(conn, keysInfo.getClassId(), keysInfo.getProductionVersion()+1, newLiveClassInfo.getBytecode());
+			int versionId = this.saveToClassVersionTable(conn, keysInfo.getClassId(), keysInfo.getProductionVersion()+1, classInfo.getBytecode());
 				
 			// salva as classes internas da classe
-			for ( ClassInfo innerClass : newLiveClassInfo.getInnerClassesInfo() )
+			for ( ClassInfo innerClass : classInfo.getInnerClassesInfo() )
 				this.saveInnerClass(conn, versionId, innerClass);
 		}
 		
 		// fecha a conexao com o BD
 		conn.close();
 	}
- 	
+
+	@Override
+	public ILiveClassDBVersion getLiveClassVersion(String className) throws SQLException
+	{
+		// obtem a conexao com o BD
+		Connection conn = this.getConnection();
+
+		// obtem as versoes da classe salvas no BD
+		TableKeysInfo keysInfo = this.getTableKeysInfo(conn, className);
+		
+		// fecha a conexao com o BD
+		conn.close();
+
+		return ( keysInfo );
+	}
+	
+	@Override
+	public List<ILiveClassDBVersion> getAllLiveClassVersion() throws SQLException
+	{
+		// obtem a conexao com o BD
+		Connection conn = this.getConnection();
+
+		// obtem as versoes da classe salvas no BD
+		List<TableKeysInfo> keysInfoList = this.getAllTableKeysInfo(conn);
+
+		// fecha a conexao com o BD
+		conn.close();
+
+		return ( new ArrayList<ILiveClassDBVersion>(keysInfoList) );
+	}
+	
+	@Override
+	public boolean commitLiveClass(String className) throws SQLException
+	{
+		// obtem a conexao com o BD
+		Connection conn = this.getConnection();
+		
+		// obtem as versoes da classe salvas no BD
+		TableKeysInfo keysInfo = this.getTableKeysInfo(conn, className);
+		
+		// 
+		int updated = 0;
+		
+		// a versao de producao eh diferente da versao de testes?
+		if ( keysInfo.getProductionVersion() < keysInfo.getTestVersion() )
+		{
+			// atualiza a versao de producao para a versao de testes
+			updated = this.updateProductionVersion(conn, className, keysInfo.getTestVersion());
+		}
+
+		// fecha a conexao com o BD
+		conn.close();
+		
+		// verifica se atualizou algum registro
+		return ( updated > 0 );
+	}
+
+	@Override
+	public boolean rollbackLiveClass(String className) throws SQLException
+	{
+		// obtem a conexao com o BD
+		Connection conn = this.getConnection();
+		
+		// obtem as versoes da classe salvas no BD
+		TableKeysInfo keysInfo = this.getTableKeysInfo(conn, className);
+		
+		// 
+		int updated = 0;
+		
+		// a versao de producao superior que a primeira versao?
+		if ( keysInfo.getProductionVersion() > 1 )
+		{
+			// retrocede uma versao
+			int newVersion = keysInfo.getProductionVersion() - 1;
+			
+			// descarta as versoes de testes
+			while ( keysInfo.getTestVersion() > newVersion )
+			{
+				// apaga as versoes de teste
+				this.removeFromClassVersionTable(conn, keysInfo.getVersionId());
+				
+				//
+				keysInfo = this.getTableKeysInfo(conn, className);
+			}
+			
+			// atualiza a versao de producao para a versao de testes
+			updated = this.updateProductionVersion(conn, className, newVersion);
+		}
+
+		// fecha a conexao com o BD
+		conn.close();
+		
+		// verifica se atualizou algum registro
+		return ( updated > 0 );
+	}
+
 	/**
 	 * Inicializa as configuracoes para acesso ao banco de dados.
 	 * 
@@ -240,9 +307,13 @@ public class LiveClassDB
 
 		// URL JDBC
 		String url = "jdbc:sqlite:" + dbFile.getAbsolutePath();
+		
+		// SQLite config
+		SQLiteConfig config = new SQLiteConfig();
+		config.enforceForeignKeys(true);
 
 		// retorna a conexao com o BD
-		return ( DriverManager.getConnection(url) );
+		return ( DriverManager.getConnection(url, config.toProperties()) );
 	}
 	
 	/**
@@ -393,33 +464,26 @@ public class LiveClassDB
 	}
 	
 	/**
-	 * Obtem as chaves e versoes da classe informada no banco de dados.
+	 * Obtem as chaves e versoes da classe informada.
 	 * 
 	 * @param conn a conexao com o banco de dados
 	 * @param className o nome da classe dinamica cujas informacoes serao retornadas
-	 * @param testMode <b>true</b> se a aplicacao estiver rodando em modo de testes - usa a versao mais recente da classe,
-	 * <b>false</b> se a aplicacao estiver rodando em modo de produto - usa a versao estavel da classe
-	 * @return
-	 * @throws SQLException
+	 * @return as chaves e versoes da classe dinamica informada
+	 * @throws SQLException em caso de erros com o banco de dados
 	 */
-	private TableKeysInfo getVersion(Connection conn, String className, boolean testMode) throws SQLException
+	private TableKeysInfo getTableKeysInfo(Connection conn, String className) throws SQLException
 	{
-		String SQL;
-		
-		if ( testMode )
-			SQL = "SELECT l.id, c.id, l.currentVersion, MAX(c.version) AS max_version FROM LiveClass l, ClassVersion c " + 
-				  "WHERE l.id = c.id_class AND l.className = ? " +
-				  "GROUP BY l.id";
-		else
-			SQL = "SELECT l.id, c.id, l.currentVersion, c.version FROM LiveClass l, ClassVersion c " + 
-				  "WHERE l.id = c.id_class AND l.currentVersion = c.version AND l.className = ?";
-			
+		String SQL = "SELECT l.id, c.id, l.currentVersion, MAX(c.version) AS max_version " + 
+					 "FROM LiveClass l, ClassVersion c " + 
+					 "WHERE l.id = c.id_class AND l.className = ? " +
+					 "GROUP BY l.id";
 		
 		PreparedStatement pStmt = conn.prepareStatement(SQL);
 		pStmt.setString(1,  className);
 		ResultSet rs = pStmt.executeQuery();
 		
 		TableKeysInfo keysInfo = new TableKeysInfo();
+		keysInfo.setName(className);
 		
 		if ( rs.next() )
 		{
@@ -432,12 +496,67 @@ public class LiveClassDB
 		return ( keysInfo );
 	}
 	
+	/**
+	 * Obtem as chaves e versoes de todas classes salvas no banco de dados.
+	 * 
+	 * @param conn a conexao com o banco de dados
+	 * @return lista com as chaves e versoes de todas as classes dinamicas salvas no banco de dados
+	 * @throws SQLException em caso de erros com o banco de dados
+	 */
+	private List<TableKeysInfo> getAllTableKeysInfo(Connection conn) throws SQLException
+	{
+		String SQL = "SELECT l.className, l.id, c.id, l.currentVersion, MAX(c.version) AS max_version " + 
+					 "FROM LiveClass l, ClassVersion c " + 
+					 "WHERE l.id = c.id_class " +
+					 "GROUP BY l.id";
+		
+		PreparedStatement pStmt = conn.prepareStatement(SQL);
+		ResultSet rs = pStmt.executeQuery();
+		
+		List<TableKeysInfo> keysInfoList = new ArrayList<TableKeysInfo>();
+		
+		while ( rs.next() )
+		{
+			TableKeysInfo keysInfo = new TableKeysInfo();
+			keysInfo.setName(rs.getString(1));
+			keysInfo.setClassId(rs.getInt(2));
+			keysInfo.setVersionId(rs.getInt(3));
+			keysInfo.setProductionVersion(rs.getInt(4));
+			keysInfo.setTestVersion(rs.getInt(5));
+			
+			keysInfoList.add(keysInfo);
+		}
+		
+		return ( keysInfoList );
+	}
+	
+	/**
+	 * Atualiza a versao de producao da classe dinamica LiveClass.
+	 * 
+	 * @param conn a conexao com o banco de dados
+	 * @param className o nome da classe dinamica 
+	 * @param version a nova versao de producao da classe dinamica
+	 * @return o numero de registros que foram atualizados (1 - OK, 0 - NOK)
+	 * @throws SQLException em caso de erros com o banco de dados
+	 */
+	private int updateProductionVersion(Connection conn, String className, int version) throws SQLException
+	{
+		PreparedStatement pStmt = conn.prepareStatement("UPDATE LiveCLass SET currentVersion=? WHERE className=?");
+		pStmt.setInt(1, version);
+		pStmt.setString(2, className);
+		
+		return ( pStmt.executeUpdate() );
+	}
 	
 	/**
 	 * Classe auxiliar para armazenar as chaves e versoes de uma classe dinamica armazenada no banco de dados.
 	 */
-	private class TableKeysInfo
+	private class TableKeysInfo implements ILiveClassDBVersion
 	{
+		// o nome da classe dinamica
+		private String name
+		;
+		
 		// a chave da classe dinamica na tabela LiveClass
 		private int classId;
 		
@@ -456,12 +575,29 @@ public class LiveClassDB
 		 */
 		public TableKeysInfo()
 		{
+			this.name = null;
 			this.classId = -1;
 			this.versionId = -1;
 			this.productionVersion = -1;
 			this.testVersion = -1;
 		}
 		
+		/**
+		 * Atribui o nome da classe dinamica.
+		 * 
+		 * @param className o nome da classe dinamica
+		 */
+		public void setName(String className)
+		{
+			this.name = className;
+		}
+
+		@Override
+		public String getName()
+		{
+			return name;
+		}
+
 		/**
 		 * Atribui a chave da classe dinamica lida da tabela LiveClass.
 		 * 
@@ -531,15 +667,17 @@ public class LiveClassDB
 		{
 			this.testVersion = testVersion;
 		}
-
-		/**
-		 * Retorna a versao de testes da classe dinamica lida da tabela ClassVersion.
-		 * 
-		 * @return a versao de testes da classe dinamica lida da tabela ClassVersion
-		 */
+		
+		@Override
 		public int getTestVersion()
 		{
 			return testVersion;
+		}
+
+		@Override
+		public int getCurrentVersion()
+		{
+			return ( this.getProductionVersion() );
 		}
 	}
 }

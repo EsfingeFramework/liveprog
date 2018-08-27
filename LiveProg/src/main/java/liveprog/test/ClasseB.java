@@ -1,6 +1,7 @@
 package liveprog.test;
 
-import org.esfinge.liveprog.annotation.*;
+import org.esfinge.liveprog.annotation.InvokeOnReload;
+import org.esfinge.liveprog.annotation.LiveClass;
 
 //versao 1
 ///*
@@ -9,6 +10,7 @@ public class ClasseB
 {
 	private String myString = "My String";
 	
+	@InvokeOnReload
 	public void test()
 	{
 		System.out.println("B >> B.test(): " + this.getClass().getSimpleName());
@@ -48,4 +50,4 @@ public class ClasseB
 		}
 	}
 }
-*/
+//*/
