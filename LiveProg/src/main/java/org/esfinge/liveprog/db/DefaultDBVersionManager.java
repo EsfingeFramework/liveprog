@@ -1,22 +1,22 @@
 package org.esfinge.liveprog.db;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
-
-import org.swingBean.actions.ApplicationAction;
-import org.swingBean.descriptor.BeanTableModel;
-import org.swingBean.descriptor.TableFieldDescriptor;
-import org.swingBean.descriptor.XMLDescriptorFactory;
-import org.swingBean.gui.JActButton;
-import org.swingBean.gui.JBeanTable;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
 
 /**
  * Gerenciador padrao de versao da classes dinamicas para a implementacao padrao do LiveClassBD (SQLite). 
@@ -25,23 +25,23 @@ import org.swingBean.gui.JBeanTable;
 public class DefaultDBVersionManager extends JFrame implements ILiveClassDBVersionManager
 {
 	// tabela com as versoes das classes dinamicas cadastradas no BD
-	private JBeanTable liveClassTable;
+	private JTable liveClassTable;
 	
 	// modelo com as informacoes das versoes das classes dinamicas do BD
-	private BeanTableModel<LiveClassBean> tableModel;
+	private LiveClassTableModel tableModel;
 	
 	// lista de observadores a serem notificados das 
 	// versoes das classes dinamicas comitadas/retrocedidas no BD
 	private List<ILiveClassDBVersionObserver> observers;
 
 	// botao para atualizar a lista de versoes
-	private JActButton btnReload;
+	private JButton btnReload;
 	
 	// botao para executar o commit da versao selecionada
-	private JActButton btnCommit;
+	private JButton btnCommit;
 	
 	// botao para executar o rollback da versao selecionada
-	private JActButton btnRollback;
+	private JButton btnRollback;
 	
 	// interface com o BD
 	private ILiveClassDB liveClassDB;
@@ -53,12 +53,12 @@ public class DefaultDBVersionManager extends JFrame implements ILiveClassDBVersi
 	public DefaultDBVersionManager(ILiveClassDB liveClassDB)
 	{
 		super("Gerenciador de Classes Dinamicas");
+		this.liveClassDB = liveClassDB;
+		this.observers = new ArrayList<ILiveClassDBVersionObserver>();
+		
 		this.add(this.generateForm());
 		this.setSize(new Dimension(640, 400));
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.liveClassDB = liveClassDB;
-		
-		this.observers = new ArrayList<ILiveClassDBVersionObserver>();
 	}
 	
 	/**
@@ -68,50 +68,22 @@ public class DefaultDBVersionManager extends JFrame implements ILiveClassDBVersi
 	 */
 	private JPanel generateForm()
 	{
-		// descritor XML do layout da Tabela de classes dinamicas cadastrados
-		TableFieldDescriptor tableDescriptor = XMLDescriptorFactory.getTableFieldDescriptor(
-				LiveClassBean.class, "liveclassmanager_descriptor.xml", "Classes Dinamicas");
-
 		// Tabela das classes dinamicas e suas versoes
-		this.tableModel = new BeanTableModel<LiveClassBean>(tableDescriptor);
-		this.tableModel.setBeanList(this.getLiveClassList());
-
-		this.liveClassTable = new JBeanTable(tableModel);
+		this.tableModel = new LiveClassTableModel();
+		this.liveClassTable = new JTable(this.tableModel);
 		this.liveClassTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		this.liveClassTable.getSelectionModel().addListSelectionListener((evt) -> updateButtons());
-		
-		// atualizar
-		ApplicationAction actReload = new ApplicationAction() {
-			public void execute()
-			{
-				tableModel.setBeanList(getLiveClassList());
-			}
-		};
-		
-		// commit
-		ApplicationAction actCommit = new ApplicationAction() {
-			public void execute()
-			{
-				int selectedRow = liveClassTable.getSelectedRow();
-				if ( selectedRow >= 0 )
-					executeCommit(tableModel.getBeanAt(selectedRow));
-			}
-		};
-		
-		// rollback
-		ApplicationAction actRollback = new ApplicationAction() {
-			public void execute()
-			{
-				int selectedRow = liveClassTable.getSelectedRow();
-				if ( selectedRow >= 0 )
-					executeRollback(tableModel.getBeanAt(selectedRow));
-			}
-		};
+		this.liveClassTable.getTableHeader().setFont(this.liveClassTable.getTableHeader().getFont().deriveFont(Font.BOLD));
+		this.liveClassTable.setDefaultRenderer(Object.class, new LiveClassTableCellRenderer());
+		this.executeReload();
 		
 		// botoes de atualizar, commit e rollback
-		this.btnReload   = new JActButton("Atualizar", actReload);
-		this.btnCommit   = new JActButton("Commit", actCommit);
-		this.btnRollback = new JActButton("Rollback", actRollback);
+		this.btnReload   = new JButton("Atualizar");
+		this.btnReload.addActionListener((evt) -> executeReload());
+		this.btnCommit   = new JButton("Commit");
+		this.btnCommit.addActionListener((evt) -> executeCommit());
+		this.btnRollback = new JButton("Rollback");
+		this.btnRollback.addActionListener((evt) -> executeRollback());
 		
 		this.btnCommit.setEnabled(false);
 		this.btnRollback.setEnabled(false);
@@ -160,36 +132,6 @@ public class DefaultDBVersionManager extends JFrame implements ILiveClassDBVersi
 	}
 
 	/**
-	 * Obtem a lista de descritores de versoes de classes dinamicas cadastradas no banco de dados.
-	 *  
-	 * @return a lista de descritores das versoes de classes dinamicas cadastradas no banco de dados
-	 */
-	private List<LiveClassBean> getLiveClassList()
-	{
-		List<LiveClassBean> beanList = new ArrayList<LiveClassBean>();
-	
-		try
-		{
-			// obtem os descritores de versoes do banco de dados
-			for ( ILiveClassDBVersion lc : DefaultLiveClassDB.getInstance().getAllLiveClassVersion() )
-			{
-				LiveClassBean bean = new LiveClassBean();
-				bean.setName(lc.getName());
-				bean.setCurrentVersion(lc.getCurrentVersion());
-				bean.setTestVersion(lc.getTestVersion());
-				
-				beanList.add(bean);
-			}
-		}
-		catch ( Exception e )
-		{
-			e.printStackTrace();
-		}
-		
-		return ( beanList );
-	}
-	
-	/**
 	 * Atualiza o status dos botoes de commit e rollback 
 	 * conforme as versoes da classe dinamica selecionada na tabela.
 	 */
@@ -201,13 +143,13 @@ public class DefaultDBVersionManager extends JFrame implements ILiveClassDBVersi
 		if ( selectedRow >= 0 )
 		{
 			// obtem o bean da linha selecionada
-			LiveClassBean bean = tableModel.getBeanAt(selectedRow);
+			ILiveClassDBVersion dbVersion = tableModel.getObjectAt(selectedRow);
 			
 			// pode executar commit?
-			this.btnCommit.setEnabled(bean.getCurrentVersion() < bean.getTestVersion());
+			this.btnCommit.setEnabled(dbVersion.getCurrentVersion() < dbVersion.getTestVersion());
 			
 			// pode executar rollback?
-			this.btnRollback.setEnabled(bean.getCurrentVersion() > 1);
+			this.btnRollback.setEnabled(dbVersion.getCurrentVersion() > 1);
 		}
 		else
 		{
@@ -218,22 +160,48 @@ public class DefaultDBVersionManager extends JFrame implements ILiveClassDBVersi
 	}
 	
 	/**
+	 * Atualiza a tabela de classes dinamicas e suas versoes.
+	 */
+	private void executeReload()
+	{
+		try
+		{
+			this.tableModel.setData(this.liveClassDB.getAllLiveClassVersion());
+			this.liveClassTable.repaint();
+		}
+		catch (SQLException e)
+		{
+			// TODO debug..
+			e.printStackTrace();
+		}
+	}
+	
+	/**
 	 * Executa o commit da versao da classe dinamica selecionada.
 	 * 
 	 * @param classBean a classe selecionada na tabela
 	 */
-	private void executeCommit(LiveClassBean classBean)
+	private void executeCommit()
 	{
 		try
 		{
-			// faz o commit no banco de dados
-			this.liveClassDB.commitLiveClass(classBean.getName());
+			// a linha selecionada
+			int selectedRow = liveClassTable.getSelectedRow();
+		
+			if ( selectedRow >= 0 )
+			{
+				// obtem o bean da linha selecionada
+				ILiveClassDBVersion dbVersion = tableModel.getObjectAt(selectedRow);
+
+				// faz o commit no banco de dados
+				this.liveClassDB.commitLiveClass(dbVersion.getName());
 			
-			// atualiza a tabela
-			tableModel.setBeanList(this.getLiveClassList());
+				// atualiza a tabela
+				this.executeReload();
 			
-			// notifica os observadores
-			this.notifyObservers(classBean.getName(), true);
+				// notifica os observadores
+				this.notifyObservers(dbVersion.getName(), true);
+			}
 		}
 		catch (IllegalStateException | SQLException e)
 		{
@@ -247,18 +215,27 @@ public class DefaultDBVersionManager extends JFrame implements ILiveClassDBVersi
 	 * 
 	 * @param classBean a classe selecinada na tabela
 	 */
-	private void executeRollback(LiveClassBean classBean)
+	private void executeRollback()
 	{
 		try
 		{
-			// faz o rollback no banco de dados
-			this.liveClassDB.rollbackLiveClass(classBean.getName());
+			// a linha selecionada
+			int selectedRow = liveClassTable.getSelectedRow();
+		
+			if ( selectedRow >= 0 )
+			{
+				// obtem o bean da linha selecionada
+				ILiveClassDBVersion dbVersion = tableModel.getObjectAt(selectedRow);
+
+				// faz o rollback no banco de dados
+				this.liveClassDB.rollbackLiveClass(dbVersion.getName());
 			
-			// atualiza a tabela
-			tableModel.setBeanList(this.getLiveClassList());
+				// atualiza a tabela
+				this.executeReload();
 			
-			// notifica os observadores
-			this.notifyObservers(classBean.getName(), false);
+				// notifica os observadores
+				this.notifyObservers(dbVersion.getName(), false);
+			}
 		}
 		catch (IllegalStateException | SQLException e)
 		{
@@ -267,80 +244,87 @@ public class DefaultDBVersionManager extends JFrame implements ILiveClassDBVersi
 		}
 	}
 	
+	
 	/**
-	 * Classe para encapsular os descritores de versoes de uma classe dinamica.
-	 * Necessario para o funcionamento do SwingBeans.
+	 * Modelo para a tabela de classes dinamicas e suas versoes.
 	 */
-	public class LiveClassBean
+	private class LiveClassTableModel extends AbstractTableModel
 	{
-		// o nome da classe dinamica
-		private String name;
+		private List<ILiveClassDBVersion> data;
+
 		
-		// atual versao de producao da classe 
-		private int currentVersion;
+		LiveClassTableModel()
+		{
+			this.data = new ArrayList<ILiveClassDBVersion>();
+		}
 		
-		// atual versao de testes da classe
-		private int testVersion;
+		@Override
+		public int getColumnCount()
+		{
+			// [nome da classe, versao de producao, versao de testes]
+			return ( 3 );
+		}
+
+		@Override
+		public int getRowCount()
+		{
+			return ( data.size() );
+		}
+
+		@Override
+		public Object getValueAt(int rowIndex, int columnIndex)
+		{
+			// obtem o objeto
+			ILiveClassDBVersion dbVersion = this.data.get(rowIndex);
+			
+			switch ( columnIndex )
+			{
+				case 0: return ( dbVersion.getName());
+				case 1: return ( dbVersion.getCurrentVersion());
+				case 2: return ( dbVersion.getTestVersion());
+				default: return "";
+			}
+		}
 		
-
-		/**
-		 * Retorna o nome da classe dinamica.
-		 * 
-		 * @return o nome da classe dinamica
-		 */
-		public String getName()
+		@Override
+		public String getColumnName(int column)
 		{
-			return name;
+			switch ( column )
+			{
+				case 0: return "Nome";
+				case 1: return "Versão de Produção";
+				case 2: return "Versão de Testes";
+				default: return "";
+			}
 		}
 
-		/**
-		 * Atribui o nome da classe dinamica.
-		 * 
-		 * @param name o nome da classe dinamica
-		 */
-		public void setName(String name)
+		public void setData(List<ILiveClassDBVersion> newData)
 		{
-			this.name = name;
+			this.data = newData;
+			this.fireTableDataChanged();
 		}
-
-		/**
-		 * Retorna a atual versao de producao da classe dinamica.
-		 * 
-		 * @return a versao de producao da classe dinamica
-		 */
-		public int getCurrentVersion()
+		
+		public ILiveClassDBVersion getObjectAt(int index)
 		{
-			return currentVersion;
+			return ( this.data.get(index) );
 		}
-
-		/**
-		 * Atribui a atual versao de producao da classe dinamica.
-		 * 
-		 * @param currentVersion a versao de producao da classe dinamica
-		 */
-		public void setCurrentVersion(int currentVersion)
+	}
+	
+	/**
+	 * Renderizador da tabela de classes dinamicas e suas versoes.
+	 */
+	private class LiveClassTableCellRenderer extends DefaultTableCellRenderer
+	{
+		@Override
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
 		{
-			this.currentVersion = currentVersion;
-		}
+			Component comp = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+			this.setHorizontalAlignment(CENTER);
 
-		/**
-		 * Retorna a atual versao de testes da classe dinamica.
-		 * 
-		 * @return a versao de testes da classe dinamica
-		 */
-		public int getTestVersion()
-		{
-			return testVersion;
-		}
-
-		/**
-		 * Atribui a atual versao de testes da classe dinamica.
-		 * 
-		 * @param testVersion a versao de testes da classe dinamica
-		 */
-		public void setTestVersion(int testVersion)
-		{
-			this.testVersion = testVersion;
+			if ( isSelected )
+				this.setBorder(BorderFactory.createEmptyBorder());
+			
+			return ( comp );
 		}
 	}
 }
