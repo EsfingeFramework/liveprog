@@ -63,8 +63,8 @@ class LiveClassLoader
 		{
 			// TODO: debug..
 			System.out.println("CLASSLOADER >> Classe dinamica NAO estava carregada: " + liveClassInfo.getName());
-			
-			// bytecode da classe
+
+      // bytecode da classe
 			byte[] classBytecode = liveClassInfo.getBytecode();
 			
 			try
@@ -94,8 +94,8 @@ class LiveClassLoader
 				
 				// TODO: debug..
 				System.out.println("CLASSLOADER >> Classe dinamica carregada: " + liveClassInfo.getName());
-				
-				//
+
+        //
 				return ( clazz );
 			}
 			catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
