@@ -47,14 +47,23 @@ class LiveClassLoader
 	{
 		try
 		{
+			// TODO: debug..
+			System.out.println("CLASSLOADER >> Classe dinamica a ser carregada: " + liveClassInfo.getName());
+
 			// verifica se a classe ja esta carregada
-			Class<?> clazz = Class.forName(liveClassInfo.getName());
+			Class<?> clazz = ClassLoader.getSystemClassLoader().loadClass(liveClassInfo.getName());
+			
+			// TODO: debug..
+			System.out.println("CLASSLOADER >> Classe dinamica ja estava carregada: " + liveClassInfo.getName());
 			
 			// a classe ja esta carregada, retorna
 			return ( clazz );
 		}
 		catch ( ClassNotFoundException cnfe )
 		{
+			// TODO: debug..
+			System.out.println("CLASSLOADER >> Classe dinamica NAO estava carregada: " + liveClassInfo.getName());
+			
 			// bytecode da classe
 			byte[] classBytecode = liveClassInfo.getBytecode();
 			
@@ -82,6 +91,9 @@ class LiveClassLoader
 						definePackage(packageName, null, null, null, null, null, null, null);
 				}
 				*/
+				
+				// TODO: debug..
+				System.out.println("CLASSLOADER >> Classe dinamica carregada: " + liveClassInfo.getName());
 				
 				//
 				return ( clazz );

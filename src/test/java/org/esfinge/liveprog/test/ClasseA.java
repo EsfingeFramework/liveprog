@@ -1,4 +1,6 @@
-package liveprog.test;
+package org.esfinge.liveprog.test;
+
+import java.util.Date;
 
 import org.esfinge.liveprog.annotation.InvokeOnReload;
 import org.esfinge.liveprog.annotation.LiveClass;
@@ -20,7 +22,7 @@ public class ClasseA
 		System.out.println("A >> campo2: " + this.campo2);
 		
 		// versao 2
-//		System.out.println("A >> version 2 date: " + new Date());
+		System.out.println("A >> version 2 date: " + new Date());
 		
 		// versao 3
 //		System.out.println("A >> New version 3 released: " + new Date());

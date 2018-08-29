@@ -1,4 +1,4 @@
-package liveprog.test;
+package org.esfinge.liveprog.test;
 
 import org.esfinge.liveprog.LiveClassFactory;
 import org.esfinge.liveprog.LiveClassFactoryBuilder;
@@ -18,19 +18,20 @@ public class Main
 		
 		// cria uma nova fabrica de objetos dinamicos
 		LiveClassFactory factory = new LiveClassFactoryBuilder()
-//											.inTestMode()
 											.monitoringDirectory("target/classes/liveprog/test")
 											.excludingSubdirs()
 											.usingDatabaseManager(DefaultLiveClassDB.getInstance())
 											.usingVersionManager(vManager)
 											.build();
 		
-		ClasseA liveA = factory.createLiveObject(ClasseA.class);
+		ClasseA liveA_prod = factory.createLiveObject(ClasseA.class);
+		ClasseA liveA_test = factory.createLiveObjectInTestMode(ClasseA.class);
 		ClasseB liveB = factory.createLiveObject(ClasseB.class);
 		
-		liveA.setB(liveB);
+		liveA_prod.setB(liveB);
+		liveA_test.setB(liveB);
 		
-		liveA.test();
-		liveB.test();
+		liveA_prod.test();
+		liveA_test.test();
 	}
 }

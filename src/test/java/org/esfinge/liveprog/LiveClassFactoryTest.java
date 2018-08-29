@@ -1,17 +1,13 @@
 package org.esfinge.liveprog;
 
 import org.esfinge.liveprog.monitor.FileSystemMonitor;
-import org.esfinge.liveprog.util.ClassInstrumentation;
-import org.junit.Assert;
-import org.junit.Test;
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 
 public class LiveClassFactoryTest {    
 	FileSystemMonitor monitorMock = Mockito.mock(FileSystemMonitor.class);
 	LiveClassLoader loaderMock = Mockito.mock(LiveClassLoader.class);
 	
+	/*
 	@Test
 	public void testLiveClassFactory() {    
 		try {
@@ -58,4 +54,5 @@ public class LiveClassFactoryTest {
 			Assert.fail(e.getMessage());
 		}
 	}
+	*/
 }

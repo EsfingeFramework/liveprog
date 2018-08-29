@@ -1,4 +1,4 @@
-package liveprog.test;
+package org.esfinge.liveprog.test;
 
 import org.esfinge.liveprog.annotation.InvokeOnReload;
 import org.esfinge.liveprog.annotation.LiveClass;

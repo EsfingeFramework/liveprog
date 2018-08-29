@@ -44,7 +44,7 @@ public abstract class InstrumentationService
 	 * 3- a classe nao pode ser utilizada como parametro em nenhum de seus metodos publicos
 	 * 4- a classe nao pode ser utilizada como retorno em nenhum de seus metodos publicos 
 	 * 5- classes internas nao podem ser utilizadas como parametro em nenhum de seus metodos publicos
-	 * 6- classes internas nao podem ser utilizadas como parametro em nenhum de seus metodos publicos    
+	 * 6- classes internas nao podem ser utilizadas como retorno em nenhum de seus metodos publicos    
 	 *   
 	 * @param liveClass a classe a ser verificada como uma classe dinamica valida 
 	 * @throws IncompatibleLiveClassException caso a classe nao respeite alguma das regras estabelecidas

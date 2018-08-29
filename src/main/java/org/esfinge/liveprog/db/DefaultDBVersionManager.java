@@ -167,7 +167,6 @@ public class DefaultDBVersionManager extends JFrame implements ILiveClassDBVersi
 		try
 		{
 			this.tableModel.setData(this.liveClassDB.getAllLiveClassVersion());
-			this.liveClassTable.repaint();
 		}
 		catch (SQLException e)
 		{
@@ -183,31 +182,33 @@ public class DefaultDBVersionManager extends JFrame implements ILiveClassDBVersi
 	 */
 	private void executeCommit()
 	{
-		try
-		{
-			// a linha selecionada
-			int selectedRow = liveClassTable.getSelectedRow();
-		
-			if ( selectedRow >= 0 )
+		new Thread(()->{
+			try
 			{
-				// obtem o bean da linha selecionada
-				ILiveClassDBVersion dbVersion = tableModel.getObjectAt(selectedRow);
-
-				// faz o commit no banco de dados
-				this.liveClassDB.commitLiveClass(dbVersion.getName());
+				// a linha selecionada
+				int selectedRow = liveClassTable.getSelectedRow();
 			
-				// atualiza a tabela
-				this.executeReload();
-			
-				// notifica os observadores
-				this.notifyObservers(dbVersion.getName(), true);
+				if ( selectedRow >= 0 )
+				{
+					// obtem o bean da linha selecionada
+					ILiveClassDBVersion dbVersion = tableModel.getObjectAt(selectedRow);
+	
+					// faz o commit no banco de dados
+					liveClassDB.commitLiveClass(dbVersion.getName());
+				
+					// notifica os observadores
+					notifyObservers(dbVersion.getName(), true);
+					
+					// atualiza a tabela
+					executeReload();
+				}
 			}
-		}
-		catch (IllegalStateException | SQLException e)
-		{
-			// TODO: debug..
-			e.printStackTrace();
-		}
+			catch (IllegalStateException | SQLException e)
+			{
+				// TODO: debug..
+				e.printStackTrace();
+			}
+		}).start();
 	}
 	
 	/**
@@ -217,31 +218,33 @@ public class DefaultDBVersionManager extends JFrame implements ILiveClassDBVersi
 	 */
 	private void executeRollback()
 	{
-		try
-		{
-			// a linha selecionada
-			int selectedRow = liveClassTable.getSelectedRow();
-		
-			if ( selectedRow >= 0 )
+		new Thread(()->{
+			try
 			{
-				// obtem o bean da linha selecionada
-				ILiveClassDBVersion dbVersion = tableModel.getObjectAt(selectedRow);
-
-				// faz o rollback no banco de dados
-				this.liveClassDB.rollbackLiveClass(dbVersion.getName());
+				// a linha selecionada
+				int selectedRow = liveClassTable.getSelectedRow();
 			
-				// atualiza a tabela
-				this.executeReload();
-			
-				// notifica os observadores
-				this.notifyObservers(dbVersion.getName(), false);
+				if ( selectedRow >= 0 )
+				{
+					// obtem o bean da linha selecionada
+					ILiveClassDBVersion dbVersion = tableModel.getObjectAt(selectedRow);
+	
+					// faz o rollback no banco de dados
+					liveClassDB.rollbackLiveClass(dbVersion.getName());
+				
+					// notifica os observadores
+					notifyObservers(dbVersion.getName(), false);
+					
+					// atualiza a tabela
+					executeReload();
+				}
 			}
-		}
-		catch (IllegalStateException | SQLException e)
-		{
-			// TODO: debug..
-			e.printStackTrace();
-		}
+			catch (IllegalStateException | SQLException e)
+			{
+				// TODO: debug..
+				e.printStackTrace();
+			}
+		}).start();
 	}
 	
 	

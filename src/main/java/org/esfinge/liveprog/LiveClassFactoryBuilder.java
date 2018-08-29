@@ -12,7 +12,7 @@ import org.esfinge.liveprog.monitor.ILiveClassFileMonitor;
 public class LiveClassFactoryBuilder
 {
 	// modo que a fabrica sera criada
-	private boolean testMode;
+	private boolean factoryTestMode;
 	
 	// monitor de arquivos de novas versoes de classes dinamicas
 	private ILiveClassFileMonitor fileMonitor;
@@ -38,7 +38,7 @@ public class LiveClassFactoryBuilder
 	 */
 	public LiveClassFactoryBuilder() throws Exception
 	{
-		this.testMode = false;
+		this.factoryTestMode = false;
 		this.updateManager = new LiveClassUpdateManager();
 	}
 	
@@ -50,7 +50,7 @@ public class LiveClassFactoryBuilder
 	 */
 	public LiveClassFactoryBuilder inTestMode() throws Exception
 	{
-		this.testMode = true;
+		this.factoryTestMode = true;
 		return ( this );
 	}
 	
@@ -195,7 +195,7 @@ public class LiveClassFactoryBuilder
 			}
 
 			// cria a fabrica
-			LiveClassFactory factory = new LiveClassFactory(dbManager, testMode);
+			LiveClassFactory factory = new LiveClassFactory(dbManager, factoryTestMode);
 
 			// configura os observadores
 			if ( versionManager != null )
