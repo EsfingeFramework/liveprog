@@ -7,10 +7,14 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * Indica uma propriedade da classe dinamica cujo valor nao sera copiado da antiga versao 
- * quando a nova versao for carregada dinamicamente.
- * 
- * Essa anotacao deve ser utilizada na NOVA (versao da) classe, que sera atualizada em tempo de execucao.
+ * <p>
+ * Marca uma propriedade para ser ignorada quando a classe dinâmica for atualizada em tempo de execução.
+ * Com isso o seu valor não será copiado para a nova versão.
+ * </p>
+ * <p><i>
+ * Annotates a property to be ignored when the LiveClass is updated at runtime.
+ * As a result its value will not be copied to the new version.
+ * </i></p>
  * 
  * @see org.esfinge.liveprog.annotation.LiveClass
  */

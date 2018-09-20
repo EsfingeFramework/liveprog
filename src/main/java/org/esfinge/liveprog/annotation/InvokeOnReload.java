@@ -7,9 +7,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * Indica um metodo a ser invocado quando a nova versao da classe for carregada dinamicamente.
- * 
- * Essa anotacao deve ser utilizada na NOVA (versao da) classe, que sera atualizada em tempo de execucao.
+ * <p>
+ * Marca um método para ser invocado quando a classe dinâmica for atualizada em tempo de execução.
+ * </p>
+ * <p><i>
+ * Annotates a method to be invoked when the LiveClass is updated at runtime.
+ * </i></p>
  * 
  * @see org.esfinge.liveprog.annotation.LiveClass
  */

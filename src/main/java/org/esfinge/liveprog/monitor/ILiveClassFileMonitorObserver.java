@@ -3,14 +3,27 @@ package org.esfinge.liveprog.monitor;
 import java.io.File;
 
 /**
- * Interface para ser notificado quando arquivos de novas versoes de classes dinamicas forem encontrados.
+ * <p>
+ * Interface a ser implementada pelas classes interessadas em ser notificadas 
+ * quando arquivos de classes dinâmicas atualizadas forem encontrados.
+ * </p>
+ * <p><i>
+ * Interface to be implemented by classes interested on being notified when updated LiveClass files are found.
+ * </i></p>
+ * 
+ * @see org.esfinge.liveprog.monitor.ILiveClassFileMonitor
  */
 public interface ILiveClassFileMonitorObserver
 {
 	/**
-	 * Notifica que um arquivo de uma nova versao de classe dinamica foi encontrado.
+	 * <p>
+	 * Recebe a notificação de que o arquivo de uma classe dinâmica atualizada foi encontrado.
+	 * </p>
+	 * <p><i>
+	 * Gets notified that a updated LiveClass file was found.
 	 * 
-	 * @param classFile o arquivo da nova versao da classe dinamica, para que possa ser recarregada
+	 * @param liveClassFile - arquivo da classe dinâmica atualizada
+	 * <br><i>the updated LiveClass file</i>
 	 */
-	public void classFileUpdated(File classFile);
+	public void liveClassFileUpdated(File liveClassFile);
 }

@@ -1,14 +1,29 @@
 package org.esfinge.liveprog;
 
 /**
- * Interface para ser notificado quando uma classe dinamica for atualizada.
+ * <p>
+ * Interface a ser implementada pelas classes interessadas em ser notificadas sobre atualizações de classes dinâmicas.
+ * </p>
+ * <p><i>
+ * Interface to be implemented by classes interested on being notified about LiveClasses updates.
+ * </i></p>
+ * 
+ * @see org.esfinge.liveprog.annotation.LiveClass
  */
 public interface ILiveClassObserver
 {
 	/**
-	 * Notifica que a classe dinamica foi atualizada.
+	 * <p>
+	 * Recebe a notificação de que a classe dinâmica foi atualizada para uma nova versão.
+	 * </p>
+	 * <p><i>
+	 * Gets notified that the LiveClass was updated to a new version.
+	 * </i></p>
 	 * 
-	 * @param newLiveClass a nova versao da classe dinamica
+	 * @param liveClassName - nome da classe dinâmica que foi atualizada
+	 * <br><i>name of the updated LiveClass</i>
+	 * @param newLiveClass - nova versão da classe dinâmica
+	 * <br><i>updated version of the LiveClass</i>
 	 */
-	public void classReloaded(Class<?> newLiveClass);
+	public void liveClassUpdated(String liveClassName, Class<?> newLiveClass);
 }

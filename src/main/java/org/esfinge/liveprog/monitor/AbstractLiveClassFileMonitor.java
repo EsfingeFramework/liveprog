@@ -5,7 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Estrutura base para monitores de arquivos de classes dinamicas.
+ * <p>
+ * Fornece uma classe base para a implementação de monitores de arquivos de classes dinâmicas atualizadas. 
+ * </p>
+ * <p><i>
+ * Provides a base class from which other {@link ILiveClassFileMonitor} classes can be derived.
+ * </i></p>
+ * 
+ * @see org.esfinge.liveprog.monitor.ILiveClassFileMonitor
  */
 public abstract class AbstractLiveClassFileMonitor implements ILiveClassFileMonitor
 {
@@ -16,12 +23,14 @@ public abstract class AbstractLiveClassFileMonitor implements ILiveClassFileMoni
 	// filtro dos tipos de arquivos a serem monitorados
 	protected ILiveClassFileFilter fileFilter;
 	
-	// validador dos arquivos monitorados
-	protected ILiveClassFileValidator fileValidator;
-	
 	
 	/**
-	 * Construtor padrao.
+	 * <p>
+	 * Construtor padrão.
+	 * </p>
+	 * <p><i>
+	 * Default constructor.
+	 * </i></p>
 	 */
 	public AbstractLiveClassFileMonitor()
 	{
@@ -32,12 +41,6 @@ public abstract class AbstractLiveClassFileMonitor implements ILiveClassFileMoni
 	public void setFileFilter(ILiveClassFileFilter filter)
 	{
 		this.fileFilter = filter;
-	}
-
-	@Override
-	public void setFileValidator(ILiveClassFileValidator validator)
-	{
-		this.fileValidator = validator;
 	}
 
 	@Override
@@ -53,12 +56,18 @@ public abstract class AbstractLiveClassFileMonitor implements ILiveClassFileMoni
 	}
 	
 	/**
-	 * Notifica os observadores que um arquivo de uma nova versao de classe dinamica foi encontrado.
+	 * <p>
+	 * Notifica os observadores de que o arquivo de uma classe dinâmica atualizada foi encontrado.
+	 * </p>
+	 * <p><i>
+	 * Notifies the observers that a updated LiveClass file was found.
+	 * </i></p>
 	 * 
-	 * @param classFile o arquivo da nova versao da classe dinamica
+	 * @param liveClassFile - arquivo da classe dinâmica atualizada
+	 * <br><i>the updated LiveClass file</i>
 	 */
-	protected void notifyObservers(File classFile)
+	protected void notifyObservers(File liveClassFile)
 	{
-		this.observers.forEach(obs -> obs.classFileUpdated(classFile));
+		this.observers.forEach(obs -> obs.liveClassFileUpdated(liveClassFile));
 	}
 }

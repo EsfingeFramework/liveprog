@@ -3,15 +3,29 @@ package org.esfinge.liveprog.monitor;
 import java.io.File;
 
 /**
- * Interface para filtrar os tipos de arquivos a serem monitorados.
+ * <p>
+ * Interface para filtrar os arquivos monitorados.
+ * </p>
+ * <p><i>
+ * Interface to filter the monitored files.
+ * </i></p>
+ * 
+ * @see org.esfinge.liveprog.monitor.ILiveClassFileMonitor
  */
 public interface ILiveClassFileFilter
 {
 	/**
-	 * Verifica se o arquivo eh apto a ser monitorado.
+	 * <p>
+	 * Verifica se o arquivo encontrado é válido.
+	 * </p>
+	 * <p><i>
+	 * Checks if the specified file is valid.
+	 * </i></p>
 	 * 
-	 * @param file o novo arquivo encontrado pelo monitor
-	 * @return <b>true</b> se for um arquivo apto a ser monitorado, <b>false</b> caso contrario
+	 * @param file - arquivo encontrado pelo monitor
+	 * <br><i>the file found by monitor</i>
+	 * @return <i>true</i> se o arquivo encontrado for válido, <i>false</i> caso contrário
+	 * <br><i>true if the file found is valid, false otherwise</i>
 	 */
 	public boolean acceptFile(File file);
 }

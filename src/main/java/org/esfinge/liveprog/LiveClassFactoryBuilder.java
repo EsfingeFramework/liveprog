@@ -1,211 +1,405 @@
 package org.esfinge.liveprog;
 
-import org.esfinge.liveprog.db.DefaultLiveClassDB;
-import org.esfinge.liveprog.db.ILiveClassDB;
-import org.esfinge.liveprog.db.ILiveClassDBVersionManager;
+import org.esfinge.liveprog.db.DefaultLiveClassPersistence;
+import org.esfinge.liveprog.db.ILiveClassPersistence;
+import org.esfinge.liveprog.db.ILiveClassVersionManager;
+import org.esfinge.liveprog.exception.LiveClassFactoryBuilderException;
 import org.esfinge.liveprog.monitor.FileSystemMonitor;
 import org.esfinge.liveprog.monitor.ILiveClassFileMonitor;
+import org.esfinge.liveprog.util.Utils;
 
 /**
- * Builder para a criacao da fabrica de criacao de objetos de classes dinamicas.
+ * <p>
+ * Builder para a criação de fábricas de objetos de classes dinâmicas.
+ * </p>
+ * <p><i>
+ * Builder to create factories of LiveClass objects. 
+ * </i></p>
+ * 
+ * @see org.esfinge.liveprog.LiveClassFactory
  */
 public class LiveClassFactoryBuilder
 {
-	// modo que a fabrica sera criada
-	private boolean factoryTestMode;
+	// classloader
+	private ILiveClassLoader classLoader;
 	
-	// monitor de arquivos de novas versoes de classes dinamicas
+	// monitor de arquivos das novas versoes de classes dinamicas
 	private ILiveClassFileMonitor fileMonitor;
 	
-	// gerenciador de banco de dados
-	private ILiveClassDB dbManager;
+	// gerenciador de persistencia
+	private ILiveClassPersistence dbManager;
 	
-	// gerenciador de versoes de classes dinamicas persistidas 
-	private ILiveClassDBVersionManager versionManager;
+	// gerenciador de versoes de classes dinamicas 
+	private ILiveClassVersionManager versionManager;
+		
+	// modo que a fabrica sera criada
+	private boolean factorySafeMode;
 	
-	// gerenciador de atualizacoes de classes dinamicas 
-	private LiveClassUpdateManager updateManager;	
+	// flag para utilizar o monitor de arquivos padrao
+	private boolean defaultFileMonintor;
+	
+	// flag para utilizar o gerenciador de persistencia padrao
+	private boolean defaultPersistenceManager;
+	
+	// inclui ou nao o monitoramento de subdiretorios
+	private boolean includeSubdirs;
 	
 	// caminho para o arquivo de banco de dados
 	private String dbFilePath;
 	
+	// diretorio a ser monitorado
+	private String monitorDir;
+
 	
 	/**
-	 * Inicializa a criacao de uma fabrica de objetos dinamicos em modo producao.
+	 * <p>
+	 * Constrói uma nova fábrica de objetos de classes dinâmicas utilizando as configurações padrão.
+	 * <br>
+	 * Utiliza a implementação padrão do gerenciador de persistência e monitora por arquivos 
+	 * das novas versões das classes dinâmicas no mesmo diretório da aplicação, não monitorando seus subdiretórios.
+	 * </p>
+	 * <p><i>
+	 * Builds a new factory of LiveClass objects, configuring it using the default parameters.
+	 * <br>
+	 * Uses the default persistence manager, and watchs for new versions of LiveClass class files 
+	 * in the same directory of the running application, excluding the subdirs.
+	 * </i></p>
 	 * 
-	 * @throws Exception em caso de erro na criacao de algum componente interno
-	 * @see org.esfinge.liveprog.LiveClassFactory#LiveClassFactory(boolean)
+	 * @return uma nova fábrica de objetos de classes dinâmicas, usando as configurações padrão
+	 * <br><i>a new factory of LiveClass objects using the default configuration</i>
+	 * @throws LiveClassFactoryBuilderException em caso de erro na configuração de algum componente interno
+	 * <br><i>if an error occurs when configuring an internal component</i>
+	 * @see org.esfinge.liveprog.LiveClassFactory
 	 */
-	public LiveClassFactoryBuilder() throws Exception
+	public static LiveClassFactory createDefaultFactory() throws LiveClassFactoryBuilderException
 	{
-		this.factoryTestMode = false;
-		this.updateManager = new LiveClassUpdateManager();
+		return ( new LiveClassFactoryBuilder().usingDefaultFileMonitor().usingDefaultPersistenceManager().build() );
+	}	
+	
+	/**
+	 * <p>
+	 * Constrói um novo Builder para a criação da fábrica de objetos de classes dinâmicas.
+	 * </p>
+	 * <p><i>
+	 * Constructs a new Builder to create a factory of LiveClass objects. 
+	 * </i></p>
+	 */
+	public LiveClassFactoryBuilder()
+	{
+		this.factorySafeMode = false;
+		this.defaultPersistenceManager = false;
+		this.defaultFileMonintor = false;
+		this.includeSubdirs = false;
 	}
 	
 	/**
-	 * Inicializa a criacao de uma fabrica de objetos dinamicos em modo de testes.
+	 * <p>
+	 * Configura a fábrica para executar em modo seguro.
+	 * Executando em modo seguro, os objetos dinâmicos são atualizados 
+	 * somente quando a nova versão da classe dinâmica é aceita (commit). 
+	 * </p>
+	 * <p><i>
+	 * Sets the factory to execute in safe mode.
+	 * When executing in safe mode, 'live' objects are only updated after a commit of the LiveClass new version.
+	 * </i></p>	
 	 * 
-	 * @throws Exception em caso de erro na criacao de algum componente interno
-	 * @see org.esfinge.liveprog.LiveClassFactory#LiveClassFactory(boolean)
+	 * @return o próximo estágio do processo de construção da fábrica
+	 * <br><i>the next stage of the factory building process</i>
+	 * @see org.esfinge.liveprog.LiveClassFactory#setSafeMode(boolean)
 	 */
-	public LiveClassFactoryBuilder inTestMode() throws Exception
+	public LiveClassFactoryBuilder inSafeMode()
 	{
-		this.factoryTestMode = true;
+		this.factorySafeMode = true;
+		return ( this );
+	}
+
+	/**
+	 * <p>
+	 * Configura a fábrica para utilizar um classloader customizado para o carregamento de classes dinâmicas.
+	 * </p>
+	 * <p><i>
+	 * Sets the factory to use a custom classloader for loading LiveClasses.
+	 * </i></p>	
+	 *
+	 * @param classLoader - classloader customizado para o carregamento de classes dinâmicas
+	 * <br><i>custom classloader for loading LiveClasses</i>
+	 * @return o próximo estágio do processo de construção da fábrica
+	 * <br><i>the next stage of the factory building process</i>
+	 * @see org.esfinge.liveprog.ILiveClassLoader
+	 */
+	public LiveClassFactoryBuilder usingCustomClassLoader(ILiveClassLoader classLoader)
+	{
+		this.classLoader = classLoader;
 		return ( this );
 	}
 	
 	/**
-	 * Monitora o diretorio especificado em busca de arquivos de novas versoes de classes dinamicas.
+	 * <p>
+	 * Utiliza por padrão um monitor que procura pelos arquivos das novas versões das classes dinâmicas 
+	 * no mesmo diretório da aplicação, não monitorando seus subdiretórios.
+	 * </p>
+	 * <p><i>
+	 * Uses the default file monitor that watchs for new versions of LiveClass class files 
+	 * in the same directory of the running application, excluding the subdirs.
+	 * </i></p>
 	 * 
-	 * @param dir o diretorio a ser monitorado na deteccao de arquivos de novas versoes de classes dinamicas
-	 * @return o proximo estagio do builder para a criacao da fabrica de objetos dinamicos
-	 * @throws Exception em caso de erro na criacao de algum componente interno
+	 * @return o próximo estágio do processo de construção da fábrica
+	 * <br><i>the next stage of the factory building process</i>
+	 * @see org.esfinge.liveprog.monitor.ILiveClassFileMonitor
+	 */
+	public LiveClassFactoryBuilderPersistence usingDefaultFileMonitor()
+	{
+		this.defaultFileMonintor = true;
+		this.monitorDir = ".";
+		return ( new LiveClassFactoryBuilderPersistence() );
+	}
+	
+	/**
+	 * <p>
+	 * Especifica o diretório a ser monitorado em busca dos arquivos das novas versões das classes dinâmicas.
+	 * </p>
+	 * <p><i>
+	 * Sets the directory to watch for new versions of LiveClass class files.
+	 * </i></p>
+	 * 
+	 * @param dir - diretório a ser monitorado
+	 * <br><i>the directory to be monitored</i>
+	 * @return o próximo estágio do processo de construção da fábrica
+	 * <br><i>the next stage of the factory building process</i>
 	 * @see org.esfinge.liveprog.monitor.FileSystemMonitor
 	 */
-	public LiveClassFactoryBuilderFileSystemMonitor monitoringDirectory(String dir) throws Exception
+	public LiveClassFactoryBuilderFileSystemMonitor monitoringDirectory(String dir)
 	{
-		return ( new LiveClassFactoryBuilderFileSystemMonitor(dir) );
+		this.defaultFileMonintor = true;
+		this.monitorDir = dir;
+		return ( new LiveClassFactoryBuilderFileSystemMonitor() );
 	}
 
 	/**
-	 * Busca os arquivos de novas versoes de classes dinamicas atraves do monitor especificado.
+	 * <p>
+	 * Especifica o monitor responsável pela busca dos arquivos das novas versões das classes dinâmicas.
+	 * </p>
+	 * <p><i>
+	 * Sets the file monitor to watch for new versions of LiveClass class files.
+	 * </i></p>
 	 * 
-	 * @param fileMonitor o monitor de arquivos de novas versoes de classes dinamicas
-	 * @return o proximo estagio do builder para a criacao da fabrica de objetos dinamicos
-	 * @throws Exception em caso de erro na criacao de algum componente interno
+	 * @param fileMonitor - monitor de arquivos de novas versões de classes dinâmicas
+	 * <br><i>the monitor to watch for new versions of LiveClass class files</i>
+	 * @return o próximo estágio do processo de construção da fábrica
+	 * <br><i>the next stage of the factory building process</i>
 	 * @see org.esfinge.liveprog.monitor.ILiveClassFileMonitor
 	 */
-	public LiveClassFactoryBuilderDB monitoringFilesThrough(ILiveClassFileMonitor fileMonitor) throws Exception
+	public LiveClassFactoryBuilderPersistence monitoringFilesThrough(ILiveClassFileMonitor fileMonitor)
 	{
+		this.defaultFileMonintor = false;
 		this.fileMonitor = fileMonitor;
-		return ( new LiveClassFactoryBuilderDB() );
+		return ( new LiveClassFactoryBuilderPersistence() );
 	}
 	
 	
 	/**
-	 * Classe auxiliar para configuracao do monitor de diretorios.
+	 * <p>
+	 * Configuração do monitor de diretórios.
+	 * </p>
+	 * <p><i>
+	 * Settings for the FileSystem monitor.
+	 * </i></p>
 	 */
 	public class LiveClassFactoryBuilderFileSystemMonitor
 	{
-		// diretorio a ser monitorado
-		private String dir;
-		
-		
 		/**
-		 * Inicializa a configuracao do monitor de diretorios.
-		 *  
-		 * @param dir o diretorio a ser monitorado
-		 */
-		public LiveClassFactoryBuilderFileSystemMonitor(String dir)
-		{
-			this.dir = dir;
-		}
-		
-		/**
-		 * Monitora tambem os subdiretorios do diretorio especificado.
+		 * <p>
+		 * Inclui os subdiretórios para serem monitorados.
+		 * </p>
+		 * <p><i>
+		 * Includes the subdirs to also be monitored.
+		 * </i></p>
 		 * 
-		 * @return o proximo estagio do builder para a criacao da fabrica de objetos dinamicos
-		 * @throws Exception em caso de erro na criacao de algum componente interno
-		 * @see org.esfinge.liveprog.monitor.FileSystemMonitor
+		 * @return o próximo estágio do processo de construção da fábrica
+		 * <br><i>the next stage of the factory building process</i>
+		 * @see org.esfinge.liveprog.monitor.FileSystemMonitor#FileSystemMonitor(String, boolean)
 		 */
-		public LiveClassFactoryBuilderDB includingSubdirs() throws Exception
+		public LiveClassFactoryBuilderPersistence includingSubdirs()
 		{
-			fileMonitor = new FileSystemMonitor(this.dir, true);
-			return ( new LiveClassFactoryBuilderDB() );
+			includeSubdirs = true;
+			return ( new LiveClassFactoryBuilderPersistence() );
 		}
 
 		/**
-		 * Nao monitora os subdiretorios do diretorio especificado.
+		 * <p>
+		 * Exclui os subdiretórios de serem monitorados.
+		 * </p>
+		 * <p><i>
+		 * Excludes the subdirs to be monitored.
+		 * </i></p>
 		 * 
-		 * @return o proximo estagio do builder para a criacao da fabrica de objetos dinamicos
-		 * @throws Exception em caso de erro na criacao de algum componente interno
-		 * @see org.esfinge.liveprog.monitor.FileSystemMonitor
+		 * @return o próximo estágio do processo de construção da fábrica
+		 * <br><i>the next stage of the factory building process</i>
+		 * @see org.esfinge.liveprog.monitor.FileSystemMonitor#FileSystemMonitor(String, boolean)
 		 */
-		public LiveClassFactoryBuilderDB excludingSubdirs() throws Exception
+		public LiveClassFactoryBuilderPersistence excludingSubdirs()
 		{
-			fileMonitor = new FileSystemMonitor(this.dir, false);
-			return ( new LiveClassFactoryBuilderDB() );
+			includeSubdirs = false;
+			return ( new LiveClassFactoryBuilderPersistence() );
 		}
 	}
 	
+	
 	/**
-	 * Classe auxiliar para configuracao do gerenciador de persistencia das classes dinamicas.
+	 * <p>
+	 * Configuração do gerenciador de persistência.
+	 * </p>
+	 * <p><i>
+	 * Settings for the persistence manager.
+	 * </i></p>
 	 */
-	public class LiveClassFactoryBuilderDB
-	{
+	public class LiveClassFactoryBuilderPersistence
+	{		
 		/**
-		 * Especifica o caminho para o arquivo do banco de dados, 
-		 * utilizando o gerenciador de persistencia padrao (SQLite).
+		 * <p>
+		 * Utiliza o gerenciador de persistência padrão, cujo nome do arquivo onde as informações das classes dinâmicas são persistidas 
+		 * chama-se <i>'liveclasses.db'</i> e fica armazenado no mesmo diretório da aplicação.
+		 * </p>
+		 * <p><i>
+		 * Uses the default persistence manager, with a database file named 'liveclasses.db' stored in the same directory of the running application.
+		 * </i></p>
 		 * 
-		 * @param dbFilePath caminho do arquivo do banco de dados
-		 * @return o proximo estagio do builder para a criacao da fabrica de objetos dinamicos
+		 * @return o próximo estágio do processo de construção da fábrica
+		 * <br><i>the next stage of the factory building process</i>
+		 * @see org.esfinge.liveprog.db.DefaultLiveClassPersistence
 		 */
-		public LiveClassFactoryBuilderCreate usingDatabaseFile(String dbFilePath)
+		public LiveClassFactoryBuilderCreate usingDefaultPersistenceManager()
 		{
-			LiveClassFactoryBuilder.this.dbFilePath = dbFilePath;
+			defaultPersistenceManager = true;
+			return ( new LiveClassFactoryBuilderCreate() );
+		}
+		
+		/**
+		 * <p>
+		 * Especifica o nome e o caminho do arquivo de persistência das classes dinâmicas, 
+		 * a ser utilizado pelo gerenciador de persistência padrão.
+		 * </p>
+		 * <p><i>
+		 * Sets the database filename and path to be used by the default persistence manager.
+		 * </i></p>
+		 * 
+		 * @param filePath - nome e caminho para o arquivo de base de dados
+		 * <br><i>filename and path of the database file</i>
+		 * @return o próximo estágio do processo de construção da fábrica
+		 * <br><i>the next stage of the factory building process</i>
+		 * @see org.esfinge.liveprog.db.DefaultLiveClassPersistence#setDatabaseFilePath(String)
+		 */
+		public LiveClassFactoryBuilderCreate usingDatabaseFilePath(String filePath)
+		{
+			defaultPersistenceManager = true;
+			dbFilePath = filePath;
 			return ( new LiveClassFactoryBuilderCreate() );
 		}
 
 		/**
-		 * Especifica o gerenciador de persistencia para as classes dinamicas.
+		 * <p>
+		 * Especifica o gerenciador de persistência de classes dinâmicas.
+		 * </p>
+		 * <p><i>
+		 * Sets the LiveClasses persistence manager.
+		 * </i></p>
 		 * 
-		 * @param dbManager o gerenciador de persistencia a ser utilizado
-		 * @return o proximo estagio do builder para a criacao da fabrica de objetos dinamicos
-		 * @see org.esfinge.liveprog.db.ILiveClassDB
+		 * @param dbManager - gerenciador de persistência de classes dinâmicas
+		 * <br><i>the persistence manager for LiveClasses</i>
+		 * @return o próximo estágio do processo de construção da fábrica
+		 * <br><i>the next stage of the factory building process</i>
+		 * @see org.esfinge.liveprog.db.ILiveClassPersistence
 		 */
-		public LiveClassFactoryBuilderCreate usingDatabaseManager(ILiveClassDB dbManager)
+		public LiveClassFactoryBuilderCreate usingPersistenceManager(ILiveClassPersistence dbManager)
 		{
+			defaultPersistenceManager = false;
 			LiveClassFactoryBuilder.this.dbManager = dbManager;
 			return ( new LiveClassFactoryBuilderCreate() );
 		}
 	}
 	
+	
 	/**
-	 * Classe auxiliar para finalizar a construcao da fabrica de objetos dinamicos.
+	 * <p>
+	 * Estágio final do processo de construção da fábrica.
+	 * </p>
+	 * <p><i>
+	 * Final stage of the factory building process.
+	 * </i></p>
 	 */
 	public class LiveClassFactoryBuilderCreate
 	{
 		/**
-		 * Especifica o gerenciador de versoes de classes dinamicas persistidas.  
+		 * <p>
+		 * Especifica o gerenciador de versões de classes dinâmicas.
+		 * </p>
+		 * <p><i>
+		 * Sets the LiveClasses version manager.
+		 * </i></p>  
 		 * 
-		 * @param versionManager o gerenciador de versoes de classes dinamicas
-		 * @return o proximo estagio do builder para a criacao da fabrica de objetos dinamicos
+		 * @param versionManager - gerenciador de versões de classes dinamicas
+		 * <br><i>the version manager for LiveClasses</i>
+		 * @return o próximo estágio do processo de construção da fábrica
+		 * <br><i>the next stage of the factory building process</i>
+		 * @see org.esfinge.liveprog.db.ILiveClassVersionManager
 		 */
-		public LiveClassFactoryBuilderCreate usingVersionManager(ILiveClassDBVersionManager versionManager)
+		public LiveClassFactoryBuilderCreate usingVersionManager(ILiveClassVersionManager versionManager)
 		{
 			LiveClassFactoryBuilder.this.versionManager = versionManager;
 			return ( this );
 		}
 		
 		/**
-		 * Cria e configura a fabrica de criacao de objetos de classes dinamicas com
-		 * os parametros escolhidos no builder.
+		 * <p>
+		 * Cria a fábrica de objetos de classes dinâmicas, configurando-a conforme os parâmetros informados no builder.
+		 * </p>
+		 * <p><i>
+		 * Builds the factory of LiveClass objects, configuring it using the parameters specified in the building process.
+		 * </i></p>
 		 *  
-		 * @return a fabrica de objetos dinamicos 
-		 * @throws Exception em caso de erro na criacao de algum componente interno
+		 * @return uma nova fábrica de objetos de classes dinâmicas
+		 * <br><i>a new factory of LiveClass objects</i>
+		 * @throws LiveClassFactoryBuilderException em caso de erro na configuração de algum componente interno
+		 * <br><i>if an error occurs when configuring an internal component</i>
 		 * @see org.esfinge.liveprog.LiveClassFactory
 		 */
-		public LiveClassFactory build() throws Exception
+		public LiveClassFactory build() throws LiveClassFactoryBuilderException
 		{
-			// verifica se esta utilizando o gerenciador de banco de dados padrao
-			if ( dbFilePath != null )
+			try
 			{
-				DefaultLiveClassDB.setDatabaseFilePath(dbFilePath);
-				dbManager = DefaultLiveClassDB.getInstance(); 
+				// verifica se esta utilizando o monitor de arquivos padrao
+				if ( defaultFileMonintor || (fileMonitor == null) )
+					fileMonitor = new FileSystemMonitor(monitorDir, includeSubdirs);
+
+				// verifica se esta utilizando o gerenciador de persistencia padrao
+				if ( defaultPersistenceManager || (dbManager == null) )
+				{
+					if ( dbFilePath != null )
+						DefaultLiveClassPersistence.setDatabaseFilePath(dbFilePath);
+					
+					dbManager = DefaultLiveClassPersistence.getInstance();
+				}
+				
+				// cria a fabrica
+				LiveClassFactory factory = new LiveClassFactory(classLoader, dbManager, factorySafeMode);
+
+				// configura os observadores
+				if ( versionManager != null )
+					versionManager.addObserver(factory);
+				
+				fileMonitor.addObserver(factory);
+				fileMonitor.start();
+				
+				return ( factory );
 			}
-
-			// cria a fabrica
-			LiveClassFactory factory = new LiveClassFactory(dbManager, factoryTestMode);
-
-			// configura os observadores
-			if ( versionManager != null )
-				versionManager.addObserver(factory);
-			
-			fileMonitor.addObserver(updateManager);
-			updateManager.addObserver(factory);
-			fileMonitor.start();
-			
-			return ( factory );
+			catch ( Exception e )
+			{
+				// log: erro
+				Utils.logError("Erro ao criar fabrica de objeto dinamicos!");
+				Utils.logException(e);
+				
+				throw new LiveClassFactoryBuilderException("Unable to create a new LiveClassFactory object!", e);
+			}
 		}
 	}
 }

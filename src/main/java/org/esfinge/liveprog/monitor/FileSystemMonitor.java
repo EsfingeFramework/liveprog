@@ -16,11 +16,17 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.esfinge.liveprog.util.Utils;
+
 /**
- * Monitora novas versoes de classes dinamicas no sistema de arquivos.
+ * <p>
+ * Monitora por arquivos de classes dinâmicas atualizadas no sistema de arquivos.
+ * </p>
+ * <p><i>
+ * Monitors for updated LiveClass files in the file system.
+ * </i><p>
  * 
- * @see org.esfinge.LiveClass
- * @see ILiveClassFileMonitor
+ * @see org.esfinge.liveprog.monitor.ILiveClassFileMonitor
  */
 public class FileSystemMonitor extends AbstractLiveClassFileMonitor
 {
@@ -41,11 +47,20 @@ public class FileSystemMonitor extends AbstractLiveClassFileMonitor
 	
 	
 	/**
-	 * Cria um novo monitor de arquivos de classes dinamicas.
+	 * <p>
+	 * Constrói um novo monitor de sistema de arquivos.
+	 * </p>
+	 * <p><i>
+	 * Constructs a new file system monitor.
+	 * </i></p>
 	 * 
-	 * @param dir o diretorio para monitorar por novas versoes de classes dinamicas 
-	 * @param includeSubdirs monitorar tambem os subdiretorios
-	 * @throws Exception caso ocorra algum erro interno de inicializacao 
+	 * @param dir - diretório para monitorar por arquivos de classes dinâmicas atualizadas
+	 * <br><i>directory for monitoring updated LiveClass files</i>
+	 * @param includeSubdirs - <i>true</i> para monitorar também os subdiretórios, 
+	 * <i>false</i> para monitorar somente o diretório informado
+	 * <br><i>true to also monitor subdirectories, false to monitor the specified directory only</i>
+	 * @throws Exception caso ocorra algum erro interno de inicialização
+	 * <br><i>in case of internal error during initialization</i>
 	 */
 	public FileSystemMonitor(String dir, boolean includeSubdirs) throws Exception
 	{
@@ -55,11 +70,8 @@ public class FileSystemMonitor extends AbstractLiveClassFileMonitor
 		this.executorService = Executors.newSingleThreadExecutor();
 		this.isRunning = false;
 		
-		// tipo de arquivos: classes Java
-		this.setFileFilter(new FileExtensionFilter("class"));
-		
-		// validador de classes Java
-		this.setFileValidator(new JavaclassValidator());
+		// filtros: classes java, anotados com @LiveClass
+		this.setFileFilter(new FileFilterComposite(new FileExtensionFilter("class"), new AnnotatedLiveClassFileFilter()));
 
 		// registra o diretorio/subdiretorios a serem monitorados
 		this.registerDirectory(this.rootDir, includeSubdirs);
@@ -99,10 +111,20 @@ public class FileSystemMonitor extends AbstractLiveClassFileMonitor
 
 	
 	/**
-	 * Registra o diretorio (e seus subdiretorios) para monitorar novas versoes de classes dinamicas.
+	 * <p>
+	 * Registra o diretório a ser monitorado.
+	 * </p>
+	 * <p><i>
+	 * Registers the directory to be monitored.
+	 * </i></p>
 	 * 
-	 * @param dir o diretorio (e seus subdiretorios) a ser monitorado
-	 * @throws IOException caso ocorra algum erro de IO 
+	 * @param dir - diretório a ser monitorado
+	 * <br><i>the directory to be monitored</i>
+	 * @param includeSubdirs - <i>true</i> para monitorar também os subdiretórios, 
+	 * <i>false</i> para monitorar somente o diretório informado
+	 * <br><i>true to also monitor subdirectories, false to monitor the specified directory only</i>
+	 * @throws IOException caso ocorra algum erro ao registrar os diretórios
+	 * <br><i>if an error occurs when registering the directories to be monitored</i>
 	 */
 	private void registerDirectory(final Path dir, boolean includeSubdirs) throws IOException
 	{
@@ -116,7 +138,7 @@ public class FileSystemMonitor extends AbstractLiveClassFileMonitor
 						// StandardWatchEventKinds.ENTRY_DELETE,
 						StandardWatchEventKinds.ENTRY_MODIFY);
 		
-		// mapeia a chave e o path do diretorio
+		// mapeia a chave e o caminho do diretorio
 		this.mapKeyPath.put(key, dir);
 		
 		// registra os subdiretorios
@@ -127,17 +149,22 @@ public class FileSystemMonitor extends AbstractLiveClassFileMonitor
 	
 	
 	/**
-	 * Thread responsavel por monitorar o(s) diretorio(s) de classes dinamicas.
+	 * <p>
+	 * Thread responsável por monitorar os diretórios registrados.
+	 * </p>
+	 * <p><i>
+	 * Thread that monitors the registed directories.
+	 * </i></p>
 	 */
 	private class MonitorRunnable implements Runnable
 	{
+		@Override
 		public void run()
 		{
 			try
 			{
-				// TODO: debug
-				// informa qual o (root) diretorio que esta sendo monitorado 
-				System.out.println("MONITOR >> Monitorando diretorio [" + rootDir.toAbsolutePath() + "]");
+				// log: o diretorio sendo monitorado
+				Utils.logInfo("Monitorando diretorio [" + rootDir.toAbsolutePath() + "]");
 				
 				//
 				isRunning = true;
@@ -161,10 +188,10 @@ public class FileSystemMonitor extends AbstractLiveClassFileMonitor
 			    		
 				    	// verifica se o arquivo eh uma classe Java compilada
 			    		// e do tipo dinamica
-				    	if ( fileFilter.acceptFile(arquivo) && fileValidator.isValid(arquivo) )
+				    	if ( fileFilter.acceptFile(arquivo) )
 			    		{
-				    		// TODO: debug
-				    		System.out.println("MONITOR >> Novo arquivo encontrado: " + arquivo.getName() );
+				    		// log: arquivo aceito
+				    		Utils.logInfo("Novo arquivo de classe encontrado: " + arquivo.getName() );
 
 				    		// notifica os observadores
 				    		FileSystemMonitor.this.notifyObservers(arquivo);
@@ -176,13 +203,16 @@ public class FileSystemMonitor extends AbstractLiveClassFileMonitor
 			}
 			catch (Exception e)
 			{
-				// TODO: debug
-				e.printStackTrace();
+				// log: erro
+				Utils.logError("Erro durante o monitoramento!");
+				Utils.logException(e);
 			}
 			
 			finally
 			{
-				System.out.println("MONITOR >> Monitoramento encerrado!" );
+				// log: encerrando monitoramento
+				Utils.logInfo("Monitoramente encerrado!");
+				
 				//
 				isRunning = false;
 			}
