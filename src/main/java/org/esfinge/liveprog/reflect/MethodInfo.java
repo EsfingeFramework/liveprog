@@ -10,10 +10,9 @@ import org.esfinge.liveprog.util.Utils;
 /**
  * <p>
  * Armazena informações sobre um método de uma classe.
- * </p>
  * <p><i>
  * Stores information about a method of a class.
- * </i></p>
+ * </i>
  */
 public class MethodInfo
 {
@@ -39,10 +38,9 @@ public class MethodInfo
 	/**
 	 * <p>
 	 * Construtor padrão.
-	 * </p>
 	 * <p><i>
 	 * Default constructor.
-	 * </i></p>
+	 * </i>
 	 */
 	public MethodInfo()
 	{
@@ -54,12 +52,11 @@ public class MethodInfo
 	/**
 	 * <p>
 	 * Atribui o nome do método.
-	 * </p>
 	 * <p><i>
 	 * Sets the method name.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param name - nome do método
+	 * @param name nome do método
 	 * <br><i>the name of the method</i>
 	 */
 	public void setName(String name)
@@ -70,10 +67,9 @@ public class MethodInfo
 	/**
 	 * <p>
 	 * Obtém o nome do método.
-	 * </p>
 	 * <p><i>
 	 * Gets the method name.
-	 * </i></p>
+	 * </i>
 	 * 
 	 * @return o nome do método
 	 * <br><i>the name of the method</i>
@@ -86,12 +82,11 @@ public class MethodInfo
 	/**
 	 * <p>
 	 * Atribui o valor inteiro representando o modificador de acesso do método. 
-	 * </p>
 	 * <p><i>
 	 * Sets the integer value representing the method access modifier.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param accessFlag - valor inteiro representando o modificador de acesso do método
+	 * @param accessFlag valor inteiro representando o modificador de acesso do método
 	 * <br><i>the integer value representing the access modifier of the method</i> 
 	 * @see java.lang.reflect.Modifier
 	 */
@@ -103,10 +98,9 @@ public class MethodInfo
 	/**
 	 * <p>
 	 * Obtém o valor inteiro representando o modificador de acesso do método.
-	 * </p>
 	 * <p><i>
 	 * Gets the integer value representing the method access modifier.
-	 * </i></p>
+	 * </i>
 	 * 
 	 * @return o valor inteiro representando o modificador de acesso do método
 	 * <br><i>the integer value representing the access modifier of the method</i> 
@@ -120,10 +114,9 @@ public class MethodInfo
 	/**
 	 * <p>
 	 * Obtém o enum representando o modificador de acesso do método.
-	 * </p>
 	 * <p><i>
 	 * Gets the enum value representing the method access modifier.
-	 * </i></p>
+	 * </i>
 	 * 
 	 * @return o enum representando o modificador de acesso do método
 	 * <br><i>the enum value representing the access modifier of the method</i> 
@@ -137,12 +130,11 @@ public class MethodInfo
 	/**
 	 * <p>
 	 * Adiciona informações das anotações do método.
-	 * </p>
 	 * <p><i>
 	 * Adds the method annotations.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param annotationsInfo - informações das anotações do método
+	 * @param annotationsInfo informações das anotações do método
 	 * <br><i>the annotations of the method</i>
 	 * @see org.esfinge.liveprog.reflect.AnnotationInfo
 	 */
@@ -154,10 +146,9 @@ public class MethodInfo
 	/**
 	 * <p>
 	 * Obtém informações das anotações do método.
-	 * </p>
 	 * <p><i>
 	 * Gets the method annotations.
-	 * </i></p>
+	 * </i>
 	 * 
 	 * @return as informações das anotações do método
 	 * <br><i>the annotations of the method</i>
@@ -171,12 +162,11 @@ public class MethodInfo
 	/**
 	 * <p>
 	 * Atribui o tipo de retorno do método.
-	 * </p>
 	 * <p><i>
 	 * Sets the method return type.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param returnType - tipo de retorno do método
+	 * @param returnType tipo de retorno do método
 	 * <br><i>the return type of the method</i>
 	 * @see org.esfinge.liveprog.reflect.TypeHandler
 	 */
@@ -188,10 +178,9 @@ public class MethodInfo
 	/**
 	 * <p>
 	 * Obtém o tipo de retorno do método.
-	 * </p>
 	 * <p><i>
 	 * Gets the method return type.
-	 * </i></p>
+	 * </i>
 	 * 
 	 * @return o tipo de retorno do método
 	 * <br><i>the return type of the method</i>
@@ -205,12 +194,11 @@ public class MethodInfo
 	/**
 	 * <p>
 	 * Adiciona os nomes das exceções do método.
-	 * </p>
 	 * <p><i>
 	 * Adds the method exception names.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param exceptionNames - nomes das exceções lançadas pelo método
+	 * @param exceptionNames nomes das exceções lançadas pelo método
 	 * <br><i>the names of the exceptions thrown by the method</i>
 	 */
 	public void addThrownExceptionName(String... exceptionNames)
@@ -221,10 +209,9 @@ public class MethodInfo
 	/**
 	 * <p>
 	 * Obtém os nomes das exceções do método.
-	 * </p>
 	 * <p><i>
 	 * Gets the method exception names.
-	 * </i></p>
+	 * </i>
 	 * 
 	 * @return os nomes das exceções lançadas pelo método
 	 * <br><i>the names of the exceptions thrown by the method</i>
@@ -237,12 +224,11 @@ public class MethodInfo
 	/**
 	 * <p>
 	 * Adiciona informações dos parâmetros do método.
-	 * </p>
 	 * <p><i>
 	 * Adds the method parameters.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param paramsInfo - informações dos parâmetros do método
+	 * @param paramsInfo informações dos parâmetros do método
 	 * <br><i>the parameters of the method</i>
 	 */
 	public void addParameterInfo(ParameterInfo... paramsInfo)
@@ -253,10 +239,9 @@ public class MethodInfo
 	/**
 	 * <p>
 	 * Obtém informações dos parâmetros do método.
-	 * </p>
 	 * <p><i>
 	 * Gets the method parameters.
-	 * </i></p>
+	 * </i>
 	 * 
 	 * @return as informações dos parâmetros do método
 	 * <br><i>the parameters of the method</i>
@@ -269,11 +254,12 @@ public class MethodInfo
 	/**
 	 * <p>
 	 * Obtém informações do parâmetro do método da posição informada.
-	 * </p>
 	 * <p><i>
 	 * Gets the method parameter at the specified position.
-	 * </i></p>
+	 * </i>
 	 * 
+	 * @param index posição do parâmetro desejado
+	 * <br><i>the desired method parameter position</i>
 	 * @return as informações do parâmetro da posição informada, ou <i>null</i> caso a posição seja inválida
 	 * <br><i>the method parameter at the specified position, or null if the specified index is invalid</i>
 	 */
@@ -285,13 +271,12 @@ public class MethodInfo
 	/**
 	 * <p>
 	 * Verifica se o método representa um construtor de uma classe.
-	 * </p>
 	 * <p><i>
 	 * Checks if this method represents a constructor of a class.
-	 * </i></p>
+	 * </i>
 	 * 
 	 * @return <i>true</i> caso o método seja um construtor, <i>false</i> caso contrário
-	 * <br><i>true if this method represents a constructor, false otherwise 
+	 * <br><i>true if this method represents a constructor, false otherwise</i>
 	 */
 	public boolean isConstructor()
 	{

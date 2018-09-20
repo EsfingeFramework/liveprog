@@ -11,10 +11,9 @@ import org.objectweb.asm.Type;
 /**
  * <p>
  * Extrai informações sobre uma anotação. 
- * </p>
  * <p><i>
  * Collects information about an annotation.
- * </i></p>
+ * </i>
  */
 class AnnotationInspector extends AnnotationVisitor
 {
@@ -25,12 +24,11 @@ class AnnotationInspector extends AnnotationVisitor
 	/**
 	 * <p>
 	 * Constrói um novo inspetor de anotações.
-	 * </p>
 	 * <p><i>
 	 * Constructs a new annotation inspector.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param annotationInfo - objeto onde as informações extraídas serão armazenadas
+	 * @param annotationInfo objeto onde as informações extraídas serão armazenadas
 	 * <br><i>the object to store the collected information</i>
 	 * @see org.esfinge.liveprog.reflect.AnnotationInfo
 	 */

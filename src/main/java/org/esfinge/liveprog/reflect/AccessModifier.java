@@ -5,10 +5,9 @@ import java.lang.reflect.Modifier;
 /**
  * <p>
  * Enum representando os tipos de modificadores de acesso Java.
- * </p>
  * <p><i>
  * Enum representing the types of Java access modifiers.
- * </i></p>
+ * </i>
  */
 public enum AccessModifier
 {
@@ -20,12 +19,11 @@ public enum AccessModifier
 	/**
 	 * <p>
 	 * Obtém o enum representando o modificador de acesso informado.
-	 * </p>
 	 * <p><i>
 	 * Gets the enum representing the specified access modifier.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param accessFlag - inteiro representando o modificador de acesso
+	 * @param accessFlag inteiro representando o modificador de acesso
 	 * <br><i>integer value representing the access modifier</i>
 	 * @return o enum representando o modificador de acesso informado
 	 * <br><i>the enum representing the specified access modifier</i>

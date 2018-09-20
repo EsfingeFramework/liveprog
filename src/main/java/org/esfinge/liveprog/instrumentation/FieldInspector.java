@@ -9,10 +9,9 @@ import org.objectweb.asm.Opcodes;
 /**
  * <p>
  * Extrai informações sobre um campo. 
- * </p>
  * <p><i>
  * Collects information about a field.
- * </i></p>
+ * </i>
  */
 class FieldInspector extends FieldVisitor
 {
@@ -23,12 +22,11 @@ class FieldInspector extends FieldVisitor
 	/**
 	 * <p>
 	 * Constrói um novo inspetor de campos.
-	 * </p>
 	 * <p><i>
 	 * Constructs a new field inspector.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param fieldInfo - objeto onde as informações extraídas serão armazenadas
+	 * @param fieldInfo objeto onde as informações extraídas serão armazenadas
 	 * <br><i>the object to store the collected information</i>
 	 * @see org.esfinge.liveprog.reflect.FieldInfo
 	 */

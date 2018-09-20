@@ -9,10 +9,9 @@ import org.objectweb.asm.Type;
 /**
  * <p>
  * Extrai informações sobre um atributo do tipo array de uma anotação. 
- * </p>
  * <p><i>
  * Collects information about an array attribute of an annotation.
- * </i></p>
+ * </i>
  */
 class ArrayAnnotationInspector extends AnnotationVisitor
 {
@@ -23,12 +22,11 @@ class ArrayAnnotationInspector extends AnnotationVisitor
 	/**
 	 * <p>
 	 * Constrói um novo inspetor de atributos de anotações do tipo array.
-	 * </p>
 	 * <p><i>
 	 * Constructs a new annotation array attribute inspector.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param attribute - objeto onde as informações extraídas serão armazenadas
+	 * @param attribute objeto onde as informações extraídas serão armazenadas
 	 * <br><i>the object to store the collected information</i>
 	 * @see org.esfinge.liveprog.reflect.AnnotationInfo.AttributeInfo
 	 */

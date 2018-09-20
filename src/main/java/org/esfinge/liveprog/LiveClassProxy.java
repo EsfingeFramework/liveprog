@@ -17,12 +17,11 @@ import net.sf.cglib.proxy.MethodProxy;
 /**
  * <p>
  * Proxy para objetos de classes dinâmicas.
- * </p>
  * <p><i>
  * Proxy for objects of LiveClasses.
- * </i></p>
+ * </i>
  * 
- * @see org.esfinge.LiveClass 
+ * @see org.esfinge.liveprog.annotation.LiveClass 
  */
 class LiveClassProxy implements MethodInterceptor
 {
@@ -36,12 +35,11 @@ class LiveClassProxy implements MethodInterceptor
 	/**
 	 * <p>
 	 * Constrói um novo proxy para o objeto de uma classe dinâmica.
-	 * </p>
 	 * <p><i>
 	 * Constructs a new proxy for an object of a LiveClass.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param liveObj - o objeto de uma classe dinâmica
+	 * @param liveObj o objeto de uma classe dinâmica
 	 * <br><i>an object from a LiveClass</i>
 	 */
 	LiveClassProxy(Object liveObj)
@@ -63,12 +61,11 @@ class LiveClassProxy implements MethodInterceptor
 	/**
 	 * <p>
 	 * Recebe a notificação de que a classe dinâmica foi recarregada em uma nova versão.
-	 * </p>
 	 * <p><i>
 	 * Gets notified that the LiveClass was reloaded on a new version.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param newLiveClass - nova versão da classe dinâmica
+	 * @param newLiveClass nova versão da classe dinâmica
 	 * <br><i>updated version of the LiveClass</i>
 	 */
 	void classReloaded(Class<?> newLiveClass)
@@ -110,12 +107,11 @@ class LiveClassProxy implements MethodInterceptor
 	/**
 	 * <p>
 	 * Recebe a notificação de que a classe dinâmica foi recarregada para uma versão anterior.
-	 * </p>
 	 * <p><i>
 	 * Gets notified that the LiveClass was rolled back to a previous version.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param newLiveClass - nova versão da classe dinâmica
+	 * @param newLiveClass nova versão da classe dinâmica
 	 * <br><i>updated version of the LiveClass</i>
 	 */
 	void classRolledBack(Class<?> newLiveClass)
@@ -161,16 +157,15 @@ class LiveClassProxy implements MethodInterceptor
 	/**
 	 * <p>
 	 * Copia as propriedades do antigo objeto para o objeto da nova versão da classe dinâmica.
-	 * </p>
 	 * <p><i>
 	 * Copies the properties of the old objet to the object of the new version of the LiveClass.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param oldObj - objeto da versão sendo substituída
+	 * @param oldObj objeto da versão sendo substituída
 	 * <br><i>object being replaced</i>
-	 * @param newObj - objeto da nova versão da classe dinâmica
+	 * @param newObj objeto da nova versão da classe dinâmica
 	 * <br><i>object of the new version of the LiveClass</i>
-	 * @param rollback - <i>true</i> caso a versão atual esteja sendo revertida para uma versão anterior, <i>false</i> caso contrário
+	 * @param rollback <i>true</i> caso a versão atual esteja sendo revertida para uma versão anterior, <i>false</i> caso contrário
 	 * <br><i>true if the current version is being rolled back to a previous version, false otherwise</i>
 	 * @throws Exception caso ocorra algum erro ao copiar as propriedades entre os objetos
 	 * <br><i>if an error occurs when copying the properties between objects</i>
@@ -256,14 +251,13 @@ class LiveClassProxy implements MethodInterceptor
 	/**
 	 * <p>
 	 * Invoca o método chamado no proxy no objeto real.
-	 * </p>
 	 * <p><i>
 	 * Invokes the method called in the proxy on the real object.
-	 * </i></p>
+	 * </i>
 	 *  
-	 * @param proxyMethod - o método chamado no proxy
+	 * @param proxyMethod o método chamado no proxy
 	 * <br><i>method called in the proxy object</i>
-	 * @param args - os argumentos do método chamado no proxy
+	 * @param args os argumentos do método chamado no proxy
 	 * <br><i>arguments passed to the proxy's method</i>
 	 * @return o valor retornado do método invocado no objeto real
 	 * <br><i>the value returned by the method invoked the real object</i>

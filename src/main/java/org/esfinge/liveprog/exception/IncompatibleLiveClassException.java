@@ -3,10 +3,9 @@ package org.esfinge.liveprog.exception;
 /**
  * <p>
  * Exceção que é lançada quando uma classe não é compatível com as regras para ser considerada uma classe dinâmica.
- * </p>
  * <p><i>
  * Exception that is thrown when a class does not comply with the LiveClass's requirements.
- * </i></p>
+ * </i>
  * 
  * @see org.esfinge.liveprog.instrumentation.InstrumentationHelper#checkValidLiveClass(Class)
  */
@@ -16,12 +15,11 @@ public class IncompatibleLiveClassException extends LiveprogException
 	/**
 	 * <p>
 	 * Constrói uma nova exceção do tipo IncompatibleLiveClassException.
-	 * </p>
 	 * <p><i>
 	 * Constructs a new IncompatibleLiveClassException.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param message - mensagem descrevendo o motivo da exceção
+	 * @param message mensagem descrevendo o motivo da exceção
 	 * <br><i>the message describing the exception's cause</i>
 	 */
 	public IncompatibleLiveClassException(String message)
@@ -32,14 +30,13 @@ public class IncompatibleLiveClassException extends LiveprogException
 	/**
 	 * <p>
 	 * Constrói uma nova exceção do tipo IncompatibleLiveClassException.
-	 * </p>
 	 * <p><i>
 	 * Constructs a new IncompatibleLiveClassException.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param message - mensagem descrevendo o motivo da exceção
-	 * <br>the message describing the exception's cause<i></i>
-	 * @param cause - exceção de origem que causou essa exceção
+	 * @param message mensagem descrevendo o motivo da exceção
+	 * <br><i>the message describing the exception's cause</i>
+	 * @param cause exceção de origem que causou essa exceção
 	 * <br><i>the original exception related to this exception</i> 
 	 */
 	public IncompatibleLiveClassException(String message, Throwable cause)

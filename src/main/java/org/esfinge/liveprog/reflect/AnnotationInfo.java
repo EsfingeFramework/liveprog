@@ -10,10 +10,9 @@ import org.esfinge.liveprog.util.Utils;
 /**
  * <p>
  * Armazena informações sobre uma anotação.
- * </p>
  * <p><i>
  * Stores information about an annotation.
- * </i></p>
+ * </i>
  */
 public class AnnotationInfo
 {
@@ -30,10 +29,9 @@ public class AnnotationInfo
 	/**
 	 * <p>
 	 * Construtor padrão.
-	 * </p>
 	 * <p><i>
 	 * Default constructor.
-	 * </i></p>
+	 * </i>
 	 */
 	public AnnotationInfo()
 	{
@@ -44,12 +42,11 @@ public class AnnotationInfo
 	/**
 	 * <p>
 	 * Atribui o nome qualificado da anotação.
-	 * </p>
 	 * <p><i>
 	 * Sets the annotation fully qualified name.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param name - nome qualificado da anotação
+	 * @param name nome qualificado da anotação
 	 * <br><i>the fully qualified name of the annotation</i>
 	 */
 	public void setName(String name)
@@ -60,10 +57,9 @@ public class AnnotationInfo
 	/**
 	 * <p>
 	 * Obtém o nome qualificado da anotação.
-	 * </p>
 	 * <p><i>
 	 * Gets the annotation fully qualified name.
-	 * </i></p>
+	 * </i>
 	 * 
 	 * @return o nome qualificado da anotação
 	 * <br><i>the fully qualified name of the annotation</i>
@@ -76,13 +72,12 @@ public class AnnotationInfo
 	/**
 	 * <p>
 	 * Obtém o nome simples da anotação.
-	 * </p>
 	 * <p><i>
 	 * Gets the annotation simple name.
-	 * </i></p>
+	 * </i>
 	 * 
 	 * @return o nome simples da anotação
-	 * <br><i>the simple name of the annotation</p>
+	 * <br><i>the simple name of the annotation</i>
 	 */
 	public String getSimpleName()
 	{
@@ -95,12 +90,11 @@ public class AnnotationInfo
 	/**
 	 * <p>
 	 * Adiciona informações dos atributos da anotação.
-	 * </p>
 	 * <p><i>
 	 * Adds the annotation attributes.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param attributesInfo - informações dos atributos da anotação
+	 * @param attributesInfo informações dos atributos da anotação
 	 * <br><i>the attributes of the annotation</i>
 	 */
 	public void addAttributeInfo(AttributeInfo... attributesInfo)
@@ -111,10 +105,9 @@ public class AnnotationInfo
 	/**
 	 * <p>
 	 * Obtém informações dos atributos da anotação.
-	 * </p>
 	 * <p><i>
 	 * Gets the annotation attributes.
-	 * </i></p>
+	 * </i>
 	 * 
 	 * @return as informações dos atributos da anotação
 	 * <br><i>the attributes of the annotation</i>
@@ -127,12 +120,11 @@ public class AnnotationInfo
 	/**
 	 * <p>
 	 * Adiciona informações das anotações da classe.
-	 * </p>
 	 * <p><i>
 	 * Adds the class annotations.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param annotationsInfo - informações das anotações da classe
+	 * @param annotationsInfo informações das anotações da classe
 	 * <br><i>the annotations of the class</i>
 	 * @see org.esfinge.liveprog.reflect.AnnotationInfo
 	 */
@@ -144,10 +136,9 @@ public class AnnotationInfo
 	/**
 	 * <p>
 	 * Obtém informações das anotações da anotação.
-	 * </p>
 	 * <p><i>
 	 * Gets the annotation annotations.
-	 * </i></p>
+	 * </i>
 	 * 
 	 * @return as informações das anotações da anotação
 	 * <br><i>the annotations of the annotation</i>
@@ -167,10 +158,9 @@ public class AnnotationInfo
 	/**
 	 * <p>
 	 * Armazena informações sobre um atributo de uma anotação.
-	 * </p>
 	 * <p><i>
 	 * Stores information about an attribute of an annotation.
-	 * </i></p>
+	 * </i>
 	 */
 	public static class AttributeInfo
 	{
@@ -187,10 +177,9 @@ public class AnnotationInfo
 		/**
 		 * <p>
 		 * Construtor padrão.
-		 * </p>
 		 * <p><i>
 		 * Default constructor.
-		 * </i></p>
+		 * </i>
 		 */
 		public AttributeInfo()
 		{
@@ -200,12 +189,11 @@ public class AnnotationInfo
 		/**
 		 * <p>
 		 * Atribui o nome do atributo.
-		 * </p>
 		 * <p><i>
 		 * Sets the attribute name.
-		 * </i></p>
+		 * </i>
 		 * 
-		 * @param name - nome do atributo
+		 * @param name nome do atributo
 		 * <br><i>the name of the attribute</i>
 		 */
 		public void setName(String name)
@@ -216,13 +204,12 @@ public class AnnotationInfo
 		/**
 		 * <p>
 		 * Obtém o nome do atributo.
-		 * </p>
 		 * <p><i>
 		 * Gets the attribute name.
-		 * </i></p>
+		 * </i>
 		 * 
 		 * @return o nome do atributo
-		 * <br>the name of the attribute</i>
+		 * <br><i>the name of the attribute</i>
 		 */
 		public String getName()
 		{
@@ -232,12 +219,11 @@ public class AnnotationInfo
 		/**
 		 * <p>
 		 * Adiciona os valores do atributo.
-		 * </p>
 		 * <p><i>
 		 * Adds the attribute values.
-		 * </i></p>
+		 * </i>
 		 * 
-		 * @param values - valores do atributo
+		 * @param values valores do atributo
 		 * <br><i>the values of the attribute</i>
 		 */
 		public void addValue(Object... values)
@@ -248,10 +234,9 @@ public class AnnotationInfo
 		/**
 		 * <p>
 		 * Obtém os valores do atributo.
-		 * </p>
 		 * <p><i>
 		 * Gets the attribute values.
-		 * </i></p>
+		 * </i>
 		 * 
 		 * @return os valores do atributo
 		 * <br><i>the values of the attribute</i>
@@ -264,12 +249,11 @@ public class AnnotationInfo
 		/**
 		 * <p>
 		 * Atribui o tipo do atributo.
-		 * </p>
 		 * <p><i>
 		 * Sets the attribute type.
-		 * </i></p>
+		 * </i>
 		 * 
-		 * @param type - tipo do atributo
+		 * @param type tipo do atributo
 		 * <br><i>the type of the attribute</i>
 		 * @see org.esfinge.liveprog.reflect.TypeHandler
 		 */
@@ -281,10 +265,9 @@ public class AnnotationInfo
 		/**
 		 * <p>
 		 * Obtém o tipo do atributo.
-		 * </p>
 		 * <p><i>
 		 * Gets the attribute type.
-		 * </i></p>
+		 * </i>
 		 * 
 		 * @return o tipo do atributo
 		 * <br><i>the type of the attribute</i>
@@ -298,13 +281,12 @@ public class AnnotationInfo
 		/**
 		 * <p>
 		 * Verifica se o atributo é um array.
-		 * </p>
 		 * <p><i>
 		 * Checks if this attribute is an array.
-		 * </i></p>
+		 * </i>
 		 * 
 		 * @return <i>true</i> caso o atributo seja um array, <i>false</i> caso contrário
-		 * <br><i>true if this attribute is an array, false otherwise 
+		 * <br><i>true if this attribute is an array, false otherwise</i>
 		 */
 		public boolean isArray()
 		{

@@ -7,24 +7,22 @@ import org.esfinge.liveprog.reflect.ClassInfo;
 /**
  * <p>
  * Interface para a persistência de classes dinâmicas.
- * </p>
  * <p><i>
  * Interface to be implemented by classes to provide LiveClasses persistence.
- * </i></p>
+ * </i>
  */
 public interface ILiveClassPersistence
 {
 	/**
 	 * <p>
 	 * Obtém as informações da classe dinâmica.
-	 * </p>
 	 * <p><i>
 	 * Gets the persisted LiveClass information.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param liveClassName - nome da classe dinâmica
+	 * @param liveClassName nome da classe dinâmica
 	 * <br><i>name of the persisted LiveClass</i>
-	 * @param safeMode - <i>true</i> para recuperar as informações da classe dinâmica do modo seguro, 
+	 * @param safeMode <i>true</i> para recuperar as informações da classe dinâmica do modo seguro, 
 	 * <i>false</i> para as informações do modo normal
 	 * <br><i>true to get the information of the LiveClass on its safe mode, false for the information of the standard mode</i>
 	 * @return as informações da classe dinâmica persistida, ou <i>null</i> se nenhuma versão for encontrada
@@ -37,14 +35,13 @@ public interface ILiveClassPersistence
 	/**
 	 * <p>
 	 * Persiste as informações da classe dinâmica.
-	 * </p>
 	 * <p><i>
 	 * Persists the LiveClass information.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param liveClassName - nome da classe dinâmica
+	 * @param liveClassName nome da classe dinâmica
 	 * <br><i>name of the LiveClass to be persisted</i>
-	 * @param liveClassInfo - informações da classe dinâmica a ser persistida
+	 * @param liveClassInfo informações da classe dinâmica a ser persistida
 	 * <br><i>information of the LiveClass to be persisted</i>
 	 * @throws Exception em caso de erros ao persistir a classe dinâmica
  	 * <br><i>if an error occurs when persisting the LiveClass</i>
@@ -58,15 +55,14 @@ public interface ILiveClassPersistence
 	 * <br>
 	 * Caso a classe ainda não tenha sido persistida, os métodos de versionamento de {@link ILiveClassVersionInfo} 
 	 * devem retornar o valor inteiro <b>-1</b>.
-	 * </p>
 	 * <p><i>
 	 * Gets the LiveClass versioning information.
 	 * <br>
 	 * If the LiveClass has not yet been persisted, all versioning methods of {@link ILiveClassVersionInfo} must return 
 	 * the integer value <b>-1</b>.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param liveClassName - nome da classe dinâmica
+	 * @param liveClassName nome da classe dinâmica
 	 * <br><i>name of the persisted LiveClass</i>
 	 * @return as informações de versionamento da classe dinâmica informada
 	 * <br><i>the versioning information of the specified LiveClass</i>
@@ -79,10 +75,9 @@ public interface ILiveClassPersistence
 	/**
 	 * <p>
 	 * Obtém as informações de versionamento de todas as classes dinâmicas persistidas.
-	 * </p>
 	 * <p><i>
 	 * Gets the versioning information of all persisted LiveClasses.
-	 * </i></p>
+	 * </i>
 	 * 
 	 * @return as informações de versionamento de todas as classes dinâmicas persistidas
 	 * <br><i>the versioning information of all persisted LiveClasses</i>
@@ -95,12 +90,11 @@ public interface ILiveClassPersistence
 	/**
 	 * <p>
 	 * Aceita a versão atual da classe dinâmica, promovendo-a como uma versão segura. 
-	 * </p>
 	 * <p><i>
 	 * Commits the current LiveClass version, promoting it as a safe version.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param liveClassName - nome da classe dinâmica
+	 * @param liveClassName nome da classe dinâmica
 	 * <br><i>name of the persisted LiveClass</i>
 	 * @return <i>true</i> se a versão atual pôde ser promovida como uma versão segura, <i>false</i> caso contrário 
 	 * (i.e se a versão segura e a atual já forem iguais)
@@ -115,12 +109,11 @@ public interface ILiveClassPersistence
 	/**
 	 * <p>
 	 * Descarta a versão atual da classe dinâmica, retrocendo-a para a versão anterior.
-	 * </p>
 	 * <p><i>
 	 * Rolls back the current LiveClass version, reverting it to its previous version.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param liveClassName - nome da classe dinâmica
+	 * @param liveClassName nome da classe dinâmica
 	 * <br><i>name of the persisted LiveClass</i>
 	 * @return <i>true</i> se a versão atual pôde ser retrocedida para a versão anterior, <i>false</i> caso contrário 
 	 * (i.e se a versão atual for a primeira versão)

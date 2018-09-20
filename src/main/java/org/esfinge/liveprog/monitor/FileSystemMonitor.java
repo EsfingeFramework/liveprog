@@ -21,10 +21,9 @@ import org.esfinge.liveprog.util.Utils;
 /**
  * <p>
  * Monitora por arquivos de classes dinâmicas atualizadas no sistema de arquivos.
- * </p>
  * <p><i>
  * Monitors for updated LiveClass files in the file system.
- * </i><p>
+ * </i>
  * 
  * @see org.esfinge.liveprog.monitor.ILiveClassFileMonitor
  */
@@ -49,14 +48,13 @@ public class FileSystemMonitor extends AbstractLiveClassFileMonitor
 	/**
 	 * <p>
 	 * Constrói um novo monitor de sistema de arquivos.
-	 * </p>
 	 * <p><i>
 	 * Constructs a new file system monitor.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param dir - diretório para monitorar por arquivos de classes dinâmicas atualizadas
+	 * @param dir diretório para monitorar por arquivos de classes dinâmicas atualizadas
 	 * <br><i>directory for monitoring updated LiveClass files</i>
-	 * @param includeSubdirs - <i>true</i> para monitorar também os subdiretórios, 
+	 * @param includeSubdirs <i>true</i> para monitorar também os subdiretórios, 
 	 * <i>false</i> para monitorar somente o diretório informado
 	 * <br><i>true to also monitor subdirectories, false to monitor the specified directory only</i>
 	 * @throws Exception caso ocorra algum erro interno de inicialização
@@ -113,14 +111,13 @@ public class FileSystemMonitor extends AbstractLiveClassFileMonitor
 	/**
 	 * <p>
 	 * Registra o diretório a ser monitorado.
-	 * </p>
 	 * <p><i>
 	 * Registers the directory to be monitored.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param dir - diretório a ser monitorado
+	 * @param dir diretório a ser monitorado
 	 * <br><i>the directory to be monitored</i>
-	 * @param includeSubdirs - <i>true</i> para monitorar também os subdiretórios, 
+	 * @param includeSubdirs <i>true</i> para monitorar também os subdiretórios, 
 	 * <i>false</i> para monitorar somente o diretório informado
 	 * <br><i>true to also monitor subdirectories, false to monitor the specified directory only</i>
 	 * @throws IOException caso ocorra algum erro ao registrar os diretórios
@@ -151,10 +148,9 @@ public class FileSystemMonitor extends AbstractLiveClassFileMonitor
 	/**
 	 * <p>
 	 * Thread responsável por monitorar os diretórios registrados.
-	 * </p>
 	 * <p><i>
 	 * Thread that monitors the registed directories.
-	 * </i></p>
+	 * </i>
 	 */
 	private class MonitorRunnable implements Runnable
 	{

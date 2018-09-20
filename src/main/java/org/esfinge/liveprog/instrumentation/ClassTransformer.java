@@ -10,10 +10,9 @@ import org.objectweb.asm.Opcodes;
 /**
  * <p>
  * Classe para instrumentação de classes. 
- * </p>
  * <p><i>
  * Class for class instrumentation.
- * </i></p>
+ * </i>
  */
 class ClassTransformer extends ClassVisitor
 {
@@ -27,16 +26,15 @@ class ClassTransformer extends ClassVisitor
 	/**
 	 * <p>
 	 * Constrói um novo manipulador de classes.
-	 * </p>
 	 * <p><i>
 	 * Constructs a new transformer for class instrumentation.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param className - nome original da classe
+	 * @param className nome original da classe
 	 * <br><i>the original class name</i>
-	 * @param newClassName - nome da nova versão da classe
+	 * @param newClassName nome da nova versão da classe
 	 * <br><i>the new name of the class</i> 
-	 * @param writer - objeto escritor de classes ASM
+	 * @param writer objeto escritor de classes ASM
 	 * <br><i>the ASM classwriter object</i>
 	 * @see org.objectweb.asm.ClassWriter
 	 */
@@ -87,12 +85,11 @@ class ClassTransformer extends ClassVisitor
 	/**
 	 * <p>
 	 * Substitui o nome original pelo nome da nova versão da classe.
-	 * </p>
 	 * <p><i>
 	 * Replaces the original class name by the new name of the class.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param arg - string a ser verificada
+	 * @param arg string a ser verificada
 	 * <br><i>the string to be verified</i>
 	 * @return a string com os nomes da classe substituídos
 	 * <br><i>the string with the class names replaced</i>

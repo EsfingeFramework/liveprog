@@ -7,10 +7,9 @@ import java.util.List;
 /**
  * <p>
  * Fornece uma classe base para a implementação de monitores de arquivos de classes dinâmicas atualizadas. 
- * </p>
  * <p><i>
  * Provides a base class from which other {@link ILiveClassFileMonitor} classes can be derived.
- * </i></p>
+ * </i>
  * 
  * @see org.esfinge.liveprog.monitor.ILiveClassFileMonitor
  */
@@ -27,10 +26,9 @@ public abstract class AbstractLiveClassFileMonitor implements ILiveClassFileMoni
 	/**
 	 * <p>
 	 * Construtor padrão.
-	 * </p>
 	 * <p><i>
 	 * Default constructor.
-	 * </i></p>
+	 * </i>
 	 */
 	public AbstractLiveClassFileMonitor()
 	{
@@ -58,12 +56,11 @@ public abstract class AbstractLiveClassFileMonitor implements ILiveClassFileMoni
 	/**
 	 * <p>
 	 * Notifica os observadores de que o arquivo de uma classe dinâmica atualizada foi encontrado.
-	 * </p>
 	 * <p><i>
 	 * Notifies the observers that a updated LiveClass file was found.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param liveClassFile - arquivo da classe dinâmica atualizada
+	 * @param liveClassFile arquivo da classe dinâmica atualizada
 	 * <br><i>the updated LiveClass file</i>
 	 */
 	protected void notifyObservers(File liveClassFile)

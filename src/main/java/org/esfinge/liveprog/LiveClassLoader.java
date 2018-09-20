@@ -10,10 +10,9 @@ import org.esfinge.liveprog.util.Utils;
 /**
  * <p>
  * Carregador de classes dinâmicas.
- * </p>
  * <p><i>
  * LiveClass classloader.
- * </i></p>
+ * </i>
  * 
  * @see org.esfinge.liveprog.annotation.LiveClass
  */
@@ -26,10 +25,9 @@ class LiveClassLoader implements ILiveClassLoader
 	/**
 	 * <p>
 	 * Constrói um novo carregador de classes dinâmicas.
-	 * <p>
 	 * <p><i>
 	 * Constructs a new LiveClass loader.
-	 * </i></p>
+	 * </i>
 	 * 
 	 * @throws LiveClassLoaderException caso não consiga obter o método 'defineClass' por reflexão
 	 * <br><i>if unable to retrieve the 'defineClass' method by reflection from the System Classloader</i>

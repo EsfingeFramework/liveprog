@@ -8,10 +8,9 @@ import org.esfinge.liveprog.util.Utils;
 /**
  * <p>
  * Armazena informações sobre um campo/propriedade de uma classe.
- * </p>
  * <p><i>
  * Stores information about a field/property of a class.
- * </i></p>
+ * </i>
  */
 public class FieldInfo
 {
@@ -31,10 +30,9 @@ public class FieldInfo
 	/**
 	 * <p>
 	 * Construtor padrão.
-	 * </p>
 	 * <p><i>
 	 * Default constructor.
-	 * </i></p>
+	 * </i>
 	 */
 	public FieldInfo()
 	{
@@ -44,12 +42,11 @@ public class FieldInfo
 	/**
 	 * <p>
 	 * Atribui o nome do campo.
-	 * </p>
 	 * <p><i>
 	 * Sets the field name.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param name - nome do campo/propriedade
+	 * @param name nome do campo/propriedade
 	 * <br><i>the name of the field</i>
 	 */
 	public void setName(String name)
@@ -60,10 +57,9 @@ public class FieldInfo
 	/**
 	 * <p>
 	 * Obtém o nome do campo.
-	 * </p>
 	 * <p><i>
 	 * Gets the field name.
-	 * </i></p>
+	 * </i>
 	 * 
 	 * @return o nome do campo/propriedade
 	 * <br><i>the name of the field</i>
@@ -76,12 +72,11 @@ public class FieldInfo
 	/**
 	 * <p>
 	 * Atribui o tipo do campo.
-	 * </p>
 	 * <p><i>
 	 * Sets the field type.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param type - tipo do campo/propriedade
+	 * @param type tipo do campo/propriedade
 	 * <br><i>the type of the field</i>
 	 * @see org.esfinge.liveprog.reflect.TypeHandler
 	 */
@@ -93,10 +88,9 @@ public class FieldInfo
 	/**
 	 * <p>
 	 * Obtém o tipo do campo.
-	 * </p>
 	 * <p><i>
 	 * Gets the field type.
-	 * </i></p>
+	 * </i>
 	 * 
 	 * @return o tipo do campo/propriedade
 	 * <br><i>the type of the field</i>
@@ -110,12 +104,11 @@ public class FieldInfo
 	/**
 	 * <p>
 	 * Atribui o valor inteiro representando o modificador de acesso do campo. 
-	 * </p>
 	 * <p><i>
 	 * Sets the integer value representing the field access modifier.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param accessFlag - valor inteiro representando o modificador de acesso do campo/propriedade
+	 * @param accessFlag valor inteiro representando o modificador de acesso do campo/propriedade
 	 * <br><i>the integer value representing the access modifier of the field</i> 
 	 * @see java.lang.reflect.Modifier
 	 */
@@ -127,10 +120,9 @@ public class FieldInfo
 	/**
 	 * <p>
 	 * Obtém o valor inteiro representando o modificador de acesso do campo.
-	 * </p>
 	 * <p><i>
 	 * Gets the integer value representing the field access modifier.
-	 * </i></p>
+	 * </i>
 	 * 
 	 * @return o valor inteiro representando o modificador de acesso do campo/propriedade
 	 * <br><i>the integer value representing the access modifier of the field</i> 
@@ -144,10 +136,9 @@ public class FieldInfo
 	/**
 	 * <p>
 	 * Obtém o enum representando o modificador de acesso do campo.
-	 * </p>
 	 * <p><i>
 	 * Gets the enum value representing the field access modifier.
-	 * </i></p>
+	 * </i>
 	 * 
 	 * @return o enum representando o modificador de acesso do campo/propriedade
 	 * <br><i>the enum value representing the access modifier of the field</i> 
@@ -161,12 +152,11 @@ public class FieldInfo
 	/**
 	 * <p>
 	 * Adiciona informações das anotações do campo.
-	 * </p>
 	 * <p><i>
 	 * Adds the field annotations.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param annotationsInfo - informações das anotações do campo/propriedade
+	 * @param annotationsInfo informações das anotações do campo/propriedade
 	 * <br><i>the annotations of the field</i>
 	 * @see org.esfinge.liveprog.reflect.AnnotationInfo
 	 */
@@ -178,10 +168,9 @@ public class FieldInfo
 	/**
 	 * <p>
 	 * Obtém informações das anotações do campo.
-	 * </p>
 	 * <p><i>
 	 * Gets the field annotations.
-	 * </i></p>
+	 * </i>
 	 * 
 	 * @return as informações das anotações do campo/propriedade
 	 * <br><i>the annotations of the field</i>
@@ -195,13 +184,12 @@ public class FieldInfo
 	/**
 	 * <p>
 	 * Verifica se o campo é um array.
-	 * </p>
 	 * <p><i>
 	 * Checks if this field is an array.
-	 * </i></p>
+	 * </i>
 	 * 
 	 * @return <i>true</i> caso o campo/propriedade seja um array, <i>false</i> caso contrário
-	 * <br><i>true if this field is an array, false otherwise 
+	 * <br><i>true if this field is an array, false otherwise</i>
 	 */
 	public boolean isArray()
 	{

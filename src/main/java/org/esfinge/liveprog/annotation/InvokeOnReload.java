@@ -9,10 +9,9 @@ import java.lang.annotation.Target;
 /**
  * <p>
  * Marca um método para ser invocado quando a classe dinâmica for atualizada em tempo de execução.
- * </p>
  * <p><i>
  * Annotates a method to be invoked when the LiveClass is updated at runtime.
- * </i></p>
+ * </i>
  * 
  * @see org.esfinge.liveprog.annotation.LiveClass
  */

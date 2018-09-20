@@ -1,0 +1,8 @@
+org.esfinge.liveprog
+org.esfinge.liveprog.annotation
+org.esfinge.liveprog.db
+org.esfinge.liveprog.exception
+org.esfinge.liveprog.instrumentation
+org.esfinge.liveprog.monitor
+org.esfinge.liveprog.reflect
+org.esfinge.liveprog.util

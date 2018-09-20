@@ -11,10 +11,9 @@ import org.esfinge.liveprog.util.Utils;
 /**
  * <p>
  * Builder para a criação de fábricas de objetos de classes dinâmicas.
- * </p>
  * <p><i>
  * Builder to create factories of LiveClass objects. 
- * </i></p>
+ * </i>
  * 
  * @see org.esfinge.liveprog.LiveClassFactory
  */
@@ -57,13 +56,12 @@ public class LiveClassFactoryBuilder
 	 * <br>
 	 * Utiliza a implementação padrão do gerenciador de persistência e monitora por arquivos 
 	 * das novas versões das classes dinâmicas no mesmo diretório da aplicação, não monitorando seus subdiretórios.
-	 * </p>
 	 * <p><i>
 	 * Builds a new factory of LiveClass objects, configuring it using the default parameters.
 	 * <br>
 	 * Uses the default persistence manager, and watchs for new versions of LiveClass class files 
 	 * in the same directory of the running application, excluding the subdirs.
-	 * </i></p>
+	 * </i>
 	 * 
 	 * @return uma nova fábrica de objetos de classes dinâmicas, usando as configurações padrão
 	 * <br><i>a new factory of LiveClass objects using the default configuration</i>
@@ -79,10 +77,9 @@ public class LiveClassFactoryBuilder
 	/**
 	 * <p>
 	 * Constrói um novo Builder para a criação da fábrica de objetos de classes dinâmicas.
-	 * </p>
 	 * <p><i>
 	 * Constructs a new Builder to create a factory of LiveClass objects. 
-	 * </i></p>
+	 * </i>
 	 */
 	public LiveClassFactoryBuilder()
 	{
@@ -97,11 +94,10 @@ public class LiveClassFactoryBuilder
 	 * Configura a fábrica para executar em modo seguro.
 	 * Executando em modo seguro, os objetos dinâmicos são atualizados 
 	 * somente quando a nova versão da classe dinâmica é aceita (commit). 
-	 * </p>
 	 * <p><i>
 	 * Sets the factory to execute in safe mode.
 	 * When executing in safe mode, 'live' objects are only updated after a commit of the LiveClass new version.
-	 * </i></p>	
+	 * </i>	
 	 * 
 	 * @return o próximo estágio do processo de construção da fábrica
 	 * <br><i>the next stage of the factory building process</i>
@@ -116,12 +112,11 @@ public class LiveClassFactoryBuilder
 	/**
 	 * <p>
 	 * Configura a fábrica para utilizar um classloader customizado para o carregamento de classes dinâmicas.
-	 * </p>
 	 * <p><i>
 	 * Sets the factory to use a custom classloader for loading LiveClasses.
-	 * </i></p>	
+	 * </i>	
 	 *
-	 * @param classLoader - classloader customizado para o carregamento de classes dinâmicas
+	 * @param classLoader classloader customizado para o carregamento de classes dinâmicas
 	 * <br><i>custom classloader for loading LiveClasses</i>
 	 * @return o próximo estágio do processo de construção da fábrica
 	 * <br><i>the next stage of the factory building process</i>
@@ -137,11 +132,10 @@ public class LiveClassFactoryBuilder
 	 * <p>
 	 * Utiliza por padrão um monitor que procura pelos arquivos das novas versões das classes dinâmicas 
 	 * no mesmo diretório da aplicação, não monitorando seus subdiretórios.
-	 * </p>
 	 * <p><i>
 	 * Uses the default file monitor that watchs for new versions of LiveClass class files 
 	 * in the same directory of the running application, excluding the subdirs.
-	 * </i></p>
+	 * </i>
 	 * 
 	 * @return o próximo estágio do processo de construção da fábrica
 	 * <br><i>the next stage of the factory building process</i>
@@ -157,12 +151,11 @@ public class LiveClassFactoryBuilder
 	/**
 	 * <p>
 	 * Especifica o diretório a ser monitorado em busca dos arquivos das novas versões das classes dinâmicas.
-	 * </p>
 	 * <p><i>
 	 * Sets the directory to watch for new versions of LiveClass class files.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param dir - diretório a ser monitorado
+	 * @param dir diretório a ser monitorado
 	 * <br><i>the directory to be monitored</i>
 	 * @return o próximo estágio do processo de construção da fábrica
 	 * <br><i>the next stage of the factory building process</i>
@@ -178,12 +171,11 @@ public class LiveClassFactoryBuilder
 	/**
 	 * <p>
 	 * Especifica o monitor responsável pela busca dos arquivos das novas versões das classes dinâmicas.
-	 * </p>
 	 * <p><i>
 	 * Sets the file monitor to watch for new versions of LiveClass class files.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param fileMonitor - monitor de arquivos de novas versões de classes dinâmicas
+	 * @param fileMonitor monitor de arquivos de novas versões de classes dinâmicas
 	 * <br><i>the monitor to watch for new versions of LiveClass class files</i>
 	 * @return o próximo estágio do processo de construção da fábrica
 	 * <br><i>the next stage of the factory building process</i>
@@ -200,20 +192,18 @@ public class LiveClassFactoryBuilder
 	/**
 	 * <p>
 	 * Configuração do monitor de diretórios.
-	 * </p>
 	 * <p><i>
 	 * Settings for the FileSystem monitor.
-	 * </i></p>
+	 * </i>
 	 */
 	public class LiveClassFactoryBuilderFileSystemMonitor
 	{
 		/**
 		 * <p>
 		 * Inclui os subdiretórios para serem monitorados.
-		 * </p>
 		 * <p><i>
 		 * Includes the subdirs to also be monitored.
-		 * </i></p>
+		 * </i>
 		 * 
 		 * @return o próximo estágio do processo de construção da fábrica
 		 * <br><i>the next stage of the factory building process</i>
@@ -228,10 +218,9 @@ public class LiveClassFactoryBuilder
 		/**
 		 * <p>
 		 * Exclui os subdiretórios de serem monitorados.
-		 * </p>
 		 * <p><i>
 		 * Excludes the subdirs to be monitored.
-		 * </i></p>
+		 * </i>
 		 * 
 		 * @return o próximo estágio do processo de construção da fábrica
 		 * <br><i>the next stage of the factory building process</i>
@@ -248,10 +237,9 @@ public class LiveClassFactoryBuilder
 	/**
 	 * <p>
 	 * Configuração do gerenciador de persistência.
-	 * </p>
 	 * <p><i>
 	 * Settings for the persistence manager.
-	 * </i></p>
+	 * </i>
 	 */
 	public class LiveClassFactoryBuilderPersistence
 	{		
@@ -259,10 +247,9 @@ public class LiveClassFactoryBuilder
 		 * <p>
 		 * Utiliza o gerenciador de persistência padrão, cujo nome do arquivo onde as informações das classes dinâmicas são persistidas 
 		 * chama-se <i>'liveclasses.db'</i> e fica armazenado no mesmo diretório da aplicação.
-		 * </p>
 		 * <p><i>
 		 * Uses the default persistence manager, with a database file named 'liveclasses.db' stored in the same directory of the running application.
-		 * </i></p>
+		 * </i>
 		 * 
 		 * @return o próximo estágio do processo de construção da fábrica
 		 * <br><i>the next stage of the factory building process</i>
@@ -278,12 +265,11 @@ public class LiveClassFactoryBuilder
 		 * <p>
 		 * Especifica o nome e o caminho do arquivo de persistência das classes dinâmicas, 
 		 * a ser utilizado pelo gerenciador de persistência padrão.
-		 * </p>
 		 * <p><i>
 		 * Sets the database filename and path to be used by the default persistence manager.
-		 * </i></p>
+		 * </i>
 		 * 
-		 * @param filePath - nome e caminho para o arquivo de base de dados
+		 * @param filePath nome e caminho para o arquivo de base de dados
 		 * <br><i>filename and path of the database file</i>
 		 * @return o próximo estágio do processo de construção da fábrica
 		 * <br><i>the next stage of the factory building process</i>
@@ -299,12 +285,11 @@ public class LiveClassFactoryBuilder
 		/**
 		 * <p>
 		 * Especifica o gerenciador de persistência de classes dinâmicas.
-		 * </p>
 		 * <p><i>
 		 * Sets the LiveClasses persistence manager.
-		 * </i></p>
+		 * </i>
 		 * 
-		 * @param dbManager - gerenciador de persistência de classes dinâmicas
+		 * @param dbManager gerenciador de persistência de classes dinâmicas
 		 * <br><i>the persistence manager for LiveClasses</i>
 		 * @return o próximo estágio do processo de construção da fábrica
 		 * <br><i>the next stage of the factory building process</i>
@@ -322,22 +307,20 @@ public class LiveClassFactoryBuilder
 	/**
 	 * <p>
 	 * Estágio final do processo de construção da fábrica.
-	 * </p>
 	 * <p><i>
 	 * Final stage of the factory building process.
-	 * </i></p>
+	 * </i>
 	 */
 	public class LiveClassFactoryBuilderCreate
 	{
 		/**
 		 * <p>
 		 * Especifica o gerenciador de versões de classes dinâmicas.
-		 * </p>
 		 * <p><i>
 		 * Sets the LiveClasses version manager.
-		 * </i></p>  
+		 * </i>  
 		 * 
-		 * @param versionManager - gerenciador de versões de classes dinamicas
+		 * @param versionManager gerenciador de versões de classes dinamicas
 		 * <br><i>the version manager for LiveClasses</i>
 		 * @return o próximo estágio do processo de construção da fábrica
 		 * <br><i>the next stage of the factory building process</i>
@@ -352,10 +335,9 @@ public class LiveClassFactoryBuilder
 		/**
 		 * <p>
 		 * Cria a fábrica de objetos de classes dinâmicas, configurando-a conforme os parâmetros informados no builder.
-		 * </p>
 		 * <p><i>
 		 * Builds the factory of LiveClass objects, configuring it using the parameters specified in the building process.
-		 * </i></p>
+		 * </i>
 		 *  
 		 * @return uma nova fábrica de objetos de classes dinâmicas
 		 * <br><i>a new factory of LiveClass objects</i>

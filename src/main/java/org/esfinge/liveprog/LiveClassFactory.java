@@ -27,10 +27,9 @@ import net.sf.cglib.proxy.Enhancer;
 /**
  * <p>
  * Fábrica para a criação de objetos de classes dinâmicas.
- * </p>
  * <p><i>
  * Factory for creating LiveClass objects.
- * </i></p>
+ * </i>
  * 
  * @see org.esfinge.liveprog.annotation.LiveClass
  * @see org.esfinge.liveprog.LiveClassFactoryBuilder
@@ -68,12 +67,11 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 	/**
 	 * <p>
 	 * Constrói uma nova fábrica para a criação de objetos de classes dinâmicas.
-	 * </p>
 	 * <p><i>
 	 * Constructs a new factory for creating LiveClass objects. 
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param dbManager - gerenciador de persistência de classes dinâmicas
+	 * @param dbManager gerenciador de persistência de classes dinâmicas
 	 * <br><i>persistence manager of LiveClasses</i>
 	 * @throws Exception caso ocorra algum erro interno de inicialização
 	 * <br><i>in case of internal error during initialization</i>
@@ -86,14 +84,13 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 	/**
 	 * <p>
 	 * Constrói uma nova fábrica para a criação de objetos de classes dinâmicas.
-	 * </p>
 	 * <p><i>
 	 * Constructs a new factory for creating LiveClass objects. 
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param dbManager - gerenciador de persistência de classes dinâmicas
+	 * @param dbManager gerenciador de persistência de classes dinâmicas
 	 * <br><i>persistence manager of LiveClasses</i>
-	 * @param safeMode - <i>true</i> para que a fábrica execute em modo seguro, <i>false</i> para executar no modo padrão
+	 * @param safeMode <i>true</i> para que a fábrica execute em modo seguro, <i>false</i> para executar no modo padrão
 	 * <br><i>true to set this factory to run in safe mode, false to run in standard mode</i> 
 	 * @throws LiveClassFactoryException caso ocorra algum erro ao instanciar a fábrica
 	 * <br><i>in case of error instantiating the factory</i> 
@@ -108,16 +105,15 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 	/**
 	 * <p>
 	 * Constrói uma nova fábrica para a criação de objetos de classes dinâmicas.
-	 * </p>
 	 * <p><i>
 	 * Constructs a new factory for creating LiveClass objects. 
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param classLoader - classloader customizado para o carregamento de classes dinâmicas
+	 * @param classLoader classloader customizado para o carregamento de classes dinâmicas
 	 * <br><i>custom classloader for loading LiveClasses</i>
-	 * @param dbManager - gerenciador de persistência de classes dinâmicas
+	 * @param dbManager gerenciador de persistência de classes dinâmicas
 	 * <br><i>persistence manager of LiveClasses</i>
-	 * @param safeMode - <i>true</i> para que a fábrica execute em modo seguro, <i>false</i> para executar no modo padrão
+	 * @param safeMode <i>true</i> para que a fábrica execute em modo seguro, <i>false</i> para executar no modo padrão
 	 * <br><i>true to set this factory to run in safe mode, false to run in standard mode</i> 
 	 * @throws LiveClassFactoryException caso ocorra algum erro ao instanciar a fábrica
 	 * <br><i>in case of error instantiating the factory</i> 
@@ -158,17 +154,16 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 	/**
 	 * <p>
 	 * Cria um novo objeto de uma classe dinâmica.
-	 * </p>
 	 * <p><i>
 	 * Creates a new LiveClass object.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param liveClass - a classe dinâmica
+	 * @param liveClass a classe dinâmica
 	 * <br><i>the LiveClass class</i>
 	 * @return um novo objeto dinâmico que é atualizado automaticamente quando uma nova versão da classe dinâmica é carregada
 	 * <br><i>a new 'live' object that is automatically updated when a new version of its LiveClass is loaded</i>
 	 * @throws IncompatibleLiveClassException caso <b>liveClass</b> não seja uma classe dinâmica válida
-	 * <br><i>in case of <b>liveCLass</b> is not a valid LiveClass
+	 * <br><i>in case of <b>liveCLass</b> is not a valid LiveClass</i>
 	 * @see org.esfinge.liveprog.annotation.LiveClass
 	 * @see org.esfinge.liveprog.instrumentation.InstrumentationHelper#checkValidLiveClass(Class)
 	 */
@@ -180,17 +175,16 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 	/**
 	 * <p>
 	 * Cria um novo objeto de uma classe dinâmica em modo seguro.
-	 * </p>
 	 * <p><i>
 	 * Creates a new LiveClass object in safe mode.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param liveClass - a classe dinâmica
+	 * @param liveClass a classe dinâmica
 	 * <br><i>the LiveClass class</i>
 	 * @return um novo objeto dinâmico que é atualizado automaticamente quando uma nova versão da classe dinâmica é aceita (commit)
 	 * <br><i>a new 'live' object that is automatically updated when a new version of its LiveClass is committed</i>
 	 * @throws IncompatibleLiveClassException caso <b>liveClass</b> não seja uma classe dinâmica válida
-	 * <br><i>in case of <b>liveCLass</b> is not a valid LiveClass
+	 * <br><i>in case of <b>liveCLass</b> is not a valid LiveClass</i>
 	 * @see org.esfinge.liveprog.annotation.LiveClass
 	 * @see org.esfinge.liveprog.instrumentation.InstrumentationHelper#checkValidLiveClass(Class)
 	 * @see #setSafeMode
@@ -288,13 +282,12 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 	 * Atribui o modo de operação da fábrica.
 	 * Se a fábrica estiver executando em modo seguro, os objetos dinâmicos só serão atualizados 
 	 * quando a nova versão da classe dinâmica for aceita (commit). 
-	 * </p>
 	 * <p><i>
 	 * Sets the operation mode of this factory.
 	 * When executing in safe mode, 'live' objects are only updated after a commit of the LiveClass new version.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param safeMode - <i>true</i> para que a fábrica execute em modo seguro, <i>false</i> para executar no modo padrão
+	 * @param safeMode <i>true</i> para que a fábrica execute em modo seguro, <i>false</i> para executar no modo padrão
 	 * <br><i>true to set this factory to run in safe mode, false to run in standard mode</i> 
 	 */
 	public void setSafeMode(boolean safeMode)
@@ -308,17 +301,16 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 	/**
 	 * <p>
 	 * Registra o observador para que seja notificado sobre atualizações da classe dinâmica informada.
-	 * </p>
 	 * <p><i>
 	 * Registers the observer interested on being notified about updates of the specified LiveClass.
-	 * </i></p> 
+	 * </i> 
 	 * 
-	 * @param liveClass - classe dinâmica a ser observada
+	 * @param liveClass classe dinâmica a ser observada
 	 * <br><i>the LiveClass to be observed</i>
-	 * @param observer - observador a ser notificado sobre atualizações da classe informada
+	 * @param observer observador a ser notificado sobre atualizações da classe informada
 	 * <br><i>observer to be notified about updates of the specified LiveClass</i>
 	 * @return <i>true</i> se o observador foi registrado corretamente, <i>false</i> caso contrário (i.e. caso <b>liveClass</b> não seja uma classe dinâmica válida)
-	 * <br><i>true if the observer was successfully registered, false otherwise (i.e in case of <b>liveCLass</b> is not a valid LiveClass)
+	 * <br><i>true if the observer was successfully registered, false otherwise (i.e in case of <b>liveCLass</b> is not a valid LiveClass)</i>
 	 * @see org.esfinge.liveprog.ILiveClassObserver
 	 * @see org.esfinge.liveprog.instrumentation.InstrumentationHelper#checkValidLiveClass(Class)
 	 */
@@ -359,14 +351,13 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 	/**
 	 * <p>
 	 * Remove o observador da lista de observadores da classe dinâmica informada.
-	 * </p>
 	 * <p><i>
 	 * Removes the observer from the list of registered observers of the specified LiveClass.
-	 * </i></p> 
+	 * </i> 
 	 * 
-	 * @param liveClass - classe dinâmica sendo observada
+	 * @param liveClass classe dinâmica sendo observada
 	 * <br><i>the observed LiveClass</i>
-	 * @param observer - observador a ser removido da lista de observadores registrados da classe informada
+	 * @param observer observador a ser removido da lista de observadores registrados da classe informada
 	 * <br><i>observer to be removed from the list of registered observers of the specified LiveClass</i>
 	 * @see org.esfinge.liveprog.ILiveClassObserver
 	 */
@@ -383,19 +374,18 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 	/**
 	 * <p>
 	 * Cria um objeto dinâmico da classe informada.
-	 * </p>
 	 * <p><i>
 	 * Creates a 'live' object of the specified LiveClass.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param liveClass - a classe dinâmica
+	 * @param liveClass a classe dinâmica
 	 * <br><i>the LiveClass class</i>
-	 * @param safeMode - <i>true</i> para que a objeto seja criado em modo seguro, <i>false</i> para ser criado no modo normal
+	 * @param safeMode <i>true</i> para que a objeto seja criado em modo seguro, <i>false</i> para ser criado no modo normal
 	 * <br><i>true creates the object in safe mode, false on standard mode</i>
 	 * @return um novo objeto dinâmico que é atualizado automaticamente nas alterações da classe dinâmica
 	 * <br><i>a new 'live' object that is automatically updated when its LiveClass changes</i>
 	 * @throws IncompatibleLiveClassException caso <b>liveClass</b> não seja uma classe dinâmica válida
-	 * <br><i>in case of <b>liveCLass</b> is not a valid LiveClass
+	 * <br><i>in case of <b>liveCLass</b> is not a valid LiveClass</i>
 	 */
 	@SuppressWarnings("unchecked")
 	private <L> L createLiveObject(Class<L> liveClass, boolean safeMode) throws IncompatibleLiveClassException
@@ -471,16 +461,15 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 	/**
 	 * <p>
 	 * Registra os proxies criados para que eles sejam notificados quando a classe dinâmica for atualizada.
-	 * </p>
 	 * <p><i>
 	 * Registers the proxies in order to notify them about updates of the LiveClass they are bound to. 
-	 * </i></p>
+	 * </i>
 	 *  
-	 * @param liveClassName - nome da classe dinâmica
+	 * @param liveClassName nome da classe dinâmica
 	 * <br><i>name of the LiveClass class</i>
-	 * @param proxy - proxy para a classe dinâmica
+	 * @param proxy proxy para a classe dinâmica
 	 * <br><i>proxy bounded to the LiveClass</i>
-	 * @param safeMode - <i>true</i> se o objeto dinâmico foi criado em modo seguro, <i>false</i> se foi criado no modo normal
+	 * @param safeMode <i>true</i> se o objeto dinâmico foi criado em modo seguro, <i>false</i> se foi criado no modo normal
 	 * <br><i>true if the 'live' object was created in safe mode, false if created in standard mode</i> 
 	 */
 	private void registerProxy(String liveClassName, LiveClassProxy proxy, boolean safeMode)	
@@ -504,14 +493,13 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 	/**
 	 * <p>
 	 * Recebe a notificação de que uma classe dinâmica foi atualizada para uma nova versão.
-	 * </p>
 	 * <p><i>
 	 * Is notified that a LiveClass was updated to a new version.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param liveClassName - nome da classe dinâmica
+	 * @param liveClassName nome da classe dinâmica
 	 * <br><i>name of the LiveClass</i>
-	 * @param newLiveClassInfo - informações da nova versão da classe dinâmica
+	 * @param newLiveClassInfo informações da nova versão da classe dinâmica
 	 * <br><i>information of its new version</i>
 	 */
 	private void liveClassUpdated(String liveClassName, ClassInfo newLiveClassInfo)
@@ -571,16 +559,15 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 	/**
 	 * <p>
 	 * Notifica os proxies que a classe dinâmica foi recarregada em uma nova versão.
-	 * </p>
 	 * <p><i>
 	 * Notifies the proxies that the LiveClass was reloaded on a new version.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param liveClassName - nome da classe dinâmica
+	 * @param liveClassName nome da classe dinâmica
 	 * <br><i>name of the LiveClass</i>
-	 * @param newLiveClass - nova versão da classe dinâmica
+	 * @param newLiveClass nova versão da classe dinâmica
 	 * <br><i>updated version of the LiveClass</i>
-	 * @param safeMode - <i>true</i> para notificar os proxies de objetos criados em modo seguro, 
+	 * @param safeMode <i>true</i> para notificar os proxies de objetos criados em modo seguro, 
 	 * <i>false</i> para os criados no modo normal
 	 * <br><i>true to notify the proxies of 'live' object created in safe mode, false for those created in standard mode</i> 
 	 */
@@ -597,16 +584,15 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 	/**
 	 * <p>
 	 * Notifica os proxies que a classe dinâmica foi revertida para uma versão anterior.
-	 * </p>
 	 * <p><i>
 	 * Notifies the proxies that the LiveClass was rolled back to a previous version.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param liveClassName - nome da classe dinâmica
+	 * @param liveClassName nome da classe dinâmica
 	 * <br><i>name of the LiveClass</i>
-	 * @param newLiveClass - nova versão da classe dinâmica
+	 * @param newLiveClass nova versão da classe dinâmica
 	 * <br><i>updated version of the LiveClass</i>
-	 * @param safeMode - <i>true</i> para notificar os proxies de objetos criados em modo seguro, 
+	 * @param safeMode <i>true</i> para notificar os proxies de objetos criados em modo seguro, 
 	 * <i>false</i> para os criados no modo normal
 	 * <br><i>true to notify the proxies of 'live' object created in safe mode, false for those created in standard mode</i> 
 	 */
@@ -623,14 +609,13 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 	/**
 	 * <p>
 	 * Notifica os observadores externos que a classe dinâmica foi recarregada em uma nova versão.
-	 * </p>
 	 * <p><i>
 	 * Notifies the observers that the LiveClass was reloaded on a new version.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param liveClassName - nome da classe dinâmica
+	 * @param liveClassName nome da classe dinâmica
 	 * <br><i>name of the LiveClass</i>
-	 * @param newLiveClass - nova versão da classe dinâmica
+	 * @param newLiveClass nova versão da classe dinâmica
 	 * <br><i>updated version of the LiveClass</i>
 	 */
 	private void notifyExternalObservers(String liveClassName, Class<?> newLiveClass)
@@ -643,10 +628,9 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 	/**
 	 * <p>
 	 * Gerenciador de atualizações de classes dinâmicas.
-	 * </p>
 	 * <p><i>
 	 * LiveClasses update manager.
-	 * </i></p>
+	 * </i>
 	 */
 	private class LiveClassUpdateManager implements ILiveClassFileMonitorObserver
 	{
@@ -657,11 +641,9 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 		/**
 		 * <p>
 		 * Constrói um novo gerenciador de atualizações de classes dinâmicas.
-		 * </p>
-		 * </p>
 		 * <p><i>
 		 * Constructs a new manager for LiveClasses updates.
-		 * </i></p>
+		 * </i>
 		 */
 		LiveClassUpdateManager()
 		{
@@ -753,13 +735,12 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 		 * <p>
 		 * Verifica a compatibilidade da nova versão da classe dinâmica com a sua versão original.
 		 * A nova classe deve ter a mesma interface pública da versão original.
-		 * </p>
 		 * <p><i>
 		 * Checks if the new version of the LiveClass is compatible with its original version.
 		 * The new class must comply with the original public interface. 
-		 * </i></p>
+		 * </i>
 		 * 
-		 * @param newClassInfo - as informações da nova classe
+		 * @param newClassInfo as informações da nova classe
 		 * <br><i>information of its new version</i>
 		 * @throws IncompatibleLiveClassException se a nova classe não for compatível com a versão original
 		 * <br><i>if the new version is not compatible with its original class</i>
@@ -838,12 +819,11 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 		/**
 		 * <p>
 		 * Cria a nova versão da classe dinâmica.
-		 * </p>
 		 * <p><i>
 		 * Creates a new version of the LiveClass.
-		 * </i></p>
+		 * </i>
 		 * 
-		 * @param classInfo - as informações da classe atualizada, carregadas do seu arquivo .class
+		 * @param classInfo as informações da classe atualizada, carregadas do seu arquivo .class
 		 * <br><i>information of the updated class, read from its class file</i>
 		 * @return as informações da classe criada em sua nova versão
 		 * <br><i>information of the newly created class on its new version</i>
@@ -861,13 +841,12 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 		 * <p>
 		 * Retorna o mapa de classes que contém a classe informada.
 		 * Se não encontrar, cria um novo mapa para ela.
-		 * </p>
 		 * <p><i>
 		 * Returns the classmap that contains the specified class.
 		 * If none is found, creates a new map for it.
-		 * </i></p>
+		 * </i>
 		 * 
-		 * @param className - o nome da classe
+		 * @param className o nome da classe
 		 * <br><i>the class name</i>
 		 * @return o mapa de classes que contém a classe informada
 		 * <br><i>the classmap that contains the specified class</i>
@@ -896,14 +875,13 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 		/**
 		 * <p>
 		 * Combina dois mapas de classes relacionados.
-		 * </p>
 		 * <p><i>
 		 * Merges two related classmaps.
-		 * </i></p>
+		 * </i>
 		 * 
-		 * @param cm1 - o mapa de classes relacionadas
+		 * @param cm1 o mapa de classes relacionadas
 		 * <br><i>the related classmap</i>
-		 * @param cm2 - o mapa de classes relacionadas
+		 * @param cm2 o mapa de classes relacionadas
 		 * <br><i>the related classmap</i>
 		 * @return um novo mapa de classes contendo as classes dos mapas informados
 		 * <br><i>a new classmap comprising both classmaps</i>
@@ -931,12 +909,11 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 		 * Para que uma classe dinâmica possa ser instrumentada e carregada em sua nova versão,
 		 * todos os arquivos das suas classes internas (que também podem conter classes internas) devem ser
 		 * encontrados e mapeados. Esta classe monta o grafo de relacionamento dessas classes.  
-		 * </p>
 		 * <p><i>
 		 * Utilitary class for mapping a LiveClass and its inner classes.
 		 * For a LiveClass to be instrumented and loaded on its new version, all inner classes files (and those of their inner classes)
 		 * must be gathered and mapped. This class helps on building the graph of these related classes.
-		 * </i></p>
+		 * </i>
 		 */
 		private class ClassMap
 		{
@@ -947,10 +924,9 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 			/**
 			 * <p>
 			 * Constrói um novo mapa de classes.
-			 * </p>
 			 * <p><i>
 			 * Constructs a new classmap. 
-			 * </i></p>
+			 * </i>
 			 */
 			ClassMap()
 			{
@@ -960,12 +936,11 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 			/**
 			 * <p>
 			 * Adiciona um novo nó com informações de uma classe relacionada a esse mapa.
-			 * </p>
 			 * <p><i>
 			 * Adds a new class node related to this classmap.
-			 * </i></p>
+			 * </i>
 			 * 
-			 * @param node - nó com informações da classe relacionada a esse mapa
+			 * @param node nó com informações da classe relacionada a esse mapa
 			 * <br><i>class node related to this classmap</i>
 			 */
 			public void addClassNode(ClassNode node)
@@ -976,12 +951,11 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 			/**
 			 * <p>
 			 * Obtém o nó com informações da classe informada.
-			 * </p>
 			 * <p><i>
 			 * Gets the class node associated with the specified class.
-			 * </i></p>
+			 * </i>
 			 * 
-			 * @param className - nome da classe
+			 * @param className nome da classe
 			 * <br><i>name of the class</i> 
 			 * @return o nó com as informações da classe informada
 			 * <br><i>the class node associated with the specified class</i>
@@ -994,12 +968,11 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 			/**
 			 * <p>
 			 * Verifica se este mapa contém um nó associado à classe informada.
-			 * <p>
 			 * <p><i>
 			 * Checks if this classmap contains a class node associated with the specified class
-			 * </i></p>
+			 * </i>
 			 * 
-			 * @param className - nome da classe 
+			 * @param className nome da classe 
 			 * <br><i>name of the class</i> 
 			 * @return <i>true</i> se a classe constar no mapa de classes,
 			 * <i>false</i> caso contrário
@@ -1013,10 +986,9 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 			/**
 			 * <p>
 			 * Verifica se o mapeamento de classes está completo.
-			 * </p>
 			 * <p><i>
 			 * Checks if the classes mapping is complete.
-			 * </i></p>
+			 * </i>
 			 * 
 			 * @return <i>true</i> se todos os nós das classes relacionadas foram carregados neste mapa de classes, 
 			 * <i>false</i> caso contrário
@@ -1035,10 +1007,9 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 			/**
 			 * <p>
 			 * Obtém as informações da classe raíz deste mapa de classes - ou seja, da classe dinâmica.
-			 * </p>
 			 * <p><i>
 			 * Gets the information of the top class of this classmap - the LiveClass itself.
-			 * </i></p>
+			 * </i>
 			 * 
 			 * @return as informações da classe dinâmica
 			 * <br><i>information of the LiveClass itself</i>
@@ -1051,10 +1022,9 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 			/**
 			 * <p>
 			 * Organiza os mapeamentos internos deste mapa de classes.
-			 * </p>
 			 * <p><i>
 			 * Organizes the inner mappings of this classmap.
-			 * </i></p>
+			 * </i>
 			 */
 			public void doArrange()
 			{
@@ -1072,11 +1042,10 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 			/**
 			 * <p>
 			 * Ordena as informações das classes internas da classe informada. 
-			 * </p>
 			 * <p><i>
 			 * Provides the inner classes arrangement of the specified class.
-			 * </i></p>
-			 * @param classInfo - classe a ser organizada
+			 * </i>
+			 * @param classInfo classe a ser organizada
 			 * <br><i>class to be arranged</i>
 			 * @return a classe com as informações das classes internas adicionadas
 			 * <br><i>the specified class and its inner classes sorted out</i>
@@ -1094,10 +1063,9 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 		/**
 		 * <p>
 		 * Armazena informações sobre uma classe associada a um mapa de classes.  
-		 * </p>
 		 * <p><i>
 		 * Stores information about a class related to a classmap.
-		 * </i></p>
+		 * </i>
 		 */
 		private class ClassNode
 		{
@@ -1111,10 +1079,9 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 			/**
 			 * <p>
 			 * Obtém o nome da classe.
-			 * </p>
 			 * <p><i>
 			 * Gets the class name.
-			 * </i></p>
+			 * </i>
 			 * 
 			 * @return o nome da classe
 			 * <br><i>the name of the class</i>
@@ -1127,11 +1094,10 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 			/**
 			 * <p>
 			 * Atribui o nome da classe.
-			 * </p>
 			 * <p><i>
 			 * Sets the class name.
-			 * </i></p>
-			 * @param className - nome da classe
+			 * </i>
+			 * @param className nome da classe
 			 * <br><i>name of the class</i>
 			 */
 			public void setClassName(String className)
@@ -1142,10 +1108,9 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 			/**
 			 * <p>
 			 * Obtém as informações da classe.
-			 * </p>
 			 * <p><i>
 			 * Gets the information of the class. 
-			 * </i></p>
+			 * </i>
 			 * 
 			 * @return as informações da classe
 			 * <br><i>the information of the class</i>
@@ -1159,12 +1124,11 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 			/**
 			 * <p>
 			 * Atribui as informações da classe.
-			 * </p>
 			 * <p><i>
 			 * Sets the information of the class.
-			 * </i></p>
+			 * </i>
 			 * 
-			 * @param classInfo - as informações da classe
+			 * @param classInfo as informações da classe
 			 * <br><i>information of the class</i>
 			 * @see org.esfinge.liveprog.reflect.ClassInfo
 			 */
@@ -1177,10 +1141,9 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 			 * <p>
 			 * Verifica se as informações da classe já foram carregadas.
 			 * As informações são carregadas quando lidas do seu arquivo .class. 
-			 * </p>
 			 * <p><i>
 			 * Checks if the class information is already loaded, read from its class file.
-			 * </i></p>
+			 * </i>
 			 * 
 			 * @return <i>true</i> caso as informações da classe já tenham sido carregadas,
 			 * <i>false</i> caso contrário

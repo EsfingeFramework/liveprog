@@ -16,10 +16,9 @@ import org.objectweb.asm.Type;
 /**
  * <p>
  * Extrai informações sobre uma classe. 
- * </p>
  * <p><i>
  * Collects information about a class.
- * </i></p>
+ * </i>
  */
 class ClassInspector extends ClassVisitor
 {
@@ -30,12 +29,11 @@ class ClassInspector extends ClassVisitor
 	/**
 	 * <p>
 	 * Constrói um novo inspetor de classes.
-	 * </p>
 	 * <p><i>
 	 * Constructs a new class inspector.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param classBytecode - bytecodes da classe
+	 * @param classBytecode bytecodes da classe
 	 * <br><i>the bytecodes of the class</i>
 	 */
 	ClassInspector(byte[] classBytecode)
@@ -52,10 +50,9 @@ class ClassInspector extends ClassVisitor
 	/**
 	 * <p>
 	 * Obtém as informações extraídas da classe.
-	 * </p>
 	 * <p><i>
 	 * Gets the class collected information.
-	 * </i></p>
+	 * </i>
 	 * 
 	 * @return as informações da classe inspecionada
 	 * <br><i>the collected information of the class</i>

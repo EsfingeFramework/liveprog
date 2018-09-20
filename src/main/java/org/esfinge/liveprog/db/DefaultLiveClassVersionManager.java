@@ -29,15 +29,14 @@ import org.esfinge.liveprog.util.Utils;
  * Os labels dos componentes estão no idioma Português-BR. Para customizá-los para outros valores ou idiomas,
  * pode-se informar um <i>Map</i> no momento da construção contendo as seguintes chaves e valores:
  * <ul>
- * <li><i>title</i> - o título da janela principal
- * <li><i>button.refresh</i> - o label do botão que atualiza a tabela de versões das classes dinâmicas
- * <li><i>button.commit</i> - o label do botão que realiza o aceite da versão da classe dinâmica selecionada
- * <li><i>button.rollback</i> - o label do botão que realiza o descarte da versão da classe dinâmica selecionada
- * <li><i>table.classname</i> - o label da coluna de nome da tabela de versões
- * <li><i>table.version</i> - o label da coluna de versão da tabela de versões 
- * <li><i>table.safemode</i> - o label da coluna de versão do modo seguro da tabela de versões
+ * <li><i>title</i> - o título da janela principal</li>
+ * <li><i>button.refresh</i> - o label do botão que atualiza a tabela de versões das classes dinâmicas</li>
+ * <li><i>button.commit</i> - o label do botão que realiza o aceite da versão da classe dinâmica selecionada</li>
+ * <li><i>button.rollback</i> - o label do botão que realiza o descarte da versão da classe dinâmica selecionada</li>
+ * <li><i>table.classname</i> - o label da coluna de nome da tabela de versões</li>
+ * <li><i>table.version</i> - o label da coluna de versão da tabela de versões</li>
+ * <li><i>table.safemode</i> - o label da coluna de versão do modo seguro da tabela de versões</li>
  * </ul>
- * </p>
  * <p><i>
  * Default implementation, in Java Swing, providing LiveClasses versioning management.
  * <br>
@@ -45,15 +44,15 @@ import org.esfinge.liveprog.util.Utils;
  * All labels are, by default, in the Portuguese-BR language. In order to customize their values, a Map may be used 
  * containing the following keys and values: 
  * <ul>
- * <li>title - the title of the main window
- * <li>button.refresh - the label of the button that refreshs the table of LiveClasses
- * <li>button.commit - the label of the button that commits the version of the selected LiveClass
- * <li>button.rollback - the label of the button that rolls back the version of the selected LiveClass
- * <li>table.classname - the label of the table's column that displays the name of the LiveClass
- * <li>table.version - the label of the table's column that displays the current version of the LiveClass 
- * <li>table.safemode - the label of the table's column that displays the safe mode version of the LiveClass
+ * <li>title - the title of the main window</li>
+ * <li>button.refresh - the label of the button that refreshs the table of LiveClasses</li>
+ * <li>button.commit - the label of the button that commits the version of the selected LiveClass</li>
+ * <li>button.rollback - the label of the button that rolls back the version of the selected LiveClass</li>
+ * <li>table.classname - the label of the table's column that displays the name of the LiveClass</li>
+ * <li>table.version - the label of the table's column that displays the current version of the LiveClass</li> 
+ * <li>table.safemode - the label of the table's column that displays the safe mode version of the LiveClass</li>
  * </ul>
- * </i></p>
+ * </i>
  */
 @SuppressWarnings("serial")
 public class DefaultLiveClassVersionManager extends JFrame implements ILiveClassVersionManager
@@ -87,12 +86,11 @@ public class DefaultLiveClassVersionManager extends JFrame implements ILiveClass
 	/**
 	 * <p>
 	 * Constrói uma nova janela para gerenciamento das versões de classes dinâmicas, utilizando os labels padrão dos componentes.
-	 * </p>
 	 * <p><i>
 	 * Constructs a new window for LiveClasses versioning management, using the default Portuguese-BR labels.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param liveClassDB - gerenciador de persistência de classes dinâmicas
+	 * @param liveClassDB gerenciador de persistência de classes dinâmicas
 	 * <br><i>LiveClasses persistence manager</i>
 	 */
 	public DefaultLiveClassVersionManager(ILiveClassPersistence liveClassDB)
@@ -103,14 +101,13 @@ public class DefaultLiveClassVersionManager extends JFrame implements ILiveClass
 	/**
 	 * <p>
 	 * Constrói uma nova janela para gerenciamento das versões de classes dinâmicas, permitindo customizar os labels dos componentes.
-	 * </p>
 	 * <p><i>
 	 * Constructs a new window for LiveClasses versioning management, allowing the customization of the component's labels.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param liveClassDB - gerenciador de persistência de classes dinâmicas
+	 * @param liveClassDB gerenciador de persistência de classes dinâmicas
 	 * <br><i>LiveClasses persistence manager</i>
-	 * @param labelsMap - mapa contendo os labels customizados dos componentes
+	 * @param labelsMap mapa contendo os labels customizados dos componentes
 	 * <br><i>the map containing the customized label's values</i>
 	 */
 	public DefaultLiveClassVersionManager(ILiveClassPersistence liveClassDB, Map<String,String> labelsMap)
@@ -141,10 +138,9 @@ public class DefaultLiveClassVersionManager extends JFrame implements ILiveClass
 	/**
 	 * <p>
 	 * Cria o painel principal da janela.
-	 * </p>
 	 * <p><i>
 	 * Creates the main panel.
-	 * </i></p>
+	 * </i>
 	 * 
 	 * @return o painel principal da janela
 	 * <br><i>the main panel</i>
@@ -200,15 +196,14 @@ public class DefaultLiveClassVersionManager extends JFrame implements ILiveClass
 	/**
 	 * <p>
 	 * Notifica os observadores sobre a alteração de uma versão de classe dinâmica.
-	 * </p>
 	 * <p><i>
 	 * Notifies the observers about a LiveClass version change.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param liveClassName - nome da classe dinâmica
+	 * @param liveClassName nome da classe dinâmica
 	 * <br><i>name of the changed LiveClass</i>
 	 * @param operation <i>true</i> para commit, <i>false</i> para rollback
-	 * <br><i>true for a commit, false for a rollback
+	 * <br><i>true for a commit, false for a rollback</i>
 	 */
 	private void notifyObservers(String liveClassName, boolean operation)
 	{
@@ -225,11 +220,10 @@ public class DefaultLiveClassVersionManager extends JFrame implements ILiveClass
 	 * <p>
 	 * Habilita ou desabilita os botões de commit e rollback 
 	 * conforme as versões da classe dinâmica selecionada na tabela.
-	 * </p>
 	 * <p><i>
 	 * Enables or disables the commit and rollback buttons 
-	 * according to the selected LiveClass.
-	 * </i></p>
+	 * according to the versioning of the selected LiveClass.
+	 * </i>
 	 */
 	private void updateButtons()
 	{
@@ -258,10 +252,9 @@ public class DefaultLiveClassVersionManager extends JFrame implements ILiveClass
 	/**
 	 * <p>
 	 * Atualiza a tabela de versões de classes dinâmicas.
-	 * </p>
 	 * <p><i>
-	 * Refreshs the LiveClasses table. 
-	 * </i></p>
+	 * Refreshs the LiveClasses versioning table. 
+	 * </i>
 	 */
 	private void executeReload()
 	{
@@ -280,10 +273,9 @@ public class DefaultLiveClassVersionManager extends JFrame implements ILiveClass
 	/**
 	 * <p>
 	 * Executa o commit da versão da classe dinâmica selecionada.
-	 * </p>
 	 * <p><i>
 	 * Commits the version of the selected LiveClass.
-	 * </i></p>
+	 * </i>
 	 */
 	private void executeCommit()
 	{
@@ -320,10 +312,9 @@ public class DefaultLiveClassVersionManager extends JFrame implements ILiveClass
 	/**
 	 * <p>
 	 * Executa o rollback da versão da classe dinâmica selecionada.
-	 * </p>
 	 * <p><i>
 	 * Rolls back the version of the selected LiveClass.
-	 * </i></p>
+	 * </i>
 	 */
 	private void executeRollback()
 	{
@@ -361,10 +352,9 @@ public class DefaultLiveClassVersionManager extends JFrame implements ILiveClass
 	/**
 	 * <p>
 	 * Modelo para a tabela de versões de classes dinâmicas.
-	 * </p>
 	 * <p><i>
-	 * TableModel of the LiveClasses table. 
-	 * </i></p>
+	 * TableModel of the LiveClasses versioning table. 
+	 * </i>
 	 */
 	private class LiveClassTableModel extends AbstractTableModel
 	{
@@ -374,10 +364,9 @@ public class DefaultLiveClassVersionManager extends JFrame implements ILiveClass
 		/**
 		 * <p>
 		 * Construtor padrão.
-		 * </p>
 		 * <p><i>
 		 * Default constructor.
-		 * </i></p>
+		 * </i>
 		 */
 		LiveClassTableModel()
 		{
@@ -426,14 +415,13 @@ public class DefaultLiveClassVersionManager extends JFrame implements ILiveClass
 
 		/**
 		 * <p>
-		 * Atribui as informações das versões das classes dinâmicas.
-		 * </p>
+		 * Atribui as informações de versionamento das classes dinâmicas.
 		 * <p><i>
-		 * Sets the data of the LiveClasses versions.
-		 * </i></p>
+		 * Sets the LiveClasses versioning data.
+		 * </i>
 		 * 
-		 * @param newData - informações das versões das classes dinâmicas
-		 * <br><i>the data of the LiveClasses versions</i>
+		 * @param newData informações das versões das classes dinâmicas
+		 * <br><i>the LiveClasses versioning data</i>
 		 */
 		public void setData(List<ILiveClassVersionInfo> newData)
 		{
@@ -443,15 +431,15 @@ public class DefaultLiveClassVersionManager extends JFrame implements ILiveClass
 		
 		/**
 		 * <p>
-		 * Obtém as informações da classe dinâmica da linha informada.
-		 * </p>
+		 * Obtém as informações de versionamento da classe dinâmica selecionada.
 		 * <p><i>
-		 * Gets the LiveClass information of the specified index.
-		 * </i></p>
+		 * Gets the LiveClass versioning information of the specified index.
+		 * </i>
 		 * 
-		 * @param index - linha da tabela de versões
-		 * <br><i>the selected row of the LiveClasses table</i>
-		 * @return
+		 * @param index linha na tabela de versões da classe dinâmica selecionada
+		 * <br><i>the selected row of the LiveClasses versioning table</i>
+		 * @return as inforações de versionamento da classe dinâmica selecionada
+		 * <br><i>the LiveClass versioning information of the specified index</i>
 		 */
 		public ILiveClassVersionInfo getObjectAt(int index)
 		{
@@ -462,10 +450,9 @@ public class DefaultLiveClassVersionManager extends JFrame implements ILiveClass
 	/**
 	 * <p>
 	 * Renderizador para a tabela de versões de classes dinâmicas.
-	 * </p>
 	 * <p><i>
-	 * TableCellRenderer of the LiveClasses table. 
-	 * </i></p>
+	 * TableCellRenderer of the LiveClasses versioning table. 
+	 * </i>
 	 */
 	private class LiveClassTableCellRenderer extends DefaultTableCellRenderer
 	{

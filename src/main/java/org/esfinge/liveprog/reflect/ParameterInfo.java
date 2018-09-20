@@ -8,10 +8,9 @@ import org.esfinge.liveprog.util.Utils;
 /**
  * <p>
  * Armazena informações sobre um parâmetro de um método.
- * </p>
  * <p><i>
  * Stores information about a parameter of a method.
- * </i></p>
+ * </i>
  */
 public class ParameterInfo implements Comparable<ParameterInfo>
 {
@@ -31,10 +30,9 @@ public class ParameterInfo implements Comparable<ParameterInfo>
 	/**
 	 * <p>
 	 * Construtor padrão.
-	 * </p>
 	 * <p><i>
 	 * Default constructor.
-	 * </i></p>
+	 * </i>
 	 */
 	public ParameterInfo()
 	{
@@ -44,12 +42,11 @@ public class ParameterInfo implements Comparable<ParameterInfo>
 	/**
 	 * <p>
 	 * Atribui o nome do parâmetro.
-	 * </p>
 	 * <p><i>
 	 * Sets the parameter name.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param name - nome do parâmetro
+	 * @param name nome do parâmetro
 	 * <br><i>the name of the parameter</i>
 	 */
 	public void setName(String name)
@@ -60,10 +57,9 @@ public class ParameterInfo implements Comparable<ParameterInfo>
 	/**
 	 * <p>
 	 * Obtém o nome do parâmetro.
-	 * </p>
 	 * <p><i>
 	 * Gets the parameter name.
-	 * </i></p>
+	 * </i>
 	 * 
 	 * @return o nome do parâmetro
 	 * <br><i>the name of the parameter</i>
@@ -76,12 +72,11 @@ public class ParameterInfo implements Comparable<ParameterInfo>
 	/**
 	 * <p>
 	 * Atribui o tipo do parâmetro.
-	 * </p>
 	 * <p><i>
 	 * Sets the parameter type.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param type - tipo do parâmetro
+	 * @param type tipo do parâmetro
 	 * <br><i>the type of the parameter</i>
 	 * @see org.esfinge.liveprog.reflect.TypeHandler
 	 */
@@ -93,10 +88,9 @@ public class ParameterInfo implements Comparable<ParameterInfo>
 	/**
 	 * <p>
 	 * Obtém o tipo do parâmetro.
-	 * </p>
 	 * <p><i>
 	 * Gets the parameter type.
-	 * </i></p>
+	 * </i>
 	 * 
 	 * @return o tipo do parâmetro
 	 * <br><i>the type of the parameter</i>
@@ -110,12 +104,11 @@ public class ParameterInfo implements Comparable<ParameterInfo>
 	/**
 	 * <p>
 	 * Atribui a posição do parâmetro no método.
-	 * </p>
 	 * <p><i>
 	 * Sets the method parameter position.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param index - posição do parâmetro no método
+	 * @param index posição do parâmetro no método
 	 * <br><i>the method parameter position</i>
 	 */
 	public void setIndex(int index)
@@ -126,10 +119,9 @@ public class ParameterInfo implements Comparable<ParameterInfo>
 	/**
 	 * <p>
 	 * Obtém a posição do parâmetro no método.
-	 * </p>
 	 * <p><i>
 	 * Gets the method parameter position.
-	 * </i></p>
+	 * </i>
 	 * 
 	 * @return a posição do parâmetro no método
 	 * <br><i>the method parameter position</i>
@@ -142,12 +134,11 @@ public class ParameterInfo implements Comparable<ParameterInfo>
 	/**
 	 * <p>
 	 * Adiciona informações das anotações do parâmetro.
-	 * </p>
 	 * <p><i>
 	 * Adds the parameter annotations.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param annotationsInfo - informações das anotações do parâmetro
+	 * @param annotationsInfo informações das anotações do parâmetro
 	 * <br><i>the annotations of the parameter</i>
 	 * @see org.esfinge.liveprog.reflect.AnnotationInfo
 	 */
@@ -159,10 +150,9 @@ public class ParameterInfo implements Comparable<ParameterInfo>
 	/**
 	 * <p>
 	 * Obtém informações das anotações do parâmetro.
-	 * </p>
 	 * <p><i>
 	 * Gets the parameter annotations.
-	 * </i></p>
+	 * </i>
 	 * 
 	 * @return as informações das anotações do parâmetro
 	 * <br><i>the annotations of the parameter</i>
@@ -176,13 +166,12 @@ public class ParameterInfo implements Comparable<ParameterInfo>
 	/**
 	 * <p>
 	 * Verifica se o parâmetro é um array.
-	 * </p>
 	 * <p><i>
 	 * Checks if this parameter is an array.
-	 * </i></p>
+	 * </i>
 	 * 
 	 * @return <i>true</i> caso o parâmetro seja um array, <i>false</i> caso contrário
-	 * <br><i>true if this parameter is an array, false otherwise 
+	 * <br><i>true if this parameter is an array, false otherwise</i>
 	 */
 	public boolean isArray()
 	{

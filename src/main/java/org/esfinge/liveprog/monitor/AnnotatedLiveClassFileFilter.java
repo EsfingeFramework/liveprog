@@ -10,10 +10,9 @@ import org.esfinge.liveprog.util.Utils;
 /**
  * <p>
  * Filtro que verifica se a classe contém a anotação {@link LiveClass}.
- * </p>
  * <p><i>
  * Filters classes annotated with {@link LiveClass}.
- * </i></p>
+ * </i>
  * 
  * @see org.esfinge.liveprog.annotation.LiveClass
  * @see org.esfinge.liveprog.monitor.ILiveClassFileFilter

@@ -3,85 +3,78 @@ package org.esfinge.liveprog.util;
 /**
  * <p>
  * Interface para customizar o logger utilizado pelo framework.
- * </p>
  * <p><i>
  * Interface to be implemented by classes to customize the logger object to be used by the framework.
- * </i></p> 
+ * </i> 
  */
 public interface ILiveClassLogger
 {
 	/**
 	 * <p>
-	 * Níveis de log permitidos.
-	 * </p>
+	 * Níveis de log disponíveis.
 	 * <p><i>
 	 * Logging levels available.
-	 * </i></p>
+	 * </i>
 	 */
 	public enum Level { ERROR, WARNING, INFO, DEBUG };
 	
 	
 	/**
 	 * <p>
-	 * Loga a exceção como uma mensagem de erro.
-	 * </p>
+	 * Loga uma exceção como uma mensagem de erro.
 	 * <p><i>
-	 * Logs the throwable object as an error message.
-	 * </i></p>
+	 * Logs a throwable object as an error message.
+	 * </i>
 	 * 
-	 * @param exception - exceção a ser logada
+	 * @param exception exceção a ser logada
 	 * <br><i>the exception object to be logged</i>
 	 */
 	public void logException(Throwable exception);
 	
 	/**
 	 * <p>
-	 * Loga a mensagem de erro.
-	 * </p>
+	 * Loga uma mensagem de erro.
 	 * <p><i>
-	 * Logs the error message.
-	 * </i></p>
+	 * Logs an error message.
+	 * </i>
 	 * 
-	 * @param message - mensagem a ser logada
+	 * @param message mensagem a ser logada
 	 * <br><i>the message to be logged</i>
 	 */
 	public void logError(String message);
 	
 	/**
 	 * <p>
-	 * Loga a mensagem de aviso.
-	 * </p>
+	 * Loga uma mensagem de aviso.
 	 * <p><i>
-	 * Logs the warning message.
-	 * </i></p>
+	 * Logs a warning message.
+	 * </i>
 	 * 
-	 * @param message - mensagem a ser logada
+	 * @param message mensagem a ser logada
 	 * <br><i>the message to be logged</i>
 	 */
 	public void logWarning(String message);
 	
 	/**
 	 * <p>
-	 * Loga a mensagem de informação.
-	 * </p>
+	 * Loga uma mensagem de informação.
 	 * <p><i>
-	 * Logs the information message.
-	 * </i></p>
+	 * Logs an information message.
+	 * </i>
 	 * 
-	 * @param message - mensagem a ser logada
+	 * @param message mensagem a ser logada
 	 * <br><i>the message to be logged</i>
 	 */
 	public void logInfo(String message);
 	
 	/**
 	 * <p>
-	 * Loga a mensagem de debug.
-	 * </p>
+	 * Loga uma mensagem de debug.
 	 * <p><i>
-	 * Logs the debug message.
-	 * </i></p>
+	 * Logs a debug message.
+	 * </i>
 	 * 
-	 * @param message - mensagem a ser logada
+	 * @param message mensagem a ser logada
 	 * <br><i>the message to be logged</i>
 	 */
 	public void logDebug(String message);
@@ -89,12 +82,11 @@ public interface ILiveClassLogger
 	/**
 	 * <p>
 	 * Especifica o nível das mensagens a serem logadas
-	 * </p>
 	 * <p><i>
 	 * Specifies the log level of the messages to be logged.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param level - nível das mensagens a serem logadas
+	 * @param logLevel nível das mensagens a serem logadas
 	 * <br><i>the log level of the messages to be logged</i>
 	 */
 	public void setLevel(Level logLevel);

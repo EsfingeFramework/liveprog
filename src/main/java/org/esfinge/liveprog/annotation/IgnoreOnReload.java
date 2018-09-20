@@ -10,11 +10,10 @@ import java.lang.annotation.Target;
  * <p>
  * Marca uma propriedade para ser ignorada quando a classe dinâmica for atualizada em tempo de execução.
  * Com isso o seu valor não será copiado para a nova versão.
- * </p>
  * <p><i>
  * Annotates a property to be ignored when the LiveClass is updated at runtime.
  * As a result its value will not be copied to the new version.
- * </i></p>
+ * </i>
  * 
  * @see org.esfinge.liveprog.annotation.LiveClass
  */
@@ -22,5 +21,4 @@ import java.lang.annotation.Target;
 @Target(FIELD)
 public @interface IgnoreOnReload
 {
-
 }

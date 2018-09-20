@@ -49,28 +49,23 @@ public abstract class InstrumentationHelper
 	/**
 	 * <p>
 	 * Verifica se a classe informada é compatível com as regras para ser considerada uma classe dinâmica válida:
-	 * <ol>
-	 * <li>a classe tem que possuir a anotação {@link LiveClass}
-	 * <li>a classe deve possuir um construtor público vazio
-	 * <li>a classe não pode ser utilizada como parâmetro em nenhum de seus métodos públicos
-	 * <li>a classe não pode ser utilizada como retorno em nenhum de seus métodos públicos 
-	 * <li>suas classes internas não podem ser utilizadas como parâmetro em nenhum de seus métodos públicos
-	 * <li>suas classes internas não podem ser utilizadas como retorno em nenhum de seus métodos públicos    
-	 * </ol>
-	 * </p>
+	 * <br>- a classe tem que possuir a anotação {@link LiveClass}
+	 * <br>- a classe deve possuir um construtor público vazio
+	 * <br>- a classe não pode ser utilizada como parâmetro em nenhum de seus métodos públicos
+	 * <br>- a classe não pode ser utilizada como retorno em nenhum de seus métodos públicos
+	 * <br>- suas classes internas não podem ser utilizadas como parâmetro em nenhum de seus métodos públicos
+	 * <br>- suas classes internas não podem ser utilizadas como retorno em nenhum de seus métodos públicos
 	 * <p><i>
 	 * Checks if the specified class complies with the LiveClass's requirements:
-	 * <ol>
-	 * <li>the class must be annotated with {@link LiveClass}
-	 * <li>the class must define a public default constructor
-	 * <li>the class cannot be used as a parameter type in none of its public methods
-	 * <li>the class cannot be used as a return type in none of its public methods 
-	 * <li>its inner classes cannot be used as a parameter type in none of its public methods
-	 * <li>its inner classes cannot be used as a return type in none of its public methods    
-	 * </ol>
-	 * </i></p>
+	 * <br>- the class must be annotated with {@link LiveClass}
+	 * <br>- the class must define a public default constructor
+	 * <br>- the class cannot be used as a parameter type in none of its public methods
+	 * <br>- the class cannot be used as a return type in none of its public methods
+	 * <br>- its inner classes cannot be used as a parameter type in none of its public methods
+	 * <br>- its inner classes cannot be used as a return type in none of its public methods
+	 * </i>
 	 *   
-	 * @param liveClass - classe candidata a ser validada como uma classe dinâmica válida 
+	 * @param liveClass classe candidata a ser validada como uma classe dinâmica válida 
 	 * <br><i>the candidate class to be validated as a valid LiveClass</i>
 	 * @throws IncompatibleLiveClassException caso a classe não cumpra alguma das regras estabelecidas
 	 * <br><i>if the candidate class does not comply with the specified rules</i>
@@ -128,12 +123,11 @@ public abstract class InstrumentationHelper
 	/**
 	 * <p>
 	 * Inspeciona uma classe para obter suas informações.
-	 * </p>
 	 * <p><i>
 	 * Inspects the class to get its information.
-	 * </i></p>
+	 * </i>
 	 *  
-	 * @param classFile - arquivo compilado da classe (.class) a ser inspecionada
+	 * @param classFile arquivo compilado da classe (.class) a ser inspecionada
 	 * <br><i>the (.class) file of the class to be inspected</i>
 	 * @return as informações sobre a classe inspecionada
 	 * <br><i>the information about the inspected class</i>
@@ -149,12 +143,11 @@ public abstract class InstrumentationHelper
 	/**
 	 * <p>
 	 * Inspeciona uma classe para obter suas informações.
-	 * </p>
 	 * <p><i>
 	 * Inspects the class to get its information.
-	 * </i></p>
+	 * </i>
 	 *  
-	 * @param classBytecode - bytecode da classe a ser inspecionada
+	 * @param classBytecode bytecode da classe a ser inspecionada
 	 * <br><i>the class bytecode to be inspected</i>
 	 * @return as informações sobre a classe inspecionada
 	 * <br><i>the information about the inspected class</i>
@@ -168,12 +161,11 @@ public abstract class InstrumentationHelper
 	/**
 	 * <p>
 	 * Inspeciona uma classe para obter suas informações.
-	 * </p>
 	 * <p><i>
 	 * Inspects the class to get its information.
-	 * </i></p>
+	 * </i>
 	 *  
-	 * @param clazz - classe a ser inspecionada
+	 * @param clazz classe a ser inspecionada
 	 * <br><i>the class object to be inspected</i>
 	 * @return as informações sobre a classe inspecionada
 	 * <br><i>the information about the inspected class</i>
@@ -247,12 +239,11 @@ public abstract class InstrumentationHelper
 	/**
 	 * <p>
 	 * Inspeciona um método para obter suas informações.
-	 * </p>
 	 * <p><i>
 	 * Inspects the method to get its information.
-	 * </i></p>
+	 * </i>
 	 *  
-	 * @param method - método a ser inspecionado
+	 * @param method método a ser inspecionado
 	 * <br><i>the method object to be inspected</i>
 	 * @return as informações sobre o método inspecionado
 	 * <br><i>the information about the inspected method</i>
@@ -297,12 +288,11 @@ public abstract class InstrumentationHelper
 	/**
 	 * <p>
 	 * Inspeciona um campo para obter suas informações.
-	 * </p>
 	 * <p><i>
 	 * Inspects the field to get its information.
-	 * </i></p>
+	 * </i>
 	 *  
-	 * @param field - campo/propriedade a ser inspecionado
+	 * @param field campo/propriedade a ser inspecionado
 	 * <br><i>the field object to be inspected</i>
 	 * @return as informações sobre o campo inspecionado
 	 * <br><i>the information about the inspected field</i>
@@ -328,12 +318,11 @@ public abstract class InstrumentationHelper
 	/**
 	 * <p>
 	 * Inspeciona a anotação para obter suas informações.
-	 * </p>
 	 * <p><i>
 	 * Inspects the annotation to get its information.
-	 * </i></p>
+	 * </i>
 	 *  
-	 * @param field - anotação a ser inspecionada
+	 * @param annotation anotação a ser inspecionada
 	 * <br><i>the annotation to be inspected</i>
 	 * @return as informações sobre a anotação inspecionada
 	 * <br><i>the information about the inspected annotation</i>
@@ -406,12 +395,11 @@ public abstract class InstrumentationHelper
 	/**
 	 * <p>
 	 * Obtém uma String com as informações de bytecode de uma classe.
-	 * </p>
 	 * <p><i>
 	 * Gets a String describing the bytecode information of a class.
-	 * </i><p>
+	 * </i>
 	 * 
-	 * @param classFile - arquivo compilado da classe (.class) a ser inspecionada
+	 * @param classFile arquivo compilado da classe (.class) a ser inspecionada
 	 * <br><i>the (.class) file of the class to be inspected</i>
 	 * @return uma String com as informações de bytecode da classe informada
 	 * <br><i>a String describing the bytecode information of the specified class</i>
@@ -426,12 +414,11 @@ public abstract class InstrumentationHelper
 	/**
 	 * <p>
 	 * Obtém uma String com as informações de bytecode de uma classe.
-	 * </p>
 	 * <p><i>
 	 * Gets a String describing the bytecode information of a class.
-	 * </i><p>
+	 * </i>
 	 * 
-	 * @param clazz - classe a ser inspecionada
+	 * @param clazz classe a ser inspecionada
 	 * <br><i>the class object to be inspected</i>
 	 * @return uma String com as informações de bytecode da classe informada
 	 * <br><i>a String describing the bytecode information of the specified class</i>
@@ -444,12 +431,11 @@ public abstract class InstrumentationHelper
 	/**
 	 * <p>
 	 * Obtém uma String com as informações de bytecode de uma classe.
-	 * </p>
 	 * <p><i>
 	 * Gets a String describing the bytecode information of a class.
-	 * </i><p>
+	 * </i>
 	 * 
-	 * @param classInfo - informações da classe a ser inspecionada
+	 * @param classInfo informações da classe a ser inspecionada
 	 * <br><i>the class information to be inspected</i>
 	 * @return uma String com as informações de bytecode da classe informada
 	 * <br><i>a String describing the bytecode information of the specified class</i>
@@ -462,12 +448,11 @@ public abstract class InstrumentationHelper
 	/**
 	 * <p>
 	 * Obtém uma String com as informações de bytecode de uma classe.
-	 * </p>
 	 * <p><i>
 	 * Gets a String describing the bytecode information of a class.
-	 * </i><p>
+	 * </i>
 	 * 
-	 * @param classBytecode - bytecode da classe a ser inspecionada
+	 * @param classBytecode bytecode da classe a ser inspecionada
 	 * <br><i>the class bytecode to be inspected</i>
 	 * @return uma String com as informações de bytecode da classe informada
 	 * <br><i>a String describing the bytecode information of the specified class</i>
@@ -485,16 +470,15 @@ public abstract class InstrumentationHelper
 	/**
 	 * <p>
 	 * Instrumenta a classe para alterar o seu nome e transformá-la numa nova versão.
-	 * </p>
 	 * <p><i>
 	 * Transforms a class to a new version, modifying its bytecode and changing its original name.
-	 * </i></p>
+	 * </i>
 	 *  
-	 * @param classInfo - informações da classe a ser instrumentada
+	 * @param classInfo informações da classe a ser instrumentada
 	 * <br><i>the class information to be transformed</i>
-	 * @param className - nome original da classe
+	 * @param className nome original da classe
 	 * <br><i>the original name of the class</i>
-	 * @param newClassName - nome da nova versão da classe 
+	 * @param newClassName nome da nova versão da classe 
 	 * <br><i>the new name of the class on its new version</i>
 	 * @return as informações da classe instrumentada em sua nova versão
 	 * <br><i>the class information transformed in its new version</i>
@@ -516,12 +500,11 @@ public abstract class InstrumentationHelper
 	/**
 	 * <p>
 	 * Tenta obter os bytecodes da classe informada.
-	 * </p>
 	 * <p><i>
 	 * Try to get the specified class's bytecode.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param clazz - classe cujo bytecode será retornado
+	 * @param clazz classe cujo bytecode será retornado
 	 * <br><i>the class whose bytecode will try to be read</i>
 	 * @return os bytecodes da classe, ou um array de bytes vazio caso o arquivo da classe não seja encontrado no classpath da aplicação
 	 * <br><i>the class bytecode, or an empty byte array if the class file could not be found in the application classpath</i>
@@ -548,14 +531,13 @@ public abstract class InstrumentationHelper
 	/**
 	 * <p>
 	 * Traduz um nome interno para um nome qualificado.
-	 * <i>Exemplo: org/esfinge/liveprog/LiveClass -> org.esfinge.liveprog.LiveClass</i>
-	 * </p>
+	 * <i>Exemplo: org/esfinge/liveprog/LiveClass -&rsaquo; org.esfinge.liveprog.LiveClass</i>
 	 * <p><i>
 	 * Translates an internal name to a fully qualified name.
-	 * Example: org/esfinge/liveprog/LiveClass -> org.esfinge.liveprog.LiveClass
-	 * </i></p>
+	 * Example: org/esfinge/liveprog/LiveClass -&rsaquo; org.esfinge.liveprog.LiveClass
+	 * </i>
 	 * 
-	 * @param internalName - o nome interno a ser traduzido
+	 * @param internalName o nome interno a ser traduzido
 	 * <br><i>the internal name to be translated</i>
 	 * @return o nome qualificado traduzido do nome interno informado
 	 * <br><i>the fully qualified name translated from the specified internal name</i>
@@ -571,14 +553,13 @@ public abstract class InstrumentationHelper
 	/**
 	 * <p>
 	 * Traduz um nome qualificado para um nome interno.
-	 * <i>Exemplo: org.esfinge.liveprog.LiveClass -> org/esfinge/liveprog/LiveClass</i>
-	 * </p>
+	 * <i>Exemplo: org.esfinge.liveprog.LiveClass -&rsaquo; org/esfinge/liveprog/LiveClass</i>
 	 * <p><i>
 	 * Translates a fully qualified name to an internal name.
-	 * Example: org.esfinge.liveprog.LiveClass -> org/esfinge/liveprog/LiveClass
-	 * </i></p>
+	 * Example: org.esfinge.liveprog.LiveClass -&rsaquo; org/esfinge/liveprog/LiveClass
+	 * </i>
 	 * 
-	 * @param qualifiedName - o nome qualificado a ser traduzido
+	 * @param qualifiedName o nome qualificado a ser traduzido
 	 * <br><i>the fully qualified name to be translated</i>
 	 * @return o nome interno traduzido do nome qualificado informado
 	 * <br><i>the internal name translated from the specified fully qualified name</i>
@@ -594,16 +575,15 @@ public abstract class InstrumentationHelper
 	/**
 	 * <p>
 	 * Instrumenta o bytecode para alterar o nome da classe.
-	 * </p>
 	 * <p><i>
 	 * Modifies a class bytecode to change its name.
-	 * </i></p>
+	 * </i>
 	 *  
-	 * @param classBytecode - bytecode da classe a ser instrumentada
+	 * @param classBytecode bytecode da classe a ser instrumentada
 	 * <br><i>the class bytecode to be transformed</i>
-	 * @param className - nome original da classe
+	 * @param className nome original da classe
 	 * <br><i>the original name of the class</i>
-	 * @param newClassName - novo nome da classe 
+	 * @param newClassName novo nome da classe 
 	 * <br><i>the new name of the class</i>
 	 * @return o bytecode da classe instrumentado com seu novo nome
 	 * <br><i>the class bytecode transformed in its new name</i>

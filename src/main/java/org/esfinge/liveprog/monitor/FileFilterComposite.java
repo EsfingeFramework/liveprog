@@ -9,10 +9,9 @@ import org.esfinge.liveprog.util.Utils;
 /**
  * <p>
  * Permite encadear um conjunto de filtros para os arquivos monitorados.
- * </p>
  * <p><i>
  * Allows to chain a set of file filters.
- * </i></p> 
+ * </i> 
  * 
  * @see org.esfinge.liveprog.monitor.ILiveClassFileFilter
  */
@@ -25,12 +24,11 @@ public class FileFilterComposite implements ILiveClassFileFilter
 	/**
 	 * <p>
 	 * Constrói um novo conjunto de filtro de arquivos.
-	 * </p>
 	 * <p><i>
 	 * Constructs a new composite of file filters.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param filters - conjunto de filtros para validar os arquivos monitorados 
+	 * @param filters conjunto de filtros para validar os arquivos monitorados 
 	 * <br><i>set of file filters to validate the monitored files</i>
 	 */
 	public FileFilterComposite(ILiveClassFileFilter... filters)
@@ -42,12 +40,12 @@ public class FileFilterComposite implements ILiveClassFileFilter
 	/**
 	 * <p>
 	 * Adiciona os filtros especificados para validar os arquivos monitorados.
-	 * </p>
 	 * <p><i>
 	 * Adds the specified file filters to validate the monitored files.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param filters
+	 * @param filters conjunto de filtros para validar os arquivos monitorados 
+	 * <br><i>set of file filters to validate the monitored files</i>
 	 */
 	public void addFilter(ILiveClassFileFilter... filters)
 	{

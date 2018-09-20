@@ -12,10 +12,9 @@ import org.objectweb.asm.Opcodes;
 /**
  * <p>
  * Extrai informações sobre um método. 
- * </p>
  * <p><i>
  * Collects information about a method.
- * </i></p>
+ * </i>
  */
 class MethodInspector extends MethodVisitor
 {
@@ -29,12 +28,11 @@ class MethodInspector extends MethodVisitor
 	/**
 	 * <p>
 	 * Constrói um novo inspetor de métodos.
-	 * </p>
 	 * <p><i>
 	 * Constructs a new method inspector.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param methodInfo - objeto onde as informações extraídas serão armazenadas
+	 * @param methodInfo objeto onde as informações extraídas serão armazenadas
 	 * <br><i>the object to store the collected information</i>
 	 * @see org.esfinge.liveprog.reflect.MethodInfo
 	 */

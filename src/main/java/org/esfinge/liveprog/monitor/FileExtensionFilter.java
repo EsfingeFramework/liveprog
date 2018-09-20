@@ -8,10 +8,9 @@ import java.util.Set;
 /**
  * <p>
  * Filtra os arquivos pelo tipo de extensão.
- * </p>
  * <p><i>
  * Filters files by extension type.
- * </i></p> 
+ * </i> 
  */
 public class FileExtensionFilter implements ILiveClassFileFilter
 {
@@ -22,12 +21,11 @@ public class FileExtensionFilter implements ILiveClassFileFilter
 	/**
 	 * <p>
 	 * Constrói um novo filtro de arquivos especificando as extensões aceitas.
-	 * </p>
-	 * <i><p>
+	 * <p><i>
 	 * Constructs a new file filter by specifying the accepted extension types.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param fileExtensions - extensões dos tipos de arquivos aceitos
+	 * @param fileExtensions extensões dos tipos de arquivos aceitos
 	 * <br><i>the accepted extension types</i>
 	 */
 	public FileExtensionFilter(String... fileExtensions)

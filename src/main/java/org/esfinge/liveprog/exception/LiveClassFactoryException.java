@@ -3,10 +3,9 @@ package org.esfinge.liveprog.exception;
 /**
  * <p>
  * Exceção que é lançada pela fábrica de objetos de classes dinâmicas.
- * </p>
  * <p><i>
  * Exception that is thrown by factories of LiveClass objects.
- * </i></p>
+ * </i>
  */
 @SuppressWarnings("serial")
 public class LiveClassFactoryException extends LiveprogException
@@ -14,12 +13,11 @@ public class LiveClassFactoryException extends LiveprogException
 	/**
 	 * <p>
 	 * Constrói uma nova exceção do tipo LiveClassFactoryException.
-	 * </p>
 	 * <p><i>
 	 * Constructs a new LiveClassFactoryException.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param message - mensagem descrevendo o motivo da exceção
+	 * @param message mensagem descrevendo o motivo da exceção
 	 * <br><i>the message describing the exception's cause</i>
 	 */
 	public LiveClassFactoryException(String message)
@@ -30,14 +28,13 @@ public class LiveClassFactoryException extends LiveprogException
 	/**
 	 * <p>
 	 * Constrói uma nova exceção do tipo LiveClassFactoryException.
-	 * </p>
 	 * <p><i>
 	 * Constructs a new LiveClassFactoryException.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param message - mensagem descrevendo o motivo da exceção
-	 * <br>the message describing the exception's cause<i></i>
-	 * @param cause - exceção de origem que causou essa exceção
+	 * @param message mensagem descrevendo o motivo da exceção
+	 * <br><i>the message describing the exception's cause</i>
+	 * @param cause exceção de origem que causou essa exceção
 	 * <br><i>the original exception related to this exception</i> 
 	 */
 	public LiveClassFactoryException(String message, Throwable cause)

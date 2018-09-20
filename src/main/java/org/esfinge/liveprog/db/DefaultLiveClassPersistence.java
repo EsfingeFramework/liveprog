@@ -23,13 +23,12 @@ import org.sqlite.SQLiteConfig;
  * Por padrão, as informações das classes dinâmicas são persistidas no arquivo <i>'liveclasses.db'</i> 
  * que fica armazenado no mesmo diretório da aplicação. Para alterá-lo, utilize o método {@link #setDatabaseFilePath(String)}
  * <u>antes do primeiro uso</u> desta classe.
- * </p>
  * <p><i>
  * Default implementation of LiveClasses persistence based on JDBC and SQLite, using the Singleton pattern.
  * <br>
  * By default, the database filename is 'liveclasses.db' and is stored in the same path of the running application. 
  * To change it, use the {@link #setDatabaseFilePath(String)} method <u>before the first use</u> of this class. 
- * </i></p>
+ * </i>
  */
 public class DefaultLiveClassPersistence implements ILiveClassPersistence
 {
@@ -43,10 +42,9 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 	/**
 	 * <p>
 	 * Construtor padrão, privado para garantir o uso da classe somente via Singleton.
-	 * </p>
 	 * <p><i>
 	 * Default private constructor to ensure the usage of the Singleton pattern.
-	 * </i></p>
+	 * </i>
 	 */
 	private DefaultLiveClassPersistence()
 	{		
@@ -55,12 +53,11 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 	/**
 	 * <p>
 	 * Especifica o nome e o caminho do arquivo de persistência das classes dinâmicas.
-	 * </p>
 	 * <p><i>
 	 * Sets the database filename and path for LiveClasses persistence.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param filePath - nome e caminho para o arquivo de base de dados
+	 * @param filePath nome e caminho para o arquivo de base de dados
 	 * <br><i>filename and path of the database file</i>
 	 */
 	public static void setDatabaseFilePath(String filePath)
@@ -74,10 +71,9 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 	/**
 	 * <p>
 	 * Obtém a instância para persistência de classes dinâmicas.
-	 * </p>
 	 * <p><i>
 	 * Gets the Singleton instance for LiveClasses persistence. 
-	 * </i></p>
+	 * </i>
 	 * 
 	 * @return o <i>Singleton</i> para a persistência de classes dinâmicas
 	 * <br><i>the Singleton instance for persistence of LiveClasses</i>   
@@ -274,10 +270,9 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 	/**
 	 * <p>
 	 * Configura o acesso ao banco de dados.
-	 * </p>
 	 * <p><i>
 	 * Configures the database.
-	 * </i></p>
+	 * </i>
 	 * 
 	 * @throws SQLException em caso de erros com o banco de dados
 	 * <br><i>if an error occurs when configuring the database</i>
@@ -342,10 +337,9 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 	/**
 	 * <p>
 	 * Obtém uma conexão com o banco de dados.
-	 * </p>
 	 * <p><i>
 	 * Gets a database connection.
-	 * </i></p>
+	 * </i>
 	 * 
 	 * @return uma conexão com o banco de dados 
 	 * <br><i>a database connection</i>
@@ -371,16 +365,15 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 	/**
 	 * <p>
 	 * Persiste as informações da classe dinâmica.
-	 * </p>
 	 * <p><i>
 	 * Persists the information of the specified LiveClass.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param conn - conexão com o banco de dados
+	 * @param conn conexão com o banco de dados
 	 * <br><i>the database connection</i>
-	 * @param liveClassName - nome da classe dinâmica
+	 * @param liveClassName nome da classe dinâmica
 	 * <br><i>the name of the LiveClass</i> 
-	 * @param safeModeVersion - versão do modo seguro da classe dinâmica
+	 * @param safeModeVersion versão do modo seguro da classe dinâmica
 	 * <br><i>the LiveClass safe mode version</i>
 	 * @return a chave criada na tabela LiveClass para a classe dinâmica persistida
 	 * <br><i>the key created on the LiveClass table for the persisted LiveClass</i>
@@ -415,18 +408,17 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 	/**
 	 * <p>
 	 * Persiste as informações da classe dinâmica da versão informada.
-	 * </p>
 	 * <p><i>
 	 * Persists the information of the specified LiveClass version.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param conn - conexão com o banco de dados
+	 * @param conn conexão com o banco de dados
 	 * <br><i>the database connection</i>
-	 * @param classId - chave da classe dinâmica na tabela LiveClass
+	 * @param classId chave da classe dinâmica na tabela LiveClass
 	 * <br><i>key of the LiveClass, from the LiveClass table</i>
-	 * @param classVersion - versão da classe dinâmica
+	 * @param classVersion versão da classe dinâmica
 	 * <br><i>the LiveClass version</i>
-	 * @param classBytecode - bytecode da classe dinâmica a ser persistida
+	 * @param classBytecode bytecode da classe dinâmica a ser persistida
 	 * <br><i>the LiveClass bytecode to be persisted</i>
 	 * @return a chave criada na tabela ClassVersion para a classe dinâmica persistida
 	 * <br><i>the key created on the ClassVersion table for the persisted LiveClass</i>
@@ -462,16 +454,15 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 	/**
 	 * <p>
 	 * Persiste as informações da classe interna da versão informada da classe dinâmica.
-	 * </p>
 	 * <p><i>
 	 * Persists the inner class information of the specified LiveClass version.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param conn - conexão com o banco de dados
+	 * @param conn conexão com o banco de dados
 	 * <br><i>the database connection</i>
-	 * @param versionId - chave da versão da classe dinâmica na tabela ClassVersion
+	 * @param versionId chave da versão da classe dinâmica na tabela ClassVersion
 	 * <br><i>key of the LiveClass version, from the ClassVersion table</i>
-	 * @param innerClassBytecode - bytecode da classe interna a ser persistida
+	 * @param innerClassBytecode bytecode da classe interna a ser persistida
 	 * <br><i>the inner class bytecode to be persisted</i>
 	 * @return a chave criada na tabela InnerClasses para a classe interna persistida
 	 * <br><i>the key created on the InnerClasses table for the persisted inner class</i>
@@ -506,16 +497,15 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 	/**
 	 * <p>
 	 * Obtém as informações da classe dinâmica na versão informada.
-	 * </p>
 	 * <p><i>
 	 * Gets the LiveClass information on the specified version.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param conn - conexão com o banco de dados
+	 * @param conn conexão com o banco de dados
 	 * <br><i>the database connection</i>
-	 * @param classId - chave da classe dinâmica na tabela LiveClass
+	 * @param classId chave da classe dinâmica na tabela LiveClass
 	 * <br><i>key of the LiveClass, from the LiveClass table</i>
-	 * @param version - versão da classe dinâmica a ser obtida
+	 * @param version versão da classe dinâmica a ser obtida
 	 * <br><i>the LiveClass version to be retrieved</i>
 	 * @return o bytecode da classe dinâmica na versão informada
 	 * <br><i>the LiveClass bytecode of its specified version</i>
@@ -550,14 +540,13 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 	/**
 	 * <p>
 	 * Obtém as informações das classes internas relacionadas à versão informada da classe dinâmica.
-	 * </p>
 	 * <p><i>
 	 * Gets the inner classes information associated to the specified version of a LiveClass.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param conn - conexão com o banco de dados
+	 * @param conn conexão com o banco de dados
 	 * <br><i>the database connection</i>
-	 * @param versionId - chave da versão da classe dinâmica na tabela ClassVersion
+	 * @param versionId chave da versão da classe dinâmica na tabela ClassVersion
 	 * <br><i>key of the LiveClass version, from the ClassVersion table</i>
 	 * @return os bytecodes das classes internas relacionadas à versão informada da classe dinâmica
 	 * <br><i>the bytecode list of the inner classes associated to the specified version of a LiveClass</i>
@@ -591,14 +580,13 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 	/**
 	 * <p>
 	 * Apaga as informações de uma versão de classe dinâmica.
-	 * </p>
 	 * <p><i>
 	 * Deletes the information of the specified LiveClass version.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param conn - conexão com o banco de dados
+	 * @param conn conexão com o banco de dados
 	 * <br><i>the database connection</i>
-	 * @param versionId - chave da versão da classe dinâmica a ser apagada
+	 * @param versionId chave da versão da classe dinâmica a ser apagada
 	 * <br><i>key of the LiveClass version to be deleted, from the ClassVersion table</i>
 	 * @throws SQLException em caso de erros com o banco de dados
 	 * <br><i>if an error occurs when accessing the database</i>
@@ -624,16 +612,15 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 	/**
 	 * <p>
 	 * Persiste as informações de classe interna.
-	 * </p>
 	 * <p><i>
 	 * Persists inner class information.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param conn - conexão com o banco de dados
+	 * @param conn conexão com o banco de dados
 	 * <br><i>the database connection</i>
-	 * @param versionId - chave da versão da classe dinâmica na tabela ClassVersion
+	 * @param versionId chave da versão da classe dinâmica na tabela ClassVersion
 	 * <br><i>key of the LiveClass version, from the ClassVersion table</i>
-	 * @param innerClassInfo - informações da classe interna
+	 * @param innerClassInfo informações da classe interna
 	 * <br><i>inner class information to be persisted</i>
 	 * @throws SQLException em caso de erros com o banco de dados
 	 * <br><i>if an error occurs when accessing the database</i>
@@ -651,14 +638,13 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 	/**
 	 * <p>
 	 * Obtém as chaves e versões da classe dinâmica informada.
-	 * </p>
 	 * <p><i>
 	 * Gets the database keys and versions of the specified LiveClass.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param conn - conexão com o banco de dados
+	 * @param conn conexão com o banco de dados
 	 * <br><i>the database connection</i>
-	 * @param liveClassName - nome da classe dinâmica
+	 * @param liveClassName nome da classe dinâmica
 	 * <br><i>the name of the LiveClass</i> 
 	 * @return as chaves e versões da classe dinâmica informada
 	 * <br><i>the database keys and versions of the specified LiveClass</i>
@@ -701,12 +687,11 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 	/**
 	 * <p>
 	 * Obtém as chaves e versões de todas classes dinâmicas persistidas no banco de dados.
-	 * </p>
 	 * <p><i>
 	 * Gets the database keys and versions of all persisted LiveClasses.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param conn - conexão com o banco de dados
+	 * @param conn conexão com o banco de dados
 	 * <br><i>the database connection</i>
 	 * @return lista das chaves e versões de todas classes dinâmicas persistidas no banco de dados
 	 * <br><i>the list of keys and versions of all persisted LiveClasses</i>
@@ -750,16 +735,15 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 	/**
 	 * <p>
 	 * Atualiza a versão de modo seguro da classe dinâmica.
-	 * </p>
 	 * <p><i>
 	 * Updates the LiveClass safe mode version.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param conn - conexão com o banco de dados
+	 * @param conn conexão com o banco de dados
 	 * <br><i>the database connection</i>
-	 * @param liveClassName - nome da classe dinâmica
+	 * @param liveClassName nome da classe dinâmica
 	 * <br><i>the name of the LiveClass</i> 
-	 * @param version - nova versão de modo seguro da classe dinâmica
+	 * @param version nova versão de modo seguro da classe dinâmica
 	 * <br><i>the new safe mode version of the LiveClass</i>
 	 * @return <i>true</i> se a versão de modo seguro foi atualizada, <i>false</i> caso contrário
 	 * <br><i>true if the safe mode version was updated, false otherwise</i>
@@ -790,13 +774,12 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 	/**
 	 * <p>
 	 * Método utilitário interno para o log de debug de SQL.
-	 * </p>
 	 * <p><i>
 	 * Internal utilitary method for SQL debugging log.
-	 * </i></p>
-	 * @param sql - cláusula SQL para um objeto do tipo PreparedStatement
+	 * </i>
+	 * @param sql cláusula SQL para um objeto do tipo PreparedStatement
 	 * <br><i>SQL clause for a PreparedStatement object</i>
-	 * @param args- parâmetros do PreparedStatement
+	 * @param args parâmetros do PreparedStatement
 	 * <br><i>PreparedStatement parameters</i>
 	 * @return o SQL preenchido com os parâmetros informados
 	 * <br><i>the SQL clause filled with its informed parameters</i>
@@ -818,10 +801,9 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 	/**
 	 * <p>
 	 * Classe auxiliar para mapear as chaves e versões de uma classe dinâmica persistida no banco de dados.
-	 * </p>
 	 * <p><i>
 	 * Utilitary class for mapping the database keys and versions of a persisted LiveClass.
-	 * </i></p>
+	 * </i>
 	 */
 	private class TableKeysInfo implements ILiveClassVersionInfo
 	{
@@ -844,10 +826,9 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 		/**
 		 * <p>
 		 * Construtor padrão.
-		 * </p>
 		 * <p><i>
 		 * Default constructor.
-		 * </i></p>
+		 * </i>
 		 */
 		public TableKeysInfo()
 		{
@@ -861,12 +842,11 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 		/**
 		 * <p>
 		 * Atribui o nome da classe dinâmica.
-		 * </p>
 		 * <p><i>
 		 * Sets the LiveClass name.
-		 * </i></p>
+		 * </i>
 		 * 
-		 * @param liveClassName - nome da classe dinâmica
+		 * @param liveClassName nome da classe dinâmica
 		 * <br><i>the name of the LiveClass</i>
 		 */
 		public void setClassName(String liveClassName)
@@ -883,12 +863,11 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 		/**
 		 * <p>
 		 * Atribui a chave da classe dinâmica, lida da tabela LiveClass.
-		 * </p>
 		 * <p><i>
 		 * Sets the key of the LiveClass, read from the LiveClass table.
-		 * </i></p>
+		 * </i>
 		 * 
-		 * @param classId - chave da classe dinâmica
+		 * @param classId chave da classe dinâmica
 		 * <br><i>the key of the LiveClass</i>
 		 */
 		public void setClassId(int classId)
@@ -899,10 +878,9 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 		/**
 		 * <p>
 		 * Obtém a chave da classe dinâmica, lida da tabela LiveClass.
-		 * </p>
 		 * <p><i>
 		 * Gets the key of the LiveClass, read from the LiveClass table.
-		 * </i></p>
+		 * </i>
 		 * 
 		 * @return a chave da classe dinâmica
 		 * <br><i>the key of the LiveClass</i>
@@ -915,12 +893,11 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 		/**
 		 * <p>
 		 * Atribui a chave da versão atual da classe dinâmica, lida da tabela ClassVersion.
-		 * </p>
 		 * <p><i>
 		 * Sets the key of the LiveClass current version, read from the ClassVersion table.
-		 * </i></p>
+		 * </i>
 		 *  
-		 * @param versionId - chave da versão atual da classe dinâmica
+		 * @param versionId chave da versão atual da classe dinâmica
 		 * <br><i>the key of the LiveClass current version</i>
 		 */
 		public void setVersionId(int versionId)
@@ -931,10 +908,9 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 		/**
 		 * <p>
 		 * Obtém a chave da versão atual da classe dinâmica, lida da tabela ClassVersion.
-		 * </p>
 		 * <p><i>
 		 * Gets the key of the LiveClass current version, read from the ClassVersion table.
-		 * </i></p>
+		 * </i>
 		 * 
 		 * @return a chave da versão atual da classe dinâmica
 		 * <br><i>the key of the LiveClass current version</i>
@@ -947,12 +923,11 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 		/**
 		 * <p>
 		 * Atribui a versão de modo seguro da classe dinâmica, lida da tabela LiveClass.
-		 * </p>
 		 * <p><i>
 		 * Sets the LiveClass safe mode version, read from the LiveClass table.
-		 * </i></p>
+		 * </i>
 		 * 
-		 * @param safeModeVersion - versão atual de modo seguro da classe dinâmica
+		 * @param safeModeVersion versão atual de modo seguro da classe dinâmica
 		 * <br><i>the current safe mode version of the LiveClass</i>
 		 */
 		public void setSafeModeVersion(int safeModeVersion)
@@ -969,12 +944,11 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 		/**
 		 * <p>
 		 * Atribui a versão atual da classe dinâmica, lida da tabela ClassVersion.
-		 * </p>
 		 * <p><i>
 		 * Sets the LiveClass current version, read from the ClassVersion table.
-		 * </i></p>
+		 * </i>
 		 * 
-		 * @param currentVersion - versão atual da classe dinâmica
+		 * @param currentVersion versão atual da classe dinâmica
 		 * <br><i>the current version of the LiveClass</i>
 		 */
 		public void setCurrentVersion(int currentVersion)

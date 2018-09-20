@@ -7,10 +7,9 @@ import org.objectweb.asm.Type;
 /**
  * <p>
  * Classe auxiliar para manipular informações de tipo.
- * </p>
  * <p><i>
  * Utilitary class for handling type information.
- * </i></p>
+ * </i>
  * 
  * @see org.objectweb.asm.Type
  */
@@ -26,12 +25,11 @@ public class TypeHandler
 	/**
 	 * <p>
 	 * Constrói um novo manipulador para tipos.
-	 * </p>
 	 * <p><i>
 	 * Constructs a new type handler.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param descriptor - descritor do tipo
+	 * @param descriptor descritor do tipo
 	 * <br><i>the type descriptor</i>
 	 */
 	public TypeHandler(String descriptor)
@@ -42,12 +40,11 @@ public class TypeHandler
 	/**
 	 * <p>
 	 * Constrói um novo manipulador para tipos.
-	 * </p>
 	 * <p><i>
 	 * Constructs a new type handler.
-	 * </i></p>
+	 * </i>
 	 * 
-	 * @param type - objeto original do tipo Type
+	 * @param type objeto original do tipo Type
 	 * <br><i>the original Type object</i>
 	 * @see org.objectweb.asm.Type
 	 */
@@ -68,11 +65,10 @@ public class TypeHandler
 	 * <p>
 	 * Obtém o nome do tipo.
 	 * Equivale ao método <i>Class.getName()</i>, conforme especificado na <i>Java Language Specification</i>.
-	 * </p>
 	 * <p><i>
 	 * Gets the type name.
 	 * It corresponds to Class.getName(), as specified in the Java Language Specification. 
-	 * </i></p>
+	 * </i>
 	 * 
 	 * @return o nome do tipo
 	 * <br><i>the name of the type</i>
@@ -89,11 +85,10 @@ public class TypeHandler
 	 * <p>
 	 * Obtém o nome informativo do tipo.
 	 * Se for um array, por exemplo, o retorno será <i>tipo[]</i>.
-	 * </p>
 	 * <p><i>
 	 * Gets the type display name.
 	 * If this is an array, for example, it will return type[].
-	 * </i></p>
+	 * </i>
 	 * 
 	 * @return o nome informativo do tipo
 	 */
@@ -105,10 +100,9 @@ public class TypeHandler
 	/**
 	 * <p>
 	 * Obtém o tipo do elemento base do array.
-	 * </p>
 	 * <p><i>
 	 * Gets the array element type.
-	 * </i></p>
+	 * </i>
 	 * 
 	 * @return o tipo do elemento base do array
 	 * <br><i>the element type of the array</i>
@@ -121,10 +115,9 @@ public class TypeHandler
 	/**
 	 * <p>
 	 * Obtém o descritor do tipo.
-	 * </p>
 	 * <p><i>
 	 * Gets the type descriptor.
-	 * </i></p>
+	 * </i>
 	 * 
 	 * @return o descritor do tipo
 	 * <br><i>the type descriptor</i>
@@ -137,10 +130,9 @@ public class TypeHandler
 	/**
 	 * <p>
 	 * Obtém o objeto Type original.
-	 * </p>
 	 * <p><i>
 	 * Gets the original Type object.
-	 * </i></p>
+	 * </i>
 	 * 
 	 * @return o objeto Type original
 	 * <br><i>the original Type object</i>
@@ -153,10 +145,9 @@ public class TypeHandler
 	/**
 	 * <p>
 	 * Obtém a classe do tipo.
-	 * </p>
 	 * <p><i>
 	 * Gets the type class.
-	 * </i></p>
+	 * </i>
 	 * 
 	 * @return a classe do tipo
 	 * <br><i>the type class</i>
@@ -211,13 +202,12 @@ public class TypeHandler
 	/**
 	 * <p>
 	 * Verifica se o tipo é um array.
-	 * </p>
 	 * <p><i>
 	 * Checks if this type is an array.
-	 * </i></p>
+	 * </i>
 	 * 
 	 * @return <i>true</i> caso o tipo seja um array, <i>false</i> caso contrário
-	 * <br><i>true if this type is an array, false otherwise 
+	 * <br><i>true if this type is an array, false otherwise</i>
 	 */
 	public boolean isArray()
 	{
@@ -227,10 +217,9 @@ public class TypeHandler
 	/**
 	 * <p>
 	 * Obtém a dimensão do array.
-	 * </p>
 	 * <p><i>
 	 * Gets the array dimensions.
-	 * </i></p>
+	 * </i>
 	 * 
 	 * @return a dimensão do array, ou 0 se não for um array
 	 * <br><i>the array dimensions, or 0 if it is not an array</i>
