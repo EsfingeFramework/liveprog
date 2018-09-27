@@ -181,7 +181,7 @@ public class LiveClassFactoryBuilder
 	 * <br><i>the next stage of the factory building process</i>
 	 * @see org.esfinge.liveprog.monitor.ILiveClassFileMonitor
 	 */
-	public LiveClassFactoryBuilderPersistence monitoringFilesThrough(ILiveClassFileMonitor fileMonitor)
+	public LiveClassFactoryBuilderPersistence usingFileMonitor(ILiveClassFileMonitor fileMonitor)
 	{
 		this.defaultFileMonintor = false;
 		this.fileMonitor = fileMonitor;
