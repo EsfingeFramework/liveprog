@@ -39,6 +39,6 @@ public abstract class LiveprogRuntimeException extends RuntimeException
 	 */
 	public LiveprogRuntimeException(String message, Throwable cause)
 	{
-		super("\n****Esfinge Liveprog RuntimeException**** \n -> " + message, cause);
+		super("\n**** Esfinge Liveprog RuntimeException **** \n -> " + message, cause);
 	}
 }

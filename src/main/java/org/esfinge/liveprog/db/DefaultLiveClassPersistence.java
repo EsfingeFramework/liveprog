@@ -13,7 +13,7 @@ import java.util.List;
 
 import org.esfinge.liveprog.instrumentation.InstrumentationHelper;
 import org.esfinge.liveprog.reflect.ClassInfo;
-import org.esfinge.liveprog.util.Utils;
+import org.esfinge.liveprog.util.LiveClassUtils;
 import org.sqlite.SQLiteConfig;
 
 /**
@@ -65,7 +65,7 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 		_dbFilePath = filePath;
 		
 		// log: debug
-		Utils.logDebug("database file: '" + filePath + "'");
+		LiveClassUtils.logDebug("database file: '" + filePath + "'");
 	}
 	
 	/**
@@ -291,7 +291,7 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 						 " safeModeVersion integer);";
 			
 			// log: debug
-			Utils.logDebug(SQL);
+			LiveClassUtils.logDebug(SQL);
 
 			// cria a tabela de versao corrente
 			Statement stmt = conn.createStatement();
@@ -307,7 +307,7 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 				  " ON DELETE CASCADE ON UPDATE NO ACTION);";
 
 			// log: debug
-			Utils.logDebug(SQL);
+			LiveClassUtils.logDebug(SQL);
 			
 			stmt.execute(SQL);
 			
@@ -320,12 +320,12 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 				  " ON DELETE CASCADE ON UPDATE NO ACTION);";
 
 			// log: debug
-			Utils.logDebug(SQL);
+			LiveClassUtils.logDebug(SQL);
 			
 			stmt.execute(SQL);
 
 			// log: info
-			Utils.logInfo("Conexao com o banco de dados '" + Paths.get(_dbFilePath).toAbsolutePath() + "' estabelecida!");
+			LiveClassUtils.logInfo("Conexao com o banco de dados '" + Paths.get(_dbFilePath).toAbsolutePath() + "' estabelecida!");
 		}		
 		
 		finally
@@ -386,7 +386,7 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 		String SQL = "INSERT INTO LiveCLass (className, safeModeVersion) VALUES (?, ?)";
 		
 		// log: debug
-		Utils.logDebug(this.debugSQL(SQL, liveClassName, safeModeVersion));
+		LiveClassUtils.logDebug(this.debugSQL(SQL, liveClassName, safeModeVersion));
 		
 		PreparedStatement pStmt = conn.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
 		pStmt.setString(1, liveClassName);
@@ -400,7 +400,7 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 		int result = rs.getInt(1);
 		
 		// log: debug
-		Utils.logDebug(String.format("chave gerada -> %d", result));
+		LiveClassUtils.logDebug(String.format("chave gerada -> %d", result));
 		
 		return ( result );
 	}
@@ -431,7 +431,7 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 		String SQL = "INSERT INTO ClassVersion (id_class, version, bytecode) VALUES (?, ?, ?)";
 		
 		// log: debug
-		Utils.logDebug(this.debugSQL(SQL, classId, classVersion, "[bytecode]"));
+		LiveClassUtils.logDebug(this.debugSQL(SQL, classId, classVersion, "[bytecode]"));
 		
 		PreparedStatement pStmt = conn.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
 		pStmt.setInt(1, classId);
@@ -446,7 +446,7 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 		int result = rs.getInt(1);
 		
 		// log: debug
-		Utils.logDebug(String.format("chave gerada -> %d", result));
+		LiveClassUtils.logDebug(String.format("chave gerada -> %d", result));
 		
 		return ( result );
 	}
@@ -475,7 +475,7 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 		String SQL = "INSERT INTO InnerClasses (id_version, bytecode) VALUES (?, ?)";
 		
 		// log: debug
-		Utils.logDebug(this.debugSQL(SQL, versionId, "[bytecode]"));
+		LiveClassUtils.logDebug(this.debugSQL(SQL, versionId, "[bytecode]"));
 		
 		PreparedStatement pStmt = conn.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
 		pStmt.setInt(1, versionId);
@@ -489,7 +489,7 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 		int result = rs.getInt(1);
 		
 		// log: debug
-		Utils.logDebug(String.format("chave gerada -> %d", result));
+		LiveClassUtils.logDebug(String.format("chave gerada -> %d", result));
 		
 		return ( result );
 	}
@@ -518,7 +518,7 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 		String SQL = "SELECT bytecode FROM ClassVersion WHERE id_class = ? AND version = ?";
 		
 		// log: debug
-		Utils.logDebug(this.debugSQL(SQL, classId, version));
+		LiveClassUtils.logDebug(this.debugSQL(SQL, classId, version));
 		
 		PreparedStatement pStmt = conn.prepareStatement(SQL);
 		pStmt.setInt(1, classId);
@@ -532,7 +532,7 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 			bytecode = rs.getBytes(1);
 		
 		// log: debug
-		Utils.logDebug(String.format("classe encontrada -> %s", bytecode == null ? "false" : "true"));
+		LiveClassUtils.logDebug(String.format("classe encontrada -> %s", bytecode == null ? "false" : "true"));
 		
 		return ( bytecode );
 	}
@@ -559,7 +559,7 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 		String SQL = "SELECT bytecode FROM InnerClasses WHERE id_version = ?";
 		
 		// log: debug
-		Utils.logDebug(this.debugSQL(SQL, versionId));
+		LiveClassUtils.logDebug(this.debugSQL(SQL, versionId));
 		
 		PreparedStatement pStmt = conn.prepareStatement(SQL);
 		pStmt.setInt(1, versionId);
@@ -572,7 +572,7 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 			bytecodeList.add( rs.getBytes(1) );
 		
 		// log: debug
-		Utils.logDebug(String.format("classes internas -> %d", bytecodeList.size()));
+		LiveClassUtils.logDebug(String.format("classes internas -> %d", bytecodeList.size()));
 		
 		return ( bytecodeList );
 	}
@@ -597,7 +597,7 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 		String SQL = "DELETE FROM ClassVersion WHERE id = ?";
 		
 		// log: debug
-		Utils.logDebug(this.debugSQL(SQL, versionId));
+		LiveClassUtils.logDebug(this.debugSQL(SQL, versionId));
 		
 		PreparedStatement pStmt = conn.prepareStatement(SQL);
 		pStmt.setInt(1, versionId);
@@ -606,7 +606,7 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 		int result = pStmt.executeUpdate();
 		
 		// log: debug
-		Utils.logDebug(String.format("registros afetados -> %d", result));
+		LiveClassUtils.logDebug(String.format("registros afetados -> %d", result));
 	}
 	
 	/**
@@ -660,7 +660,7 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 					 "GROUP BY l.id";
 		
 		// log: debug
-		Utils.logDebug(this.debugSQL(SQL, liveClassName));
+		LiveClassUtils.logDebug(this.debugSQL(SQL, liveClassName));
 
 		
 		PreparedStatement pStmt = conn.prepareStatement(SQL);
@@ -678,7 +678,7 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 			keysInfo.setCurrentVersion(rs.getInt(4));
 			
 			// log: debug
-			Utils.logDebug(keysInfo.toString());
+			LiveClassUtils.logDebug(keysInfo.toString());
 		}
 		
 		return ( keysInfo );
@@ -707,7 +707,7 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 					 "GROUP BY l.id";
 
 		// log: debug
-		Utils.logDebug(SQL);		
+		LiveClassUtils.logDebug(SQL);		
 		
 		PreparedStatement pStmt = conn.prepareStatement(SQL);
 		ResultSet rs = pStmt.executeQuery();
@@ -726,7 +726,7 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 			keysInfoList.add(keysInfo);
 			
 			// log: debug
-			Utils.logDebug(keysInfo.toString());
+			LiveClassUtils.logDebug(keysInfo.toString());
 		}
 		
 		return ( keysInfoList );
@@ -756,7 +756,7 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 		String SQL = "UPDATE LiveCLass SET safeModeVersion=? WHERE className=?";
 
 		// log: debug
-		Utils.logDebug(this.debugSQL(SQL, version, liveClassName));
+		LiveClassUtils.logDebug(this.debugSQL(SQL, version, liveClassName));
 		
 		PreparedStatement pStmt = conn.prepareStatement(SQL);
 		pStmt.setInt(1, version);
@@ -766,7 +766,7 @@ public class DefaultLiveClassPersistence implements ILiveClassPersistence
 		int result = pStmt.executeUpdate();
 		
 		// log: debug
-		Utils.logDebug(String.format("registros afetados -> %d", result));
+		LiveClassUtils.logDebug(String.format("registros afetados -> %d", result));
 		
 		return ( result > 0 );
 	}

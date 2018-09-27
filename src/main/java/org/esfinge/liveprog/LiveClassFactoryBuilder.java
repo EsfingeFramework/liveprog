@@ -6,7 +6,7 @@ import org.esfinge.liveprog.db.ILiveClassVersionManager;
 import org.esfinge.liveprog.exception.LiveClassFactoryBuilderException;
 import org.esfinge.liveprog.monitor.FileSystemMonitor;
 import org.esfinge.liveprog.monitor.ILiveClassFileMonitor;
-import org.esfinge.liveprog.util.Utils;
+import org.esfinge.liveprog.util.LiveClassUtils;
 
 /**
  * <p>
@@ -377,8 +377,8 @@ public class LiveClassFactoryBuilder
 			catch ( Exception e )
 			{
 				// log: erro
-				Utils.logError("Erro ao criar fabrica de objeto dinamicos!");
-				Utils.logException(e);
+				LiveClassUtils.logError("Erro ao criar fabrica de objeto dinamicos!");
+				LiveClassUtils.logException(e);
 				
 				throw new LiveClassFactoryBuilderException("Unable to create a new LiveClassFactory object!", e);
 			}

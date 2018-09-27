@@ -39,6 +39,6 @@ public abstract class LiveprogException extends Exception
 	 */
 	public LiveprogException(String message, Throwable cause)
 	{
-		super("\n****Esfinge Liveprog Exception**** \n -> " + message, cause);
+		super("\n**** Esfinge Liveprog Exception **** \n -> " + message, cause);
 	}
 }

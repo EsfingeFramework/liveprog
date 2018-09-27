@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.esfinge.liveprog.util.Utils;
+import org.esfinge.liveprog.util.LiveClassUtils;
 
 /**
  * <p>
@@ -140,7 +140,7 @@ public class MethodInfo
 	 */
 	public void addAnnotationInfo(AnnotationInfo... annotationsInfo)
 	{
-		Utils.addToCollection(this.annotationsInfo, annotationsInfo);
+		LiveClassUtils.addToCollection(this.annotationsInfo, annotationsInfo);
 	}
 
 	/**
@@ -203,7 +203,7 @@ public class MethodInfo
 	 */
 	public void addThrownExceptionName(String... exceptionNames)
 	{
-		Utils.addToCollection(this.thrownExceptionNames, exceptionNames);
+		LiveClassUtils.addToCollection(this.thrownExceptionNames, exceptionNames);
 	}
 	
 	/**
@@ -233,7 +233,7 @@ public class MethodInfo
 	 */
 	public void addParameterInfo(ParameterInfo... paramsInfo)
 	{
-		Utils.addToCollection(this.parametersInfo, paramsInfo);
+		LiveClassUtils.addToCollection(this.parametersInfo, paramsInfo);
 	}
 	
 	/**
@@ -265,7 +265,7 @@ public class MethodInfo
 	 */
 	public ParameterInfo getParameterAtIndex(int index)
 	{
-		return ( Utils.getFromCollection(this.parametersInfo, (p) -> p.getIndex() == index) );
+		return ( LiveClassUtils.getFromCollection(this.parametersInfo, (p) -> p.getIndex() == index) );
 	}
 	
 	/**

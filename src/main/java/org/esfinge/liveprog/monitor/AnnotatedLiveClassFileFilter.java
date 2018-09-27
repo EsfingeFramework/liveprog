@@ -5,7 +5,7 @@ import java.io.File;
 import org.esfinge.liveprog.annotation.LiveClass;
 import org.esfinge.liveprog.instrumentation.InstrumentationHelper;
 import org.esfinge.liveprog.reflect.ClassInfo;
-import org.esfinge.liveprog.util.Utils;
+import org.esfinge.liveprog.util.LiveClassUtils;
 
 /**
  * <p>
@@ -42,8 +42,8 @@ public class AnnotatedLiveClassFileFilter  implements ILiveClassFileFilter
 		}
 		catch ( Exception e )
 		{
-			Utils.logDebug("Arquivo '" + file.getAbsolutePath() + "' nao contem uma classe valida");
-			Utils.logException(e);
+			LiveClassUtils.logDebug("Arquivo '" + file.getAbsolutePath() + "' nao contem uma classe valida");
+			LiveClassUtils.logException(e);
 			
 			return ( false );
 		}

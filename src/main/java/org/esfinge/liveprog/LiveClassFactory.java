@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.ClassUtils;
 import org.esfinge.liveprog.db.ILiveClassPersistence;
 import org.esfinge.liveprog.db.ILiveClassVersionInfo;
 import org.esfinge.liveprog.db.ILiveClassVersionObserver;
@@ -20,7 +19,7 @@ import org.esfinge.liveprog.monitor.ILiveClassFileMonitorObserver;
 import org.esfinge.liveprog.reflect.AccessModifier;
 import org.esfinge.liveprog.reflect.ClassInfo;
 import org.esfinge.liveprog.reflect.MethodInfo;
-import org.esfinge.liveprog.util.Utils;
+import org.esfinge.liveprog.util.LiveClassUtils;
 
 import net.sf.cglib.proxy.Enhancer;
 
@@ -145,7 +144,7 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 		catch ( Exception e )
 		{
 			// log: erro
-			Utils.logError("Erro ao instanciar a fabrica de objetos de classes dinamicas!");
+			LiveClassUtils.logError("Erro ao instanciar a fabrica de objetos de classes dinamicas!");
 			
 			throw new LiveClassFactoryException("Unable to instantiate a new LiveClassFactory object!", e);
 		}
@@ -199,7 +198,7 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 	public void liveClassFileUpdated(File liveClassFile)
 	{
 		// log: arquivo de classe dinamica recebido
-		Utils.logInfo("Arquivo de classe dinamica recebido: " + liveClassFile.getName());
+		LiveClassUtils.logInfo("Arquivo de classe dinamica recebido: " + liveClassFile.getName());
 		
 		// redireciona para o gerenciador de atualizacoes
 		this.updateManager.liveClassFileUpdated(liveClassFile);
@@ -209,7 +208,7 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 	public void liveClassCommitted(String liveClassName)
 	{
 		// log: commit de classe dinamica
-		Utils.logInfo("Classe dinamica - commit: " + liveClassName);
+		LiveClassUtils.logInfo("Classe dinamica - commit: " + liveClassName);
 		
 		try
 		{
@@ -231,8 +230,8 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 		catch ( Exception e )
 		{
 			// log: erro commit
-			Utils.logError("Erro ao carregar commit da classe dinamica '" + liveClassName + "'");
-			Utils.logException(e);
+			LiveClassUtils.logError("Erro ao carregar commit da classe dinamica '" + liveClassName + "'");
+			LiveClassUtils.logException(e);
 		}
 	}
 
@@ -242,7 +241,7 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 		try
 		{
 			// log: rollback de classe dinamica
-			Utils.logInfo("Classe dinamica - rollback (modo padrao): " + liveClassName);
+			LiveClassUtils.logInfo("Classe dinamica - rollback (modo padrao): " + liveClassName);
 
 			// obtem as informacoes da classe dinamica no modo padrao
 			ClassInfo liveClassInfo = this.dbManager.getLiveClassInfo(liveClassName, false);
@@ -260,7 +259,7 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 			if (! newLiveClass.equals(this.cacheLiveClassesSafeMode.put(liveClassName, newLiveClass)) )
 			{
 				// log: rollback do modo seguro
-				Utils.logInfo("Classe dinamica - rollback (modo seguro): " + liveClassName);
+				LiveClassUtils.logInfo("Classe dinamica - rollback (modo seguro): " + liveClassName);
 
 				// notifica os proxies em modo seguro de operacao
 				this.notifyRollback(liveClassName, newLiveClass, true);
@@ -272,8 +271,8 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 		catch ( Exception e )
 		{
 			// log: erro rollback
-			Utils.logError("Erro ao carregar rollback da classe dinamica '" + liveClassName + "'");
-			Utils.logException(e);
+			LiveClassUtils.logError("Erro ao carregar rollback da classe dinamica '" + liveClassName + "'");
+			LiveClassUtils.logException(e);
 		}
 	}
 	
@@ -295,7 +294,7 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 		this.factorySafeMode = safeMode;
 		
 		// log: modo de operacao
-		Utils.logDebug("Safe mode: " + this.factorySafeMode);
+		LiveClassUtils.logDebug("Safe mode: " + this.factorySafeMode);
 	}
 
 	/**
@@ -341,8 +340,8 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 		catch ( IncompatibleLiveClassException e )
 		{
 			// log: erro ao registrar observador
-			Utils.logError("Erro ao registrar observador para a classe '" + liveClass.getName() + "'");
-			Utils.logException(e);
+			LiveClassUtils.logError("Erro ao registrar observador para a classe '" + liveClass.getName() + "'");
+			LiveClassUtils.logException(e);
 			
 			return ( false );
 		}
@@ -404,7 +403,7 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 			if ( clazz == null )
 			{
 				// log: classe dinamica nao encontrada no cache
-				Utils.logDebug("Classe dinamica nao encontrada no cache: '" + liveClass.getName() + "'");
+				LiveClassUtils.logDebug("Classe dinamica nao encontrada no cache: '" + liveClass.getName() + "'");
 				
 				// verifica se a classe cumpre os requisitos de classes dinamicas
 				InstrumentationHelper.checkValidLiveClass(liveClass);
@@ -416,7 +415,7 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 				if ( liveClassInfo == null )
 				{
 					// log: classe dinamica ainda nao foi persistida
-					Utils.logDebug("Classe dinamica ainda nao foi persistida: '" + liveClass.getName() + "'");
+					LiveClassUtils.logDebug("Classe dinamica ainda nao foi persistida: '" + liveClass.getName() + "'");
 										
 					// primeiro uso da classe dinamica
 					liveClassInfo = InstrumentationHelper.inspect(liveClass);
@@ -439,7 +438,7 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 			LiveClassProxy proxy = new LiveClassProxy(liveObj);
 			Enhancer e = new Enhancer();
 			e.setSuperclass(liveClass);
-			e.setInterfaces(ClassUtils.getAllInterfaces(liveClass).toArray(new Class[0]));
+			e.setInterfaces(liveClass.getInterfaces());
 			e.setCallback(proxy);
 			
 			// registra o proxy para ser notificado quando a classe dinamica for atualizada
@@ -450,8 +449,8 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 		catch ( Exception e)
 		{
 			// log: erro ao criar objeto dinamico
-			Utils.logError("Erro ao criar objeto dinamico da classe '" + liveClass.getName() + "'");
-			Utils.logException(e);
+			LiveClassUtils.logError("Erro ao criar objeto dinamico da classe '" + liveClass.getName() + "'");
+			LiveClassUtils.logException(e);
 			
 			// problemas ao criar objeto dinamico
 			throw new IncompatibleLiveClassException("Unable to create a new live object!", e);
@@ -512,7 +511,7 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 			if ( versionInfo.getCurrentVersion() < 1 )
 			{
 				// log: classe dinamica ainda nao foi persistida
-				Utils.logInfo("Classe dinamica original ainda nao foi persistida: '" + liveClassName + "'");
+				LiveClassUtils.logInfo("Classe dinamica original ainda nao foi persistida: '" + liveClassName + "'");
 				
 				// obtem a classe original
 				Class<?> origLiveClass = Class.forName(liveClassName);
@@ -531,13 +530,13 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 			this.dbManager.saveLiveClassInfo(liveClassName, newLiveClassInfo);
 			
 			// log: classe dinamica atualizada
-			Utils.logInfo("Classe dinamica atualizada: " + liveClassName);
+			LiveClassUtils.logInfo("Classe dinamica atualizada: " + liveClassName);
 			
 			// carrega a classe dinamica
 			Class<?> newLiveClass = this.classLoader.loadLiveClass(newLiveClassInfo);
 
 			// log:  classe dinamica carregada
-			Utils.logInfo("Classe dinamica carregada: " + newLiveClass.getName());
+			LiveClassUtils.logInfo("Classe dinamica carregada: " + newLiveClass.getName());
 
 			// atualiza o cache de classes do modo normal de operacao
 			this.cacheLiveClassesStdMode.put(liveClassName, newLiveClass);
@@ -551,8 +550,8 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 		catch ( Exception e )
 		{
 			// log: erro ao carregar classe dinamica
-			Utils.logError("Erro ao carregar nova versao da classe dinamica '" + liveClassName + "'");
-			Utils.logException(e);
+			LiveClassUtils.logError("Erro ao carregar nova versao da classe dinamica '" + liveClassName + "'");
+			LiveClassUtils.logException(e);
 		}
 	}
 	
@@ -659,7 +658,7 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 				ClassInfo classInfo = InstrumentationHelper.inspect(liveClassFile);
 
 				// log: arquivo de classe recebido
-				Utils.logInfo("Classe recebida: '" + classInfo.getName() + "'");
+				LiveClassUtils.logInfo("Classe recebida: '" + classInfo.getName() + "'");
 				
 				// mapeamento das classes que compoem a classe do arquivo recebido
 				ClassMap classMap = this.findClassMap(classInfo.getName());
@@ -698,7 +697,7 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 					classInfo = classMap.getRootClass();
 					
 					// log: nova versao de classe dinamica
-					Utils.logInfo("Nova versao da classe dinamica: '" + classInfo.getName() + "'");
+					LiveClassUtils.logInfo("Nova versao da classe dinamica: '" + classInfo.getName() + "'");
 
 					try
 					{
@@ -714,8 +713,8 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 					catch ( Exception e )
 					{
 						// log: erro ao criar nova versao da classe dinamica
-						Utils.logError("Erro ao criar nova versao da classe dinamica '" + classInfo.getName() + "'");
-						Utils.logException(e);
+						LiveClassUtils.logError("Erro ao criar nova versao da classe dinamica '" + classInfo.getName() + "'");
+						LiveClassUtils.logException(e);
 					}			
 					finally
 					{
@@ -727,7 +726,7 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 			catch ( Exception e )
 			{
 				// log: erro
-				Utils.logException(e);
+				LiveClassUtils.logException(e);
 			}
 		}
 		
@@ -753,7 +752,7 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 				Class<?> origClass = Class.forName(newClassInfo.getName());
 				
 				// obtem os metodos publicos da nova classe
-				List<MethodInfo> newClassMethods = Utils.filterFromCollection(newClassInfo.getMethodsInfo(), 
+				List<MethodInfo> newClassMethods = LiveClassUtils.filterFromCollection(newClassInfo.getMethodsInfo(), 
 															m -> m.getAccessPermission() == AccessModifier.PUBLIC);
 				
 				// verifica se a nova classe possui os metodos publicos da classe original
@@ -765,7 +764,7 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 
 					// tenta obter o mesmo metodo na nova classe
 					boolean cont = false;
-					List<MethodInfo> newMethods = Utils.filterFromCollection(newClassMethods, 
+					List<MethodInfo> newMethods = LiveClassUtils.filterFromCollection(newClassMethods, 
 															m -> m.getName().equals(origMethod.getName()) && 
 															    (m.getParametersInfo().size() == origMethod.getParameterCount()));
 					for ( MethodInfo m : newMethods )
@@ -805,12 +804,12 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 				}
 				
 				// log: versao compativel
-				Utils.logInfo("Nova versao da classe dinamica compativel com a original!");
+				LiveClassUtils.logInfo("Nova versao da classe dinamica compativel com a original!");
 			}
 			catch ( Exception e )
 			{
 				// log: versao incompativel
-				Utils.logError("Nova versao da classe dinamica NAO compativel com a original!");
+				LiveClassUtils.logError("Nova versao da classe dinamica NAO compativel com a original!");
 
 				throw new IncompatibleLiveClassException("New class is incompatible with original class public interface!", e);
 			}
@@ -1016,7 +1015,7 @@ public class LiveClassFactory implements ILiveClassFileMonitorObserver, ILiveCla
 			 */
 			public ClassInfo getRootClass()
 			{
-				return ( Utils.getFromCollection(this.classMap.values(), n -> !n.getClassInfo().isInnerClass()).getClassInfo() );
+				return ( LiveClassUtils.getFromCollection(this.classMap.values(), n -> !n.getClassInfo().isInnerClass()).getClassInfo() );
 			}
 
 			/**

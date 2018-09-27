@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.esfinge.liveprog.util.Utils;
+import org.esfinge.liveprog.util.LiveClassUtils;
 
 /**
  * <p>
@@ -160,7 +160,7 @@ public class FileSystemMonitor extends AbstractLiveClassFileMonitor
 			try
 			{
 				// log: o diretorio sendo monitorado
-				Utils.logInfo("Monitorando diretorio [" + rootDir.toAbsolutePath() + "]");
+				LiveClassUtils.logInfo("Monitorando diretorio [" + rootDir.toAbsolutePath() + "]");
 				
 				//
 				isRunning = true;
@@ -187,7 +187,7 @@ public class FileSystemMonitor extends AbstractLiveClassFileMonitor
 				    	if ( fileFilter.acceptFile(arquivo) )
 			    		{
 				    		// log: arquivo aceito
-				    		Utils.logInfo("Novo arquivo de classe encontrado: " + arquivo.getName() );
+				    		LiveClassUtils.logInfo("Novo arquivo de classe encontrado: " + arquivo.getName() );
 
 				    		// notifica os observadores
 				    		FileSystemMonitor.this.notifyObservers(arquivo);
@@ -200,14 +200,14 @@ public class FileSystemMonitor extends AbstractLiveClassFileMonitor
 			catch (Exception e)
 			{
 				// log: erro
-				Utils.logError("Erro durante o monitoramento!");
-				Utils.logException(e);
+				LiveClassUtils.logError("Erro durante o monitoramento!");
+				LiveClassUtils.logException(e);
 			}
 			
 			finally
 			{
 				// log: encerrando monitoramento
-				Utils.logInfo("Monitoramente encerrado!");
+				LiveClassUtils.logInfo("Monitoramente encerrado!");
 				
 				//
 				isRunning = false;

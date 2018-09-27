@@ -19,7 +19,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 
-import org.esfinge.liveprog.util.Utils;
+import org.esfinge.liveprog.util.LiveClassUtils;
 
 /**
  * <p>
@@ -265,8 +265,8 @@ public class DefaultLiveClassVersionManager extends JFrame implements ILiveClass
 		catch (Exception e)
 		{
 			// log: erro
-			Utils.logError("Erro ao carregar tabela de versoes de classes dinamicas");
-			Utils.logException(e);
+			LiveClassUtils.logError("Erro ao carregar tabela de versoes de classes dinamicas");
+			LiveClassUtils.logException(e);
 		}
 	}
 	
@@ -303,8 +303,8 @@ public class DefaultLiveClassVersionManager extends JFrame implements ILiveClass
 			catch (Exception e)
 			{
 				// log: erro
-				Utils.logError("Erro ao executar o commit de classe dinamica selecionada");
-				Utils.logException(e);
+				LiveClassUtils.logError("Erro ao executar o commit de classe dinamica selecionada");
+				LiveClassUtils.logException(e);
 			}
 		}).start();
 	}
@@ -342,8 +342,8 @@ public class DefaultLiveClassVersionManager extends JFrame implements ILiveClass
 			catch (Exception e)
 			{
 				// log: erro
-				Utils.logError("Erro ao executar o rollback de classe dinamica selecionada");
-				Utils.logException(e);
+				LiveClassUtils.logError("Erro ao executar o rollback de classe dinamica selecionada");
+				LiveClassUtils.logException(e);
 			}
 		}).start();
 	}

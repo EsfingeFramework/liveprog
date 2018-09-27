@@ -1,7 +1,7 @@
 package org.esfinge.liveprog.reflect;
 
 import org.esfinge.liveprog.instrumentation.InstrumentationHelper;
-import org.esfinge.liveprog.util.Utils;
+import org.esfinge.liveprog.util.LiveClassUtils;
 import org.objectweb.asm.Type;
 
 /**
@@ -192,8 +192,8 @@ public class TypeHandler
 		catch (ClassNotFoundException e)
 		{
 			// log: erro
-			Utils.logError("Tipo desconhecido: '" + this.getDisplayName() + "'");
-			Utils.logException(e);
+			LiveClassUtils.logError("Tipo desconhecido: '" + this.getDisplayName() + "'");
+			LiveClassUtils.logException(e);
 			
 			return ( null );
 		}

@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.esfinge.liveprog.util.Utils;
+import org.esfinge.liveprog.util.LiveClassUtils;
 
 /**
  * <p>
@@ -49,7 +49,7 @@ public class FileFilterComposite implements ILiveClassFileFilter
 	 */
 	public void addFilter(ILiveClassFileFilter... filters)
 	{
-		Utils.addToCollection(this.filters, filters);
+		LiveClassUtils.addToCollection(this.filters, filters);
 	}
 
 	@Override

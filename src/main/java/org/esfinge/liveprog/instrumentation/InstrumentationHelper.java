@@ -30,7 +30,7 @@ import org.esfinge.liveprog.reflect.FieldInfo;
 import org.esfinge.liveprog.reflect.MethodInfo;
 import org.esfinge.liveprog.reflect.ParameterInfo;
 import org.esfinge.liveprog.reflect.TypeHandler;
-import org.esfinge.liveprog.util.Utils;
+import org.esfinge.liveprog.util.LiveClassUtils;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Type;
@@ -81,7 +81,7 @@ public abstract class InstrumentationHelper
 			throw new IncompatibleLiveClassException("'" + liveClass + "' is not annotated with @LiveClass!");
 		
 		// verifica se tem um construtor publico vazio
-		Constructor<?> defaultConst = Utils.getFromCollection(Arrays.asList(liveClass.getConstructors()), c -> c.getParameterCount() == 0 );
+		Constructor<?> defaultConst = LiveClassUtils.getFromCollection(Arrays.asList(liveClass.getConstructors()), c -> c.getParameterCount() == 0 );
 		if ( defaultConst == null )
 			throw new IncompatibleLiveClassException("'" + liveClass + "' must have a default public constructor!");
 		
@@ -371,8 +371,8 @@ public abstract class InstrumentationHelper
 			catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
 			{
 				// log: erro ao recuperar valor da anotacao
-				Utils.logError("Erro ao recuperar valor da anotacao: '" + attr.getName() + "'");
-				Utils.logException(e);
+				LiveClassUtils.logError("Erro ao recuperar valor da anotacao: '" + attr.getName() + "'");
+				LiveClassUtils.logException(e);
 			}
 
 			//
@@ -514,7 +514,7 @@ public abstract class InstrumentationHelper
 		try
 		{
 			String strURL = "/" + clazz.getName().replace(".", "/") + ".class";
-			Utils.logDebug("URL -> " + strURL);
+			LiveClassUtils.logDebug("URL -> " + strURL);
 			
 			URL resourceUrl = clazz.getResource(strURL);
 			InputStream classStream = resourceUrl.openStream();

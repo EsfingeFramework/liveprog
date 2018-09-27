@@ -3,7 +3,7 @@ package org.esfinge.liveprog.reflect;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.esfinge.liveprog.util.Utils;
+import org.esfinge.liveprog.util.LiveClassUtils;
 
 /**
  * <p>
@@ -162,7 +162,7 @@ public class FieldInfo
 	 */
 	public void addAnnotationInfo(AnnotationInfo... annotationsInfo)
 	{
-		Utils.addToCollection(this.annotationsInfo, annotationsInfo);
+		LiveClassUtils.addToCollection(this.annotationsInfo, annotationsInfo);
 	}
 
 	/**

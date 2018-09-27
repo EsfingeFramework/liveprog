@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 
 import org.esfinge.liveprog.exception.LiveClassLoaderException;
 import org.esfinge.liveprog.reflect.ClassInfo;
-import org.esfinge.liveprog.util.Utils;
+import org.esfinge.liveprog.util.LiveClassUtils;
 
 /**
  * <p>
@@ -43,7 +43,7 @@ class LiveClassLoader implements ILiveClassLoader
 		catch (NoSuchMethodException | SecurityException e)
 		{
 			// log: erro reflection
-			Utils.logError("Erro ao recuperar metodo 'ClassLoader.defineClass()' por reflexão!");
+			LiveClassUtils.logError("Erro ao recuperar metodo 'ClassLoader.defineClass()' por reflexão!");
 			
 			throw new LiveClassLoaderException("Unable to retrive method 'defineClass' from System Classloader by reflection");
 		}
@@ -55,13 +55,13 @@ class LiveClassLoader implements ILiveClassLoader
 		try
 		{
 			// log:
-			Utils.logInfo("Classe dinamica a ser carregada: '" + liveClassInfo.getName() + "'");
+			LiveClassUtils.logInfo("Classe dinamica a ser carregada: '" + liveClassInfo.getName() + "'");
 
 			// verifica se a classe ja esta carregada
 			Class<?> clazz = ClassLoader.getSystemClassLoader().loadClass(liveClassInfo.getName());
 			
 			// log:
-			Utils.logInfo("Classe dinamica ja estava carregada");
+			LiveClassUtils.logInfo("Classe dinamica ja estava carregada");
 			
 			// a classe ja esta carregada, retorna
 			return ( clazz );
@@ -69,7 +69,7 @@ class LiveClassLoader implements ILiveClassLoader
 		catch ( ClassNotFoundException cnfe )
 		{
 			// log:
-			Utils.logInfo("Classe dinamica NAO estava carregada");
+			LiveClassUtils.logInfo("Classe dinamica NAO estava carregada");
 			
 			// bytecode da classe
 			byte[] classBytecode = liveClassInfo.getBytecode();
@@ -100,7 +100,7 @@ class LiveClassLoader implements ILiveClassLoader
 				*/
 				
 				// log:
-				Utils.logInfo("Classe dinamica carregada com sucesso: '" + liveClassInfo.getName() + "'");
+				LiveClassUtils.logInfo("Classe dinamica carregada com sucesso: '" + liveClassInfo.getName() + "'");
 				
 				//
 				return ( clazz );
@@ -108,7 +108,7 @@ class LiveClassLoader implements ILiveClassLoader
 			catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e)
 			{
 				// log: erro
-				Utils.logError("Erro ao carregar classe dinamica: '" + liveClassInfo.getName() + "'");
+				LiveClassUtils.logError("Erro ao carregar classe dinamica: '" + liveClassInfo.getName() + "'");
 				
 				throw new LiveClassLoaderException("Error loading live class!", e);
 			}

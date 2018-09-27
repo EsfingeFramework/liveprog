@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.esfinge.liveprog.util.Utils;
+import org.esfinge.liveprog.util.LiveClassUtils;
 
 /**
  * <p>
@@ -99,7 +99,7 @@ public class AnnotationInfo
 	 */
 	public void addAttributeInfo(AttributeInfo... attributesInfo)
 	{
-		Utils.addToCollection(this.attributesInfo, attributesInfo);
+		LiveClassUtils.addToCollection(this.attributesInfo, attributesInfo);
 	}
 	
 	/**
@@ -130,7 +130,7 @@ public class AnnotationInfo
 	 */
 	public void addAnnotationInfo(AnnotationInfo... annotationsInfo)
 	{
-		Utils.addToCollection(this.annotationsInfo, annotationsInfo);
+		LiveClassUtils.addToCollection(this.annotationsInfo, annotationsInfo);
 	}
 
 	/**
@@ -228,7 +228,7 @@ public class AnnotationInfo
 		 */
 		public void addValue(Object... values)
 		{
-			Utils.addToCollection(this.values, values);
+			LiveClassUtils.addToCollection(this.values, values);
 		}
 
 		/**

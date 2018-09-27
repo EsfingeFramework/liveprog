@@ -2,6 +2,7 @@ package org.esfinge.liveprog;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,7 +10,7 @@ import org.esfinge.liveprog.annotation.IgnoreOnReload;
 import org.esfinge.liveprog.annotation.InvokeOnReload;
 import org.esfinge.liveprog.annotation.InvokeOnRollback;
 import org.esfinge.liveprog.exception.LiveClassProxyException;
-import org.esfinge.liveprog.util.Utils;
+import org.esfinge.liveprog.util.LiveClassUtils;
 
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
@@ -17,9 +18,10 @@ import net.sf.cglib.proxy.MethodProxy;
 /**
  * <p>
  * Proxy para objetos de classes dinâmicas.
+ * </p>
  * <p><i>
  * Proxy for objects of LiveClasses.
- * </i>
+ * </i></p>
  * 
  * @see org.esfinge.liveprog.annotation.LiveClass 
  */
@@ -35,9 +37,10 @@ class LiveClassProxy implements MethodInterceptor
 	/**
 	 * <p>
 	 * Constrói um novo proxy para o objeto de uma classe dinâmica.
+	 * </p>
 	 * <p><i>
 	 * Constructs a new proxy for an object of a LiveClass.
-	 * </i>
+	 * </i></p>
 	 * 
 	 * @param liveObj o objeto de uma classe dinâmica
 	 * <br><i>an object from a LiveClass</i>
@@ -54,16 +57,17 @@ class LiveClassProxy implements MethodInterceptor
 		// lock para invocar o metodo no objeto da classe dinamica
 		synchronized( this.lock )
 		{
-			return ( this.invokeRealMethod(method, args) );
+			return ( this.invokeOnLiveObject(method, args) );
 		}
 	}
 	
 	/**
 	 * <p>
 	 * Recebe a notificação de que a classe dinâmica foi recarregada em uma nova versão.
+	 * </p>
 	 * <p><i>
 	 * Gets notified that the LiveClass was reloaded on a new version.
-	 * </i>
+	 * </i></p>
 	 * 
 	 * @param newLiveClass nova versão da classe dinâmica
 	 * <br><i>updated version of the LiveClass</i>
@@ -86,16 +90,16 @@ class LiveClassProxy implements MethodInterceptor
 			}
 			
 			// log: objeto dinamico atualizado
-			Utils.logDebug("Objeto dinamico atualizado: " + this.liveObj);
+			LiveClassUtils.logDebug("Objeto dinamico atualizado: " + this.liveObj);
 			
 			// verifica se a classe possui metodo marcado com @InvokeOnReload
-				for ( Method m : Utils.getAnnotadedMethods(newLiveClass, InvokeOnReload.class) )
-					this.invokeRealMethod(m);
+				for ( Method m : LiveClassUtils.getAnnotatedMethods(newLiveClass, InvokeOnReload.class) )
+					this.invokeOnLiveObject(m);
 		}
 		catch ( Throwable e )
 		{
 			// log: erro
-			Utils.logError("Erro ao atualizar objeto dinamico!");
+			LiveClassUtils.logError("Erro ao atualizar objeto dinamico!");
 			
 			// retorna para a versao antiga do objeto
 			this.liveObj = oldObj;
@@ -107,9 +111,10 @@ class LiveClassProxy implements MethodInterceptor
 	/**
 	 * <p>
 	 * Recebe a notificação de que a classe dinâmica foi recarregada para uma versão anterior.
+	 * </p>
 	 * <p><i>
 	 * Gets notified that the LiveClass was rolled back to a previous version.
-	 * </i>
+	 * </i></p>
 	 * 
 	 * @param newLiveClass nova versão da classe dinâmica
 	 * <br><i>updated version of the LiveClass</i>
@@ -132,20 +137,20 @@ class LiveClassProxy implements MethodInterceptor
 			}
 			
 			// log: objeto dinamico atualizado
-			Utils.logDebug("Objeto dinamico revertido: " + this.liveObj);
+			LiveClassUtils.logDebug("Objeto dinamico revertido: " + this.liveObj);
 			
 			// verifica se a classe possui metodo marcado com @InvokeOnRollback
-			for ( Method m : Utils.getAnnotadedMethods(newLiveClass, InvokeOnRollback.class) )
-				this.invokeRealMethod(m);
+			for ( Method m : LiveClassUtils.getAnnotatedMethods(newLiveClass, InvokeOnRollback.class) )
+				this.invokeOnLiveObject(m);
 
 			// verifica se a classe possui metodo marcado com @InvokeOnReload
-				for ( Method m : Utils.getAnnotadedMethods(newLiveClass, InvokeOnReload.class) )
-					this.invokeRealMethod(m);
+				for ( Method m : LiveClassUtils.getAnnotatedMethods(newLiveClass, InvokeOnReload.class) )
+					this.invokeOnLiveObject(m);
 		}
 		catch ( Throwable e )
 		{
 			// log: erro
-			Utils.logError("Erro ao reverter versao do objeto dinamico!");
+			LiveClassUtils.logError("Erro ao reverter versao do objeto dinamico!");
 			
 			// retorna para a versao antiga do objeto
 			this.liveObj = oldObj;
@@ -157,9 +162,10 @@ class LiveClassProxy implements MethodInterceptor
 	/**
 	 * <p>
 	 * Copia as propriedades do antigo objeto para o objeto da nova versão da classe dinâmica.
+	 * </p>
 	 * <p><i>
 	 * Copies the properties of the old objet to the object of the new version of the LiveClass.
-	 * </i>
+	 * </i></p>
 	 * 
 	 * @param oldObj objeto da versão sendo substituída
 	 * <br><i>object being replaced</i>
@@ -173,7 +179,7 @@ class LiveClassProxy implements MethodInterceptor
 	private void copyProperties(Object oldObj, Object newObj, boolean rollback) throws Exception
 	{
 		// log: debug
-		Utils.logDebug("Rollback: " + rollback);
+		LiveClassUtils.logDebug("Rollback: " + rollback);
 
 		if ( rollback )
 		{
@@ -181,7 +187,7 @@ class LiveClassProxy implements MethodInterceptor
 			if ( (oldObj instanceof ILiveClassState) && (newObj instanceof ILiveClassState) )
 			{
 				// log: debug
-				Utils.logDebug("As duas versoes implementam a interface ILiveClassState");
+				LiveClassUtils.logDebug("As duas versoes implementam a interface ILiveClassState");
 
 				// prepara o mapa de estado do objeto antigo
 				Map<String,Object> mapState = ((ILiveClassState) oldObj).prepareToRollback();
@@ -197,13 +203,22 @@ class LiveClassProxy implements MethodInterceptor
 		if ( newObj instanceof ILiveClassState )
 		{
 			// log: debug
-			Utils.logDebug("Nova versao implementa interface ILiveClassState");
+			LiveClassUtils.logDebug("Nova versao implementa interface ILiveClassState");
 
 			// cria o mapa de propriedades do objeto antigo
 			Map<String,Object> mapState = new HashMap<String,Object>();
 			
-			for ( Field oldObjField : Utils.getFields(oldObj.getClass()) )
+			for ( Field oldObjField : LiveClassUtils.getFields(oldObj.getClass()) )
 			{
+				// ignora campos estaticos
+				if ( Modifier.isStatic(oldObjField.getModifiers()) )
+				{
+					// log: debug
+					LiveClassUtils.logDebug("Propriedade estatica ignorada: '" + oldObjField.getName() + "'");
+					
+					continue;
+				}
+				
 				// armazena a propriedade no objeto antigo
 				oldObjField.setAccessible(true);
 				mapState.put(oldObjField.getName(), oldObjField.get(oldObj));
@@ -215,22 +230,31 @@ class LiveClassProxy implements MethodInterceptor
 		else
 		{
 			// log: debug
-			Utils.logDebug("Nova versao NAO implementa interface ILiveClassState");
+			LiveClassUtils.logDebug("Nova versao NAO implementa interface ILiveClassState");
 			
 			// obtem as propriedades do novo objeto
-			for ( Field newObjField : Utils.getFields(newObj.getClass()) )
+			for ( Field newObjField : LiveClassUtils.getFields(newObj.getClass()) )
 			{
+				// ignora campos estaticos
+				if ( Modifier.isStatic(newObjField.getModifiers()) )
+				{
+					// log: debug
+					LiveClassUtils.logDebug("Propriedade estatica ignorada: '" + newObjField.getName() + "'");
+					
+					continue;
+				}
+				
 				// verifica se o campo esta marcado com @IgnoreOnReload
 				if ( newObjField.isAnnotationPresent(IgnoreOnReload.class) )
 				{
 					// log: debug
-					Utils.logDebug("Propriedade ignorada: '" + newObjField.getName() + "'");
+					LiveClassUtils.logDebug("Propriedade @IgnoreOnReload ignorada: '" + newObjField.getName() + "'");
 					
 					continue;
 				}
 				
 				// obtem a propriedade no objeto antigo
-				Field oldObjField =Utils.getField(oldObj.getClass(), newObjField.getName());						
+				Field oldObjField =LiveClassUtils.getField(oldObj.getClass(), newObjField.getName());						
 			
 				if ( oldObjField != null )
 				{
@@ -242,7 +266,7 @@ class LiveClassProxy implements MethodInterceptor
 					newObjField.set(newObj, oldObjField.get(oldObj));
 
 					// log: debug
-					Utils.logDebug(String.format("Propriedade copiada: [%s , %s]", newObjField.getName(), newObjField.get(newObj)));
+					LiveClassUtils.logDebug(String.format("Propriedade copiada: [%s , %s]", newObjField.getName(), newObjField.get(newObj)));
 				}
 			}
 		}
@@ -251,9 +275,10 @@ class LiveClassProxy implements MethodInterceptor
 	/**
 	 * <p>
 	 * Invoca o método chamado no proxy no objeto real.
+	 * </p>
 	 * <p><i>
 	 * Invokes the method called in the proxy on the real object.
-	 * </i>
+	 * </i></p>
 	 *  
 	 * @param proxyMethod o método chamado no proxy
 	 * <br><i>method called in the proxy object</i>
@@ -264,8 +289,26 @@ class LiveClassProxy implements MethodInterceptor
 	 * @throws Throwable caso ocorra algum erro ao invocar o método no objeto real
 	 * <br><i>if an error occurs when invoking the method on the real object</i>
 	 */
-	private Object invokeRealMethod(Method proxyMethod, Object... args) throws Throwable
+	private Object invokeOnLiveObject(Method proxyMethod, Object... args) throws Throwable
 	{
-		return ( this.liveObj.getClass().getMethod(proxyMethod.getName(), proxyMethod.getParameterTypes()).invoke(this.liveObj, args) );
+		// log: debug
+		LiveClassUtils.logDebug("Metodo interceptado: " + proxyMethod.toString());
+
+		// obtem o metodo no objeto dinamico
+		Method method = LiveClassUtils.getMethod(this.liveObj.getClass(), proxyMethod.getName(), proxyMethod.getParameterTypes());
+		
+		if ( method != null )
+		{
+			method.setAccessible(true);
+			
+			return ( method.invoke(this.liveObj, args) );
+		}
+		else
+		{
+			// log: erro
+			LiveClassUtils.logError("Metodo nao encontrado no objeto dinamico: " + proxyMethod.toString());
+			
+			throw new LiveClassProxyException("Intercepted method not found on live object: " + proxyMethod.toString());
+		}
 	}
 }

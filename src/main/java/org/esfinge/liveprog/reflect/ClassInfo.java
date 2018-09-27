@@ -3,7 +3,7 @@ package org.esfinge.liveprog.reflect;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.esfinge.liveprog.util.Utils;
+import org.esfinge.liveprog.util.LiveClassUtils;
 
 /**
  * <p>
@@ -357,7 +357,7 @@ public class ClassInfo
 	 */
 	public void addInnerClassName(String... innerClassNames)
 	{
-		Utils.addToCollection(this.innerClassNames,  innerClassNames);
+		LiveClassUtils.addToCollection(this.innerClassNames,  innerClassNames);
 	}
 	
 	/**
@@ -387,7 +387,7 @@ public class ClassInfo
 	 */
 	public void addInnerClassInfo(ClassInfo... innerClassesInfo)
 	{
-		Utils.addToCollection(this.innerClassesInfo, innerClassesInfo);
+		LiveClassUtils.addToCollection(this.innerClassesInfo, innerClassesInfo);
 	}
 	
 	/**
@@ -417,7 +417,7 @@ public class ClassInfo
 	 */
 	public void addInterfaceName(String... interfaceNames)
 	{
-		Utils.addToCollection(this.interfaceNames, interfaceNames);
+		LiveClassUtils.addToCollection(this.interfaceNames, interfaceNames);
 	}
 
 	/**
@@ -448,7 +448,7 @@ public class ClassInfo
 	 */
 	public void addFieldInfo(FieldInfo... fieldsInfo)
 	{
-		Utils.addToCollection(this.fieldsInfo, fieldsInfo);
+		LiveClassUtils.addToCollection(this.fieldsInfo, fieldsInfo);
 	}
 
 	/**
@@ -480,7 +480,7 @@ public class ClassInfo
 	 */
 	public void addMethodInfo(MethodInfo... methodsInfo)
 	{
-		Utils.addToCollection(this.methodsInfo, methodsInfo);
+		LiveClassUtils.addToCollection(this.methodsInfo, methodsInfo);
 	}
 
 	/**
@@ -512,7 +512,7 @@ public class ClassInfo
 	 */
 	public void addAnnotationInfo(AnnotationInfo... annotationsInfo)
 	{
-		Utils.addToCollection(this.annotationsInfo, annotationsInfo);
+		LiveClassUtils.addToCollection(this.annotationsInfo, annotationsInfo);
 	}
 
 	/**
