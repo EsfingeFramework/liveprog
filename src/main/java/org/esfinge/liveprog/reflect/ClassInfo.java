@@ -24,7 +24,7 @@ public class ClassInfo
 	private String name;
 	
 	// nome da classe pai
-	private String superclassNames;
+	private String superclassName;
 	
 	// nome da classe externa imediatamente acima (para classes internas)
 	private String enclosingClassName;
@@ -233,7 +233,7 @@ public class ClassInfo
 	 */
 	public void setSuperclassName(String superclassName)
 	{
-		this.superclassNames = superclassName;
+		this.superclassName = superclassName;
 	}
 
 	/**
@@ -248,7 +248,7 @@ public class ClassInfo
 	 */
 	public String getSuperclassName()
 	{
-		return superclassNames;
+		return superclassName;
 	}
 	
 	/**

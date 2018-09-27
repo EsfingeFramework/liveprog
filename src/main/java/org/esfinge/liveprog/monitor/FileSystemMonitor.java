@@ -69,7 +69,7 @@ public class FileSystemMonitor extends AbstractLiveClassFileMonitor
 		this.isRunning = false;
 		
 		// filtros: classes java, anotados com @LiveClass
-		this.setFileFilter(new FileFilterComposite(new FileExtensionFilter("class"), new AnnotatedLiveClassFileFilter()));
+		this.setFileFilter(new CompositeFileFilter(new ExtensionFileFilter("class"), new AnnotatedLiveClassFileFilter()));
 
 		// registra o diretorio/subdiretorios a serem monitorados
 		this.registerDirectory(this.rootDir, includeSubdirs);
